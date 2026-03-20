@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-contrast="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chris Rudnew — UX/UI Designer & Researcher</title>
+  <meta name="description" content="UX/UI Designer and Researcher with a CS and Business background, completing a Master's in UX Design at the University of Toronto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Figma capture script removed for production -->
+  <style>
+
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+       All contrast ratios calculated against --bg (#FAF8F4)
+       Targeting WCAG AAA (7:1 for normal text, 4.5:1 large text)
+    ============================================================ */
+    :root {
+      /* Backgrounds */
+      --bg:             #FAF8F4;   /* page background */
+      --bg-secondary:   #F2EDE6;
+      --surface:        rgba(255, 255, 255, 0.72);  /* glassmorphism */
+      --surface-solid:  #FFFFFF;   /* @supports fallback */
+
+      /* Borders */
+      --border:         rgba(210, 196, 183, 0.48);
+      --border-solid:   #D4C8BE;   /* slightly lighter than surface = glass edge highlight */
+      --border-hi:      rgba(255, 255, 255, 0.55); /* inner glass highlight */
+
+      /* Text — all WCAG AAA on --bg */
+      --text-primary:   #1A1614;   /* 16.8:1 ✓ AAA */
+      --text-secondary: #524841;   /* 8.2:1  ✓ AAA */
+      --text-muted:     #5A4D44;   /* 7.5:1  ✓ AAA */
+      --accent-text:    #5C4E45;   /* 7.3:1  ✓ AAA — use for coloured text */
+
+      /* Accent — decorative / non-text use */
+      --accent:         #7B6A5F;
+      --accent-btn-bg:  #4A3E38;   /* btn hover bg — 10:1 vs white ✓ AAA */
+      --accent-light:   #E8DDD4;
+      --accent-lighter: #F2EDE7;
+
+      /* Shadows */
+      --shadow-sm:  0 2px 8px rgba(26,22,20,0.06);
+      --shadow-md:  0 8px 28px rgba(26,22,20,0.09);
+      --shadow-lg:  0 24px 56px rgba(26,22,20,0.12);
+
+      /* Type */
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+
+      /* Radius */
+      --radius-sm:  10px;
+      --radius-md:  20px;
+      --radius-lg:  28px;
+
+      /* Motion */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Focus ring */
+      --focus-color: #5C4E45;  /* 7.3:1 on --bg ✓ AAA */
+    }
+
+    /* ---- Dark mode ---- */
+    [data-theme="dark"] {
+      --bg:             #17110E;
+      --bg-secondary:   #211710;
+      --surface:        rgba(36, 26, 22, 0.82);
+      --surface-solid:  #2A1E18;
+      --border:         rgba(123,106,95,0.22);
+      --border-solid:   rgba(123,106,95,0.35);
+      --border-hi:      rgba(255,255,255,0.08);
+      --text-primary:   #F5F0EA;
+      --text-secondary: #C9BCB2;
+      --text-muted:     #A89A90;
+      --accent-text:    #D4C5BC;
+      --accent:         #C4B5AA;
+      --accent-btn-bg:  #D4C5BC;
+      --accent-light:   rgba(123,106,95,0.22);
+      --accent-lighter: rgba(123,106,95,0.12);
+      --shadow-sm:  0 2px 8px rgba(0,0,0,0.28);
+      --shadow-md:  0 8px 28px rgba(0,0,0,0.32);
+      --shadow-lg:  0 24px 56px rgba(0,0,0,0.44);
+    }
+
+    /* ---- High contrast mode ---- */
+    [data-contrast="high"] {
+      --bg:             #FFFFFF;
+      --bg-secondary:   #F5F5F5;
+      --surface:        rgba(255,255,255,0.98);
+      --surface-solid:  #FFFFFF;
+      --border:         #1A1614;
+      --border-solid:   #1A1614;
+      --text-primary:   #000000;
+      --text-secondary: #000000;
+      --text-muted:     #111111;
+      --accent-text:    #1A0A00;
+      --accent:         #1A0A00;
+      --accent-btn-bg:  #000000;
+      --accent-light:   #E0E0E0;
+      --accent-lighter: #F0F0F0;
+      --focus-color:    #000000;
+    }
+
+    [data-theme="dark"][data-contrast="high"] {
+      --bg:             #000000;
+      --bg-secondary:   #0A0A0A;
+      --surface:        rgba(0,0,0,0.98);
+      --surface-solid:  #000000;
+      --border:         #FFFFFF;
+      --border-solid:   #FFFFFF;
+      --text-primary:   #FFFFFF;
+      --text-secondary: #EEEEEE;
+      --text-muted:     #DDDDDD;
+      --accent-text:    #FFD9CC;
+      --accent:         #FFD9CC;
+      --accent-btn-bg:  #FFD9CC;
+      --accent-light:   #1A1A1A;
+      --accent-lighter: #0D0D0D;
+      --focus-color:    #FFFFFF;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ============================================================
+       FOCUS STATES — WCAG 2.4.11 enhanced focus visible
+    ============================================================ */
+    :focus { outline: none; }
+
+    :focus-visible {
+      outline: 2px dashed var(--focus-color);
+      outline-offset: 4px;
+      border-radius: 3px;
+    }
+
+    /* Cards and articles get a slightly larger offset */
+    .card:focus-visible,
+    .bento-card:focus-visible {
+      outline: 2px dashed var(--focus-color);
+      outline-offset: 4px;
+      border-radius: var(--radius-md);
+    }
+
+    /* Buttons inherit the global rule; links too */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px dashed var(--focus-color);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    /* ============================================================
+       SKIP LINK (screen reader / keyboard only)
+    ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      padding: 8px 16px;
+      background: var(--text-primary);
+      color: var(--bg);
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      z-index: 9999;
+      text-decoration: none;
+      transition: top 0.2s ease;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+    @keyframes blobFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(30px,-20px) scale(1.05); }
+      66%      { transform: translate(-15px,15px) scale(0.97); }
+    }
+    @keyframes blobFloat2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(-25px,20px) scale(1.03); }
+      66%      { transform: translate(20px,-10px) scale(0.95); }
+    }
+    @keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+    @keyframes slideLeft { from { opacity:0; transform:translateX(-20px) } to { opacity:1; transform:translateX(0) } }
+
+    /* ============================================================
+       CUSTOM CURSOR
+    ============================================================ */
+    .cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transition: transform 0.15s ease;
+    }
+    .cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1.5px solid rgba(123,106,95,0.4);
+      border-radius: 50%; pointer-events: none; z-index: 9998;
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+    }
+    .cursor-ring.hovering { width: 54px; height: 54px; border-color: var(--accent); }
+
+    /* ============================================================
+       HEADER — Glassmorphism
+       Fallback for browsers without backdrop-filter support
+    ============================================================ */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 44px;
+      border-bottom: 1px solid var(--border);
+      /* Solid fallback */
+      background: var(--surface-solid);
+      /* Glassmorphism */
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 var(--border-hi);
+      position: sticky; top: 0; z-index: 100;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    [data-theme="dark"] header { background: rgba(23,17,14,0.88); }
+    @supports not (backdrop-filter: blur(1px)) {
+      header { background: var(--surface-solid); }
+      [data-theme="dark"] header { background: var(--surface-solid); }
+    }
+
+    .header-name {
+      font-family: var(--font-heading);
+      font-weight: 600; font-size: 21px; letter-spacing: -0.3px;
+      color: var(--text-primary);
+      transition: color 0.2s ease;
+      animation: slideLeft 0.6s ease both;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 22px; }
+
+    nav.header-links { display: flex; gap: 22px; align-items: center; }
+
+    nav.header-links a {
+      display: flex; align-items: center; gap: 7px;
+      text-decoration: none; color: var(--text-secondary);
+      font-size: 14px; font-weight: 500;
+      transition: color 0.2s ease;
+      animation: fadeIn 0.6s ease both;
+    }
+    nav.header-links a:nth-child(1) { animation-delay: 0.1s; }
+    nav.header-links a:nth-child(2) { animation-delay: 0.2s; }
+    nav.header-links a:hover { color: var(--text-primary); }
+    nav.header-links a img { width: 17px; height: 17px; opacity: 0.6; transition: transform 0.2s ease, opacity 0.2s ease; }
+    nav.header-links a:hover img { transform: translateY(-1px); opacity: 1; }
+
+    /* ---- Settings bubble radial ---- */
+    .settings-wrap {
+      position: relative;
+      display: flex; align-items: center;
+    }
+
+    .settings-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-solid);
+      background: var(--surface); cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.4s var(--ease);
+      color: var(--text-secondary);
+      position: relative; z-index: 2;
+    }
+    .settings-btn:hover,
+    .settings-wrap.is-open .settings-btn,
+    .settings-wrap:focus-within .settings-btn {
+      background: var(--accent-light); border-color: var(--accent);
+      transform: rotate(90deg);
+    }
+    .settings-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* Sub-button bubbles — pop out downward */
+    .settings-bubbles {
+      position: absolute;
+      top: 100%;          /* starts immediately at gear bottom — no gap to cross */
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-top: 8px;   /* visual gap lives inside the hover zone */
+      z-index: 1;
+      /* auto so the container itself registers hover, keeping .settings-wrap:hover true */
+      pointer-events: auto;
+    }
+
+    .settings-bubble {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-solid);
+      background: var(--surface-solid);
+      background: var(--surface);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      /* Hidden by default */
+      opacity: 0;
+      transform: scale(0.5) translateY(-12px);
+      transition: opacity 0.25s var(--ease),
+                  transform 0.3s var(--ease),
+                  background 0.2s ease,
+                  border-color 0.2s ease;
+      /* Buttons non-interactive until visible */
+      pointer-events: none;
+    }
+    .settings-bubble svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* Stagger: first bubble faster */
+    .settings-bubble:nth-child(1) { transition-delay: 0.04s; }
+    .settings-bubble:nth-child(2) { transition-delay: 0.1s; }
+
+    /* Reveal via JS-added .is-open class (handles hover + keyboard focus) */
+    .settings-wrap.is-open .settings-bubble,
+    .settings-wrap:focus-within .settings-bubble {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Active state (toggle is ON) */
+    .settings-bubble[aria-checked="true"] {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    /* Tooltip label to the left of each bubble */
+    .settings-bubble::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      right: calc(100% + 10px);
+      top: 50%; transform: translateY(-50%);
+      background: var(--text-primary);
+      color: var(--bg);
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      white-space: nowrap;
+      padding: 4px 9px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+    .settings-bubble:hover::before { opacity: 1; }
+
+    /* Sun/moon icon toggle within dark bubble */
+    .settings-bubble .icon-moon { display: none; }
+    .settings-bubble .icon-sun  { display: block; }
+    [data-theme="dark"] .settings-bubble .icon-moon { display: block; }
+    [data-theme="dark"] .settings-bubble .icon-sun  { display: none; }
+
+    /* ============================================================
+       MAIN
+    ============================================================ */
+    main {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 64px; padding: 88px 44px;
+    }
+
+    /* ============================================================
+       DIVIDER
+    ============================================================ */
+    .divider {
+      width: 200px; height: 1px;
+      background: var(--border-solid); border: none; margin: 0;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero-wrapper {
+      position: relative; width: 100%; max-width: 1212px;
+      display: flex; justify-content: center;
+    }
+    .hero-wrapper::before, .hero-wrapper::after {
+      content: ''; position: absolute; border-radius: 50%;
+      z-index: 0; pointer-events: none;
+    }
+    .hero-wrapper::before {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(123,106,95,0.1) 0%, transparent 70%);
+      top: -70px; left: -90px;
+      animation: blobFloat1 12s ease-in-out infinite;
+    }
+    .hero-wrapper::after {
+      width: 270px; height: 270px;
+      background: radial-gradient(circle, rgba(232,221,212,0.3) 0%, transparent 70%);
+      bottom: -50px; right: -50px;
+      animation: blobFloat2 10s ease-in-out infinite;
+    }
+
+    .hero {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
+      padding: 72px 80px; width: 100%;
+      /* Glassmorphism */
+      background: var(--surface-solid);
+      background: var(--surface);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .hero { background: var(--surface-solid); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 2.8px; color: var(--accent-text);
+      padding: 6px 18px;
+      border: 1px solid var(--border-solid);
+      border-radius: 9999px; background: var(--accent-lighter);
+      animation: fadeIn 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: 66px; font-weight: 700; line-height: 1.13;
+      text-align: center; color: var(--text-primary);
+      letter-spacing: -1.5px; max-width: 880px;
+    }
+    .hero h1 .highlight { color: var(--accent-text); }
+
+    .underline-draw {
+      display: block; width: 0%;
+      height: 4px; margin-top: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      border-radius: 2px;
+    }
+
+    .hero-subtitle {
+      font-size: 19px; line-height: 1.7;
+      text-align: center; color: var(--text-secondary);
+      max-width: 760px;
+    }
+
+    /* ============================================================
+       SECTION HEADINGS  (h2)
+    ============================================================ */
+    .section-heading {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      color: var(--text-muted); text-align: center;
+    }
+
+    /* ============================================================
+       PROJECTS
+    ============================================================ */
+    .projects-section {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 40px; width: 100%; max-width: 1212px;
+    }
+
+    .cards {
+      display: flex; gap: 28px;
+      justify-content: center; width: 100%;
+    }
+
+    .card {
+      display: flex; flex-direction: column;
+      flex: 1 1 0; min-width: 0; max-width: 388px;
+      border-radius: var(--radius-md);
+      background: var(--surface-solid);
+      background: var(--surface);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-sm);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .card { background: var(--surface-solid); }
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-lg);
+      border-color: var(--accent);
+    }
+
+    /* Card image + overlay */
+    .card-image {
+      position: relative; width: 100%;
+      aspect-ratio: 4 / 3; overflow: hidden;
+    }
+    .card-image img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: top center;
+      transition: transform 0.55s var(--ease), filter 0.55s ease;
+    }
+    /* WeAct card — show top of phone UI */
+    .card--weact .card-image img { object-position: top center; }
+
+    .card:hover .card-image img {
+      transform: scale(1.08);
+      filter: blur(3px) brightness(0.48);
+    }
+
+    .card-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 22px;
+      background: linear-gradient(to top,
+        rgba(20,14,10,0.9) 0%,
+        rgba(20,14,10,0.1) 60%,
+        transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .card:hover .card-overlay { opacity: 1; }
+
+    .card-overlay-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+    }
+    .card-overlay-tag {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      color: #F2EDE7;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 4px; padding: 4px 10px;
+    }
+    .card-overlay-impact {
+      font-size: 13px; line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+    }
+    .card-overlay-impact strong { color: #fff; font-weight: 600; }
+
+    .card-text {
+      display: flex; flex-direction: column;
+      gap: 10px; padding: 24px 22px 22px; flex-grow: 1;
+    }
+    .card-text h3 {
+      font-family: var(--font-heading);
+      font-size: 21px; font-weight: 600;
+      line-height: 1.25; letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+    .card-text p {
+      font-size: 14px; line-height: 1.65;
+      color: var(--text-secondary); flex-grow: 1;
+    }
+
+    /* Magnetic button — constrained so it never clips */
+    .btn-magnetic {
+      display: block; position: relative;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px 20px;
+      background: var(--accent-light);
+      border: 1px solid var(--border-solid);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary); text-decoration: none;
+      cursor: pointer; width: 100%;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn:hover {
+      background: var(--accent-btn-bg);
+      border-color: var(--accent-btn-bg);
+      color: #fff;
+    }
+    .btn img {
+      width: 13px; height: 13px;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .btn:hover img { transform: translateX(3px); filter: brightness(10); }
+
+    /* ============================================================
+       BENTO GRID
+       Glassmorphism — technical specs from design brief
+    ============================================================ */
+    .bento-section {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 36px; width: 100%; max-width: 1212px;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px; width: 100%;
+    }
+
+    /* Each card is an <article> per semantic HTML requirement */
+    .bento-card {
+      display: flex; flex-direction: column; gap: 16px;
+      padding: 38px 34px;
+      /* 1. Solid fallback */
+      background: var(--surface-solid);
+      /* Glassmorphism */
+      background: var(--surface);
+      /* 2. Blur */
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      /* 3. Edge highlight border */
+      border: 1px solid var(--border-hi);
+      box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-sm);
+      border-radius: var(--radius-md);
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease),
+                  border-color 0.3s ease, background 0.3s ease;
+    }
+    /* Solid bg fallback */
+    @supports not (backdrop-filter: blur(1px)) {
+      .bento-card { background: var(--surface-solid); border-color: var(--border-solid); }
+    }
+    .bento-card:hover {
+      transform: translateY(-6px);
+      box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-md);
+      border-color: var(--accent);
+    }
+
+    /* 4. Text contrast — --text-secondary (#524841) = 8.2:1 on --bg ✓ AAA */
+    .bento-header { display: flex; align-items: baseline; gap: 8px; }
+    .bento-number {
+      font-family: var(--font-heading);
+      font-size: 12px; font-weight: 700;
+      color: var(--accent-text); letter-spacing: 1px;
+    }
+    .bento-sep { color: var(--text-muted); font-size: 12px; }
+    .bento-label {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2.2px;
+      color: var(--text-muted);
+    }
+
+    /* Card h3 heading */
+    .bento-card h3 {
+      font-family: var(--font-heading);
+      font-size: 22px; font-weight: 600;
+      line-height: 1.25; letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+
+    .bento-logo-wrap {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: var(--accent-lighter);
+      border: 1px solid var(--border-solid);
+      border-radius: 8px; width: fit-content;
+    }
+    .bento-logo { height: 26px; width: auto; object-fit: contain; }
+    .bento-logo-text {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .bento-card p {
+      font-size: 14.5px; line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    /* 5. Reduced transparency */
+    @media (prefers-reduced-transparency: reduce) {
+      header,
+      .hero,
+      .card,
+      .bento-card,
+      .settings-popout {
+        background: var(--surface-solid) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+      [data-theme="dark"] header,
+      [data-theme="dark"] .hero,
+      [data-theme="dark"] .card,
+      [data-theme="dark"] .bento-card,
+      [data-theme="dark"] .settings-popout {
+        background: var(--surface-solid) !important;
+      }
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--accent);
+      border-top: 1px solid var(--border-solid);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px; padding: 22px 64px; width: 100%;
+      transition: background 0.3s ease;
+    }
+    footer a {
+      font-family: var(--font-heading);
+      font-weight: 600; font-size: 22px;
+      color: #fff; text-decoration: underline;
+      text-align: center;
+      transition: opacity 0.2s ease;
+    }
+    footer a:hover { opacity: 0.82; }
+    .footer-copyright {
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      text-align: center;
+    }
+
+    /* ============================================================
+       RESPONSIVE — TABLET  800–1279px  (Figma Sites)
+    ============================================================ */
+    @media (max-width: 1279px) {
+      header { padding: 16px 28px; }
+      main { padding: 60px 28px; gap: 52px; }
+      .hero { padding: 52px 44px; }
+      .hero h1 { font-size: 48px; letter-spacing: -0.8px; }
+      .hero-subtitle { font-size: 17px; }
+      .cards { gap: 20px; }
+      .card-text h3 { font-size: 18px; }
+      .card-text p { font-size: 13px; }
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-card:nth-child(3) { grid-column: span 2; }
+      .bento-card h3 { font-size: 19px; }
+      .bento-card { padding: 30px 26px; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE  1–799px  (Figma Sites)
+    ============================================================ */
+    @media (max-width: 799px) {
+      header { padding: 14px 18px; }
+      .header-name { font-size: 18px; }
+      nav.header-links a { font-size: 0; gap: 0; }
+      nav.header-links a img { width: 20px; height: 20px; }
+      nav.header-links { gap: 14px; }
+      .header-right { gap: 14px; }
+      main { padding: 40px 18px; gap: 36px; }
+      .hero-wrapper::before, .hero-wrapper::after { display: none; }
+      .hero { padding: 40px 22px; gap: 20px; }
+      .hero h1 { font-size: 34px; letter-spacing: -0.5px; }
+      .hero-subtitle { font-size: 15px; }
+      /* Cards always visible on mobile — no GSAP hide */
+      .cards { flex-direction: column; align-items: stretch; gap: 18px; }
+      .card { flex: 0 0 auto; max-width: 100%; opacity: 1 !important; transform: none !important; }
+      .card:hover { transform: none; box-shadow: var(--shadow-sm); }
+      .card-text { padding: 20px 18px 18px; }
+      .card-text h3 { font-size: 19px; }
+      .card-text p { font-size: 14px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-card:nth-child(3) { grid-column: span 1; }
+      .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
+      .bento-card h3 { font-size: 18px; }
+      .settings-popout { right: -18px; }
+      footer { padding: 16px 20px; }
+    }
+
+    /* ============================================================
+       REDUCED MOTION
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .hero-wrapper::before, .hero-wrapper::after { animation: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard / screen reader -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <a href="/" class="header-name" aria-label="Chris Rudnew — home">Chris Rudnew</a>
+
+    <div class="header-right">
+      <nav class="header-links" aria-label="Primary navigation">
+        <a href="https://linkedin.com/in/chris-rudnew" rel="noopener noreferrer" target="_blank">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a href="mailto:crudnew@gmail.com">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          Contact
+        </a>
+      </nav>
+
+      <!-- Settings / Accessibility bubbles -->
+      <div class="settings-wrap">
+        <button class="settings-btn" aria-label="Accessibility settings" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+
+        <!-- Bubbles pop out downward -->
+        <div class="settings-bubbles" role="group" aria-label="Accessibility options">
+
+          <!-- Dark mode bubble -->
+          <button class="settings-bubble"
+            role="switch" aria-checked="false"
+            id="dark-toggle-btn"
+            aria-label="Toggle dark mode"
+            data-tooltip="Dark Mode">
+            <!-- Sun icon (shown in light mode) -->
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <!-- Moon icon (shown in dark mode) -->
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+
+          <!-- High contrast bubble -->
+          <button class="settings-bubble"
+            role="switch" aria-checked="false"
+            id="contrast-toggle-btn"
+            aria-label="Toggle high contrast mode"
+            data-tooltip="High Contrast">
+            <!-- Half-circle contrast icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v18" stroke-width="1.5"/>
+              <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- Hero -->
+    <div class="hero-wrapper">
+      <section class="hero" aria-labelledby="hero-heading">
+        <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
+        <h1 id="hero-heading">Designing at the intersection of <span class="highlight">users, systems,<span class="underline-draw" aria-hidden="true"></span></span> and business.</h1>
+        <p class="hero-subtitle">
+          CS and Business grad completing a Master's in UX Design at the University of Toronto. I design accessible interfaces that balance user needs, technical constraints, and business goals.
+        </p>
+      </section>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- Selected Work -->
+    <section class="projects-section" aria-labelledby="projects-heading">
+      <h2 class="section-heading" id="projects-heading">Selected Work</h2>
+      <div class="cards">
+
+        <!-- WeAct -->
+        <article class="card card--weact" aria-label="WeAct: Reimagining Local Volunteering">
+          <div class="card-image" aria-hidden="true">
+            <img src="./assets/Homepage-WeAct.png"
+                 alt="WeAct app — Dog Rescue Volunteer listing screen showing scheduling, location, and description details">
+            <div class="card-overlay" aria-hidden="true">
+              <div class="card-overlay-tags">
+                <span class="card-overlay-tag">UX Research</span>
+                <span class="card-overlay-tag">Prototyping</span>
+                <span class="card-overlay-tag">Usability Testing</span>
+              </div>
+              <p class="card-overlay-impact"><strong>Impact:</strong> Reduced friction in the volunteer discovery process from first search to confirmed commitment.</p>
+            </div>
+          </div>
+          <div class="card-text">
+            <h3>WeAct: Reimagining Local Volunteering</h3>
+            <p>An app that makes local volunteering easier to find and commit to.</p>
+            <div class="btn-magnetic">
+              <a href="#" class="btn" aria-label="More about WeAct: Reimagining Local Volunteering">
+                More
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Crime Map -->
+        <article class="card" aria-label="Crime Map: Undergraduate Capstone">
+          <div class="card-image" aria-hidden="true">
+            <img src="./assets/Homepage-CrimeMap.png"
+                 alt="Crime Map website showing a map with incident markers and statistical overlays">
+            <div class="card-overlay" aria-hidden="true">
+              <div class="card-overlay-tags">
+                <span class="card-overlay-tag">UI Design</span>
+                <span class="card-overlay-tag">Data Visualization</span>
+                <span class="card-overlay-tag">Front-End Dev</span>
+              </div>
+              <p class="card-overlay-impact"><strong>Impact:</strong> Gave users real-time visibility into local crime data to support more informed, safer decisions.</p>
+            </div>
+          </div>
+          <div class="card-text">
+            <h3>Crime Map: Undergraduate Capstone</h3>
+            <p>A website that helps users feel safer in their city through real-time crime data and incident reporting.</p>
+            <div class="btn-magnetic">
+              <a href="#" class="btn" aria-label="More about Crime Map: Undergraduate Capstone">
+                More
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Placeholder -->
+        <article class="card" aria-label="Coming soon project">
+          <div class="card-image" aria-hidden="true">
+            <img src="./assets/Homepage-Placeholder.png"
+                 alt="Placeholder — project coming soon">
+            <div class="card-overlay" aria-hidden="true">
+              <div class="card-overlay-tags">
+                <span class="card-overlay-tag">Coming Soon</span>
+              </div>
+              <p class="card-overlay-impact"><strong>More work</strong> on the way.</p>
+            </div>
+          </div>
+          <div class="card-text">
+            <h3>Placeholder</h3>
+            <p>Placeholder</p>
+            <div class="btn-magnetic">
+              <a href="#" class="btn" aria-label="More about upcoming project" aria-disabled="true">
+                More
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- Background / Bento Grid -->
+    <section class="bento-section" aria-labelledby="background-heading">
+      <h2 class="section-heading" id="background-heading">Background</h2>
+      <div class="bento-grid">
+
+        <article class="bento-card" aria-labelledby="bento-1-heading">
+          <header class="bento-header" aria-hidden="true">
+            <span class="bento-number">01</span>
+            <span class="bento-sep">/</span>
+            <span class="bento-label">Technical</span>
+          </header>
+          <h3 id="bento-1-heading">B.Sc. Computer Science &amp; Business Studies</h3>
+          <div class="bento-logo-wrap">
+            <!--
+              Add MacEwan University's logo by replacing the src:
+              src="https://www.macewan.ca/[path-to-logo]"
+              The text fallback is shown automatically if the image fails.
+            -->
+            <img class="bento-logo" src="" alt="MacEwan University wordmark" onerror="this.style.display='none'">
+            <span class="bento-logo-text">MacEwan University, Alberta</span>
+          </div>
+          <p>My background is in software architecture and organizational logic. I design with an understanding of technical constraints and system requirements, ensuring that high-fidelity concepts are actually feasible for production.</p>
+        </article>
+
+        <article class="bento-card" aria-labelledby="bento-2-heading">
+          <header class="bento-header" aria-hidden="true">
+            <span class="bento-number">02</span>
+            <span class="bento-sep">/</span>
+            <span class="bento-label">Design &amp; Research</span>
+          </header>
+          <h3 id="bento-2-heading">Master of Information (UXD) @ UofT</h3>
+          <div class="bento-logo-wrap">
+            <!--
+              Add University of Toronto logo by replacing the src:
+              src="https://www.utoronto.ca/[path-to-logo]"
+            -->
+            <img class="bento-logo" src="" alt="University of Toronto crest" onerror="this.style.display='none'">
+            <span class="bento-logo-text">University of Toronto, Ontario</span>
+          </div>
+          <p>I focus on user-centered design and research, user interface design, and information architecture. I specialize in turning complex requirements into structured, accessible interfaces that prioritize user needs and task flow.</p>
+        </article>
+
+        <article class="bento-card" aria-labelledby="bento-3-heading">
+          <header class="bento-header" aria-hidden="true">
+            <span class="bento-number">03</span>
+            <span class="bento-sep">/</span>
+            <span class="bento-label">Product Handoff</span>
+          </header>
+          <h3 id="bento-3-heading">Bridging the Gap</h3>
+          <p>I work at the intersection of design and development. My aim is to reduce the friction between design and implementation. By leveraging my CS background, I can build prototypes with developers in mind. I ensure the design intent is preserved without creating unnecessary technical friction.</p>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <a href="#main-content">About Me</a>
+    <p class="footer-copyright">&copy; 2026 Chris Rudnew</p>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ==================== SETTINGS & ACCESSIBILITY ==================== */
+
+    // Restore saved preferences
+    const savedTheme    = localStorage.getItem('theme')    || 'light';
+    const savedContrast = localStorage.getItem('contrast') || 'normal';
+    document.documentElement.setAttribute('data-theme',    savedTheme);
+    document.documentElement.setAttribute('data-contrast', savedContrast);
+
+    const darkToggle     = document.getElementById('dark-toggle-btn');
+    const contrastToggle = document.getElementById('contrast-toggle-btn');
+
+    if (savedTheme    === 'dark')   darkToggle.setAttribute('aria-checked',     'true');
+    if (savedContrast === 'high')   contrastToggle.setAttribute('aria-checked', 'true');
+
+    darkToggle.addEventListener('click', function () {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next   = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      this.setAttribute('aria-checked', String(!isDark));
+    });
+
+    contrastToggle.addEventListener('click', function () {
+      const isHigh = document.documentElement.getAttribute('data-contrast') === 'high';
+      const next   = isHigh ? 'normal' : 'high';
+      document.documentElement.setAttribute('data-contrast', next);
+      localStorage.setItem('contrast', next);
+      this.setAttribute('aria-checked', String(!isHigh));
+    });
+
+    // Settings: open/close with a leave-delay so mouse can travel gear → bubbles
+    const settingsWrap = document.querySelector('.settings-wrap');
+    let settingsLeaveTimer = null;
+
+    function openSettings() {
+      clearTimeout(settingsLeaveTimer);
+      settingsWrap.classList.add('is-open');
+      settingsWrap.querySelector('.settings-btn').setAttribute('aria-expanded', 'true');
+    }
+    function closeSettings() {
+      settingsWrap.classList.remove('is-open');
+      settingsWrap.querySelector('.settings-btn').setAttribute('aria-expanded', 'false');
+    }
+
+    settingsWrap.addEventListener('mouseenter', openSettings);
+    settingsWrap.addEventListener('mouseleave', () => {
+      settingsLeaveTimer = setTimeout(closeSettings, 150);
+    });
+    // Also keep open when re-entering the container (covers the absolute-positioned bubbles)
+    settingsWrap.addEventListener('mouseover', openSettings);
+
+    settingsWrap.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeSettings();
+        document.querySelector('.settings-btn').focus();
+      }
+    });
+
+    /* ==================== ANIMATION STRATEGY ==================== */
+    // gsap.matchMedia() automatically reverts inline styles when breakpoint no longer matches,
+    // so cards are never stuck hidden if the window shrinks to mobile after load.
+    const mm = gsap.matchMedia();
+
+    /* ==================== CUSTOM CURSOR ==================== */
+    const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
+    const ring = document.createElement('div'); ring.className = 'cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    let mx = 0, my = 0, dx = 0, dy = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    (function tick() {
+      dx += (mx - dx) * 0.18; dy += (my - dy) * 0.18;
+      dot.style.cssText  = `left:${mx-4}px;top:${my-4}px`;
+      ring.style.cssText = `left:${dx-18}px;top:${dy-18}px`;
+      requestAnimationFrame(tick);
+    })();
+
+    document.querySelectorAll('a, button, .bento-card, .card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+    if ('ontouchstart' in window) { dot.style.display = 'none'; ring.style.display = 'none'; }
+
+    /* ==================== HERO ENTRANCE ==================== */
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from('.hero',           { y: 60, opacity: 0, duration: 1,   delay: 0.2 })
+      .from('.hero-eyebrow',   { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+      .from('.hero h1',        { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
+      .to('.underline-draw',   { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+      .from('.hero-subtitle',  { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+
+    /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
+    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.set('.card',            { opacity: 0, y: 50 });
+      gsap.set('.bento-card',      { opacity: 0, y: 32 });
+      gsap.set('.divider',         { width: 0 });
+      gsap.set('.section-heading', { opacity: 0, y: 16 });
+
+      /* Dividers */
+      gsap.utils.toArray('.divider').forEach(div => {
+        gsap.to(div, {
+          width: 200, duration: 1, ease: 'power2.inOut',
+          scrollTrigger: { trigger: div, start: 'top 88%' }
+        });
+      });
+
+      /* Section headings */
+      gsap.utils.toArray('.section-heading').forEach(el => {
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' }
+        });
+      });
+
+      /* Staggered project cards */
+      ScrollTrigger.create({
+        trigger: '.cards', start: 'top 80%', once: true,
+        onEnter: () => gsap.to('.card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: 'power3.out' })
+      });
+
+      /* Bento grid cards */
+      ScrollTrigger.create({
+        trigger: '.bento-grid', start: 'top 82%', once: true,
+        onEnter: () => gsap.to('.bento-card', { opacity: 1, y: 0, duration: 0.7, stagger: 0.14, ease: 'power3.out' })
+      });
+    });
+
+    /* ==================== MAGNETIC BUTTONS ==================== */
+    // Max 8px movement so button never clips card edge
+    const MAX_MAGNETIC = 8;
+
+    document.querySelectorAll('.btn-magnetic').forEach(wrap => {
+      const btn = wrap.querySelector('.btn');
+      wrap.addEventListener('mousemove', e => {
+        const r = wrap.getBoundingClientRect();
+        const rawX = (e.clientX - r.left  - r.width  / 2) * 0.18;
+        const rawY = (e.clientY - r.top   - r.height / 2) * 0.18;
+        gsap.to(btn, {
+          x: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawX)),
+          y: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawY)),
+          duration: 0.3, ease: 'power2.out'
+        });
+      });
+      wrap.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+      });
+    });
+
+    /* ==================== HERO PARALLAX ==================== */
+    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.to('.hero', {
+        yPercent: -4, ease: 'none',
+        scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
+      });
+
+      /* ==================== HEADER HIDE / SHOW ==================== */
+      let lastScroll = 0;
+      const headerEl = document.querySelector('header');
+      ScrollTrigger.create({
+        start: 'top top', end: 99999,
+        onUpdate: self => {
+          const y = self.scroll();
+          gsap.to(headerEl, {
+            y: (y > lastScroll && y > 100) ? -100 : 0,
+            duration: 0.35,
+            ease: y > lastScroll ? 'power2.in' : 'power2.out'
+          });
+          lastScroll = y;
+        }
+      });
+
+      /* ==================== FOOTER ==================== */
+      gsap.from('footer', {
+        opacity: 0, y: 28, duration: 0.7,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
+      });
+    }); // end mm.add desktop
+  </script>
+
+</body>
+</html>
