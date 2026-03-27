@@ -18,8 +18,94 @@
 
   <header-component></header-component>
 
-  <main id="main-content">
-    <!-- About Me content coming soon -->
+  <main id="main-content" class="case-main">
+
+    <!-- ① Hero -->
+    <section class="case-hero" style="padding-bottom:48px;">
+      <h1>About me</h1>
+    </section>
+
+    <!-- ② Intro: Portrait + Bio -->
+    <section class="case-section">
+      <div class="content-row">
+        <div class="image-col">
+          <img
+            src="./assets/about-portrait.png"
+            alt="A portrait of Chris Rudnew."
+            style="border-radius:var(--radius-md); width:100%; max-width:420px; height:500px; object-fit:cover; object-position:top;">
+        </div>
+        <div class="text-col">
+          <h2>Chris Rudnew</h2>
+          <p><strong>WHO AM I?</strong><br>
+            I'm a <em>UX/UI designer and researcher</em> with a foundation in computer science and business studies, focused on building accessible and user-centered digital experiences.</p>
+          <p><strong>BACKGROUND:</strong><br>
+            I'm a first-year student completing a <em>Master of Information, concentrating in User Experience Design,</em> at the University of Toronto, Canada.</p>
+          <p>I earned a <em>Bachelor of Science in Computer Science with a minor in Business Studies</em>, in Edmonton, Alberta, Canada.</p>
+          <p>This combination gives me a strong foundation alongside an understanding of product strategy and user needs, while allowing me to work fluently alongside designers, researchers, and engineers.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ Why Me — case-band with overview cards -->
+    <div class="case-band">
+      <div class="case-band-inner">
+        <h2 style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; color:var(--text-primary); margin-bottom:32px;">Why Me?</h2>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <h3>What I Bring</h3>
+            <ul>
+              <li>A strong academic foundation, allowing me to design with both users and feasibility in mind.</li>
+              <li>A research-informed design approach, using interviews, testing, and synthesis to guide decision making.</li>
+              <li>The ability to collaborate and communicate effectively and enthusiastically across multiple disciplines, helping align researchers, designers, and engineers while keeping spirits high.</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <h3>How I Work</h3>
+            <p>I value collaboration, curiosity, creativity, and grounding design decisions in evidence. I enjoy working in diverse environments and see every project as an opportunity for personal and professional growth.</p>
+            <p style="margin-top:16px;">Open communication, respect, and humor (where appropriate) help teams thrive, and I aspire to be someone who can create a positive and productive team environment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ The Human Part + photo gallery -->
+    <section class="case-section">
+      <div class="content-full">
+        <h2>The Human Part...</h2>
+        <p>I'm interested in how things work, and how people experience them. I love learning new things, and being able to apply them to all aspects of my life.</p>
+        <p>Outside of UX, I enjoy the usual things like gaming, spending time with friends, or getting immersed in a new series. I'm influenced by a wide range of music and visual styles, and while I often lean toward minimalism and neutrality, I also appreciate bold ideas when they're executed with intention.</p>
+        <p>I'm very comfortable in conversation, enjoy exchanging ideas, love learning new things, and I try my best to make the people around me feel included. I'm quite spontaneous, but when it comes to education or work, I enjoy thinking things through so that decisions feel grounded, not rushed.</p>
+      </div>
+      <!-- Gallery -->
+      <div style="display:flex; gap:24px; padding:8px 64px 64px; width:100%; max-width:1212px; box-sizing:border-box;">
+        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+          <img src="./assets/about-gallery-1.png"
+               alt="" aria-hidden="true"
+               style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+          <img src="./assets/about-gallery-2.png"
+               alt="" aria-hidden="true"
+               style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+          <img src="./assets/about-gallery-3.png"
+               alt="" aria-hidden="true"
+               style="width:100%; height:100%; object-fit:cover;">
+        </div>
+      </div>
+    </section>
+
+    <hr class="case-divider" style="margin:0 auto;">
+
+    <!-- ⑤ A Fun Fact -->
+    <section class="case-section">
+      <div class="content-full" style="padding-bottom:96px;">
+        <h2>A Fun Fact</h2>
+        <p>I took a philosophy course during my undergrad degree that ended up shaping me more than I expected. It changed how I approach questions, conversations, people, viewpoints, and more! I'm convinced that everyone should try it at least once!</p>
+      </div>
+    </section>
+
   </main>
 
   <footer-component></footer-component>
