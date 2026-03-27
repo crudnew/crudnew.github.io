@@ -208,7 +208,7 @@
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
       gsap.set('.card',            { opacity: 0, y: 50 });
-      gsap.set('.bento-card',      { opacity: 0, y: 32 });
+      gsap.set('.bento-card',      { opacity: 0 });
       gsap.set('.divider',         { width: 0 });
       gsap.set('.section-heading', { opacity: 0, y: 16 });
 
@@ -237,7 +237,7 @@
       /* Bento grid cards */
       ScrollTrigger.create({
         trigger: '.bento-grid', start: 'top 82%', once: true,
-        onEnter: () => gsap.to('.bento-card', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' })
+        onEnter: () => gsap.to('.bento-card', { opacity: 1, duration: 0.7, ease: 'power3.out' })
       });
     });
 
