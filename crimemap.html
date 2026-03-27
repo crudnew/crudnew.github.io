@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crime Map — Chris Rudnew</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+  <script>
+    (function () {
+      const t = localStorage.getItem('theme');
+      const c = localStorage.getItem('contrast');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      if (c) document.documentElement.setAttribute('data-contrast', c);
+    })();
+  </script>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header-component></header-component>
+
+  <main id="main-content" class="case-main">
+
+    <!-- ① HERO -->
+    <section class="case-hero">
+      <p class="case-eyebrow">Case Study — Capstone Project</p>
+      <h1>Crime Map</h1>
+      <p class="case-tagline">Making you feel safer in your city.</p>
+      <p class="subtitle">A full-stack web application that visualises crime data and lets users report suspicious activity in their neighbourhood — built as a Computer Science undergraduate capstone.</p>
+    </section>
+
+    <!-- ② META -->
+    <div class="case-meta">
+      <div class="meta-item">
+        <span class="meta-label">Timeline</span>
+        <span class="meta-value">Fall 2021</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Duration</span>
+        <span class="meta-value">12 Weeks</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Team</span>
+        <span class="meta-value">4 Students + 1 Supervisor</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Institution</span>
+        <span class="meta-value">MacEwan University</span>
+      </div>
+    </div>
+
+    <!-- ③ HERO IMAGE -->
+    <div style="width:100%;max-width:1212px;padding:0 64px 64px;display:flex;justify-content:center;">
+      <img
+        src="./assets/crimemap-main-screen.png"
+        alt="Crime Map application — main interface showing a map of Edmonton with crime markers"
+        style="width:100%;max-width:980px;border-radius:24px;box-shadow:var(--shadow-lg);"
+      />
+    </div>
+
+    <!-- ④ TEAM MARQUEE -->
+    <div class="marquee-wrap" aria-label="Team members">
+      <div class="marquee-track">
+        <span class="marquee-name">Chris Rudnew</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Taylor McCubbing</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Diego Padilla</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Carlos Diaz</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Supervisor: Mohammed Elmorsy</span>
+        <span class="marquee-sep">|</span>
+      </div>
+    </div>
+
+    <!-- ⑤ OVERVIEW BAND -->
+    <div class="case-band">
+      <div class="case-band-inner">
+        <div class="overview-grid">
+
+          <div class="overview-card">
+            <h3>Goal</h3>
+            <p><strong>Have you ever thought about going out, but weren't sure if it was safe to walk around a particular area at night?</strong></p>
+            <br />
+            <p>So many of our friends would recite this same story over and over. We wanted to change that.</p>
+          </div>
+
+          <div class="overview-card">
+            <h3>My Role</h3>
+            <div class="role-columns">
+              <ul>
+                <li>UI Design</li>
+                <li>Statistical Visualization</li>
+                <li>Front-End Development</li>
+                <li>System Design</li>
+                <li>Back-End Development</li>
+                <li>API Integration</li>
+              </ul>
+              <ul>
+                <li>Collaboration</li>
+              </ul>
+            </div>
+          </div>
+
+        </div><!-- /overview-grid -->
+      </div>
+    </div>
+
+    <!-- ⑥ WHY? -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">01</span>
+        Why We Built It
+      </div>
+      <div class="content-row">
+        <div class="text-col">
+          <h2>Why?</h2>
+          <p>By making the Crime Map, we wanted to provide users with the ability to check crime occurrences and unsafe areas to help them determine if they should avoid a particular location.</p>
+          <p>We want our friends and family to feel <em>safe</em>.</p>
+        </div>
+        <div class="image-col">
+          <img
+            src="./assets/crimemap-assault-example.png"
+            alt="Assault example shown on the Crime Map interface"
+            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+          />
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑦ PERSONAL MOTIVATIONS -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">02</span>
+        Personal Motivations
+      </div>
+      <div class="content-row reverse">
+        <div class="image-col">
+          <img
+            src="./assets/crimemap-pie-chart.png"
+            alt="Pie chart showing crime type distribution"
+            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+          />
+        </div>
+        <div class="text-col">
+          <h2>Personal Motivations...</h2>
+          <p><strong>Our Desire to Help.</strong></p>
+          <ul>
+            <li>Wanted to learn new skills, and create something that we had little-to-no experience in.
+              <ul style="list-style:disc;padding-left:20px;margin-top:4px;">
+                <li>Web Development</li>
+              </ul>
+            </li>
+            <li>Desire to create something that could be innovated on post-graduation.</li>
+            <li>Desire to help society.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑧ WHAT WE ACCOMPLISHED -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">03</span>
+        Accomplishments
+      </div>
+      <div class="content-row">
+        <div class="text-col">
+          <h2>What We Accomplished...</h2>
+          <ol>
+            <li>Developed a website that has real world applications.</li>
+            <li>Made the website concise and user-friendly.</li>
+            <li>Made the website more personal than the existing Edmonton Police Services website.
+              <ul style="list-style:disc;padding-left:20px;margin-top:4px;">
+                <li>Created a crime database with a personal approach (i.e. the ability to mark suspicious activity at the time of occurrence, giving people the choice to avoid the marked area).</li>
+              </ul>
+            </li>
+            <li>Provided real statistics of crime to provide visualization of severity and intensity.</li>
+            <li>Sign-up and log-in.</li>
+            <li>Incident reporting.</li>
+          </ol>
+        </div>
+        <div class="image-col">
+          <img
+            src="./assets/crimemap-bar-chart.png"
+            alt="Bar chart showing crime statistics by neighbourhood"
+            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+          />
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑨ COMPONENTS / TECH STACK -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">04</span>
+        Tech Stack
+      </div>
+      <div class="content-full">
+        <h2>Components...</h2>
+        <p><strong>HTML, JavaScript, Apache, MySQL.</strong></p>
+        <div style="display:flex;gap:48px;flex-wrap:wrap;margin-top:8px;">
+          <div style="flex:1;min-width:180px;">
+            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Front-End</p>
+            <ul>
+              <li>HTML5</li>
+              <li>CSS</li>
+              <li>JavaScript &amp; JQuery</li>
+              <li>Charts.js (statistical visualization)</li>
+              <li>Google Maps API</li>
+            </ul>
+          </div>
+          <div style="flex:1;min-width:180px;">
+            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Back-End</p>
+            <ul>
+              <li>PHP (database connection)</li>
+              <li>Apache2 (server)</li>
+              <li>Special thanks to Cybera for having a public IP for everyone to use.</li>
+            </ul>
+          </div>
+          <div style="flex:1;min-width:180px;">
+            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Database</p>
+            <ul>
+              <li>MySQL</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑩ DATASET -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">05</span>
+        Dataset
+      </div>
+      <div class="content-full">
+        <h2>Dataset...</h2>
+        <ul>
+          <li>The dataset was posted by Open Analytics and made available through the Edmonton Police Service website.</li>
+          <li>This dataset provided the type of crime, date, and the neighbourhood the crime happened in for the years 2009–2019.</li>
+          <li>We created a script to turn the neighbourhoods into GPS locations.</li>
+          <li>Dataset was found at: <span style="color:var(--text-muted);">ace.edmonton.ca/projects/visualizations/edmontons-crime-stats/</span> (no longer functioning)</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑪ LIMITATIONS & THE FUTURE -->
+    <div class="case-section">
+      <div class="section-eyebrow">
+        <span class="section-num">06</span>
+        Limitations &amp; The Future
+      </div>
+      <div class="content-row">
+        <div class="text-col">
+          <h2>Limitations</h2>
+          <p>We recognise that allowing users to label areas as "dangerous" can lead to misinformation, bias, or stigmatisation of certain locations or groups. Our goal is to show a proof of concept, and display our desire to try and make people feel safer in their hometown.</p>
+        </div>
+        <div class="text-col">
+          <h2>The Future</h2>
+          <ul>
+            <li>Make into a mobile application.</li>
+            <li>Increase security measures.</li>
+            <li>Add data mining functionality.</li>
+            <li>Image processing.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" />
+
+    <!-- ⑫ DATABASE -->
+    <div class="case-section" style="margin-bottom:96px;">
+      <div class="section-eyebrow">
+        <span class="section-num">07</span>
+        Database Design
+      </div>
+      <div class="content-row">
+        <div class="text-col">
+          <h2>Database...</h2>
+          <p><strong>Database Design: ER Diagram</strong></p>
+          <p>Entity-Relationship Diagram showing how the tables in our database relate to one another.</p>
+        </div>
+        <div class="image-col">
+          <img
+            src="./assets/crimemap-er-diagram.png"
+            alt="ER diagram showing database table relationships"
+            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+          />
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer-component></footer-component>
+
+  <script src="./layout.js"></script>
+  <script>
+    /* ==================== MARQUEES — seamless infinite scroll ==================== */
+    document.querySelectorAll('.marquee-track').forEach(track => {
+      const wrap = track.closest('.marquee-wrap');
+      const origChildren = Array.from(track.children);
+      const measureClone = track.cloneNode(true);
+      measureClone.style.position = 'absolute';
+      measureClone.style.visibility = 'hidden';
+      document.body.appendChild(measureClone);
+      const oneSetWidth = measureClone.scrollWidth;
+      document.body.removeChild(measureClone);
+
+      const copies = Math.ceil(window.innerWidth / oneSetWidth) + 2;
+      for (let i = 0; i < copies; i++) {
+        origChildren.forEach(child => track.appendChild(child.cloneNode(true)));
+      }
+
+      const speed = 30;
+      let offset = 0, paused = false, lastTime = null;
+
+      wrap.addEventListener('mouseenter', () => { paused = true; });
+      wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
+
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let motionOk = !motionQuery.matches;
+      motionQuery.addEventListener('change', e => { motionOk = !e.matches; });
+
+      function animate(now) {
+        if (!paused && motionOk) {
+          if (lastTime !== null) {
+            const dt = (now - lastTime) / 1000;
+            offset -= speed * dt;
+            if (Math.abs(offset) >= oneSetWidth) offset += oneSetWidth;
+            track.style.transform = 'translateX(' + offset + 'px)';
+          }
+          lastTime = now;
+        } else { lastTime = null; }
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    });
+  </script>
+
+</body>
+</html>
