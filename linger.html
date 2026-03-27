@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-contrast="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linger: Scent-Mapping Wearable Ecosystem — Chris Rudnew</title>
+  <meta name="description" content="Linger case study — A speculative wearable-integrated mobile ecosystem for scent-mapping. FigBuild 2026 Designathon by Figma. UX Design by Chris Rudnew.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    /* Drop shadows on all case study images */
+    .phone-pair img       { box-shadow: var(--shadow-lg); }
+    .image-col img        { box-shadow: var(--shadow-md); border-radius: var(--radius-md); max-height: 420px; width: auto; max-width: 100%; }
+
+    /* List alignment in full-width sections (also in style.css for other pages) */
+    .content-full ul, .content-full ol { padding-left: 24px; margin-bottom: 8px; }
+    .content-full ul { list-style: disc; }
+    .content-full ol { list-style: decimal; }
+    .content-full li { font-size: 16px; line-height: 1.65; color: var(--text-secondary); letter-spacing: -0.09px; margin-bottom: 6px; }
+    .content-full li strong { color: var(--text-primary); }
+
+    /* Overview section wrapper — vertical separation only, no horizontal offset */
+    .linger-overview-section {
+      padding-bottom: 40px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .linger-overview-section .overview-grid { margin-bottom: 0; }
+
+    /* Sprint timeline */
+    .sprint-timeline {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; width: 100%; max-width: 1212px;
+      padding: 20px 64px 40px;
+    }
+    .sprint-day {
+      background: var(--surface);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .sprint-day-label {
+      font-family: var(--font-heading);
+      font-size: 17px; font-weight: 600; color: var(--text-primary);
+      border-bottom: 1px solid var(--border); padding-bottom: 12px;
+    }
+    .sprint-day ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .sprint-day li {
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      background: var(--accent-lighter); border-radius: var(--radius-sm);
+      padding: 6px 12px;
+    }
+    @media (max-width: 900px) {
+      .sprint-timeline { grid-template-columns: repeat(2, 1fr); padding: 20px 28px 32px; }
+    }
+    @media (max-width: 600px) {
+      .sprint-timeline { grid-template-columns: 1fr; padding: 16px 18px 24px; }
+    }
+
+    /* Brand / logo image — full-width below phone pair */
+    .linger-brand-wrap {
+      width: 100%; max-width: 1212px;
+      padding: 40px 64px 0;
+    }
+    .linger-brand-wrap img {
+      width: 100%; height: auto; display: block;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    @media (max-width: 900px) { .linger-brand-wrap { padding: 32px 28px 0; } }
+    @media (max-width: 600px) { .linger-brand-wrap { padding: 24px 18px 0; } }
+  </style>
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header-component></header-component>
+
+  <main id="main-content" class="case-main">
+
+    <!-- ===== HERO ===== -->
+    <section class="case-hero" aria-labelledby="case-heading">
+      <p class="case-eyebrow">FigBuild 2026 &middot; Designathon</p>
+      <h1 id="case-heading">Linger</h1>
+      <p class="case-tagline">Because some moments should linger.</p>
+      <p class="subtitle">A speculative wearable-integrated mobile ecosystem for scent-mapping, designed in 83 hours.</p>
+      <a href="https://devpost.com/software/s-jkcvdn" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="View Linger on Devpost">
+        View on Devpost
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+    </section>
+
+    <!-- Project Meta -->
+    <div class="case-meta" aria-label="Project details">
+      <div class="meta-item">
+        <span class="meta-label">Timeline</span>
+        <span class="meta-value">March 2026 &middot; 83 Hours</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Team</span>
+        <span class="meta-value">4 Designers</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">UX Research &amp; Design</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Context</span>
+        <span class="meta-value">FigBuild 2026 by Figma</span>
+      </div>
+    </div>
+
+    <!-- Hero Showcase -->
+    <section class="case-showcase" aria-label="Linger app showcase">
+      <div class="phone-pair">
+        <img src="./assets/linger-screen-1.png" alt="Linger app — scent detection screen">
+        <img src="./assets/linger-screen-2.png" alt="Linger app — sensory library screen">
+      </div>
+    </section>
+
+    <!-- Brand image — full-width below phone pair -->
+    <div class="linger-brand-wrap">
+      <img src="./assets/linger-logo.png" alt="Linger brand">
+    </div>
+
+    <!-- ===== OVERVIEW BAND ===== -->
+    <section class="case-band" aria-label="Project overview">
+      <div class="case-band-inner">
+        <div class="linger-overview-section">
+        <div class="overview-grid">
+          <div class="overview-card">
+            <h3>The Challenge</h3>
+            <p>Design a tool that tracks, measures, visualizes, or quantifies an aspect of human sensory experience, while providing the ability to detect, enhance, or manipulate those same sensory inputs.</p>
+          </div>
+          <div class="overview-card">
+            <h3>My Role</h3>
+            <div class="role-columns">
+              <ul>
+                <li>UX Research</li>
+                <li>UX/UI Design</li>
+                <li>Concept Strategy</li>
+                <li>Visual System</li>
+                <li>Ideation</li>
+              </ul>
+              <ul>
+                <li>Prototyping</li>
+                <li>Design Craft</li>
+                <li>Presentation</li>
+                <li>Collaboration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="case-stats">
+          <div class="stat-card">
+            <span class="stat-number">83</span>
+            <span class="stat-label">Hour Sprint</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Designers</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">3</span>
+            <span class="stat-label">Core Features</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">1</span>
+            <span class="stat-label">Wearable + App</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Marquee -->
+    <div class="marquee-wrap" aria-label="Team members">
+      <div class="marquee-track">
+        <span class="marquee-name">Chris Rudnew</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Michelle Liu</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Vinay Adhya</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Raine Tse</span>
+        <span class="marquee-sep">|</span>
+      </div>
+    </div>
+
+    <!-- Sprint Timeline -->
+    <div class="sprint-timeline" aria-label="83-hour sprint timeline">
+      <div class="sprint-day">
+        <span class="sprint-day-label">Friday</span>
+        <ul>
+          <li>Brainstorming</li>
+          <li>Ideation</li>
+          <li>Research</li>
+        </ul>
+      </div>
+      <div class="sprint-day">
+        <span class="sprint-day-label">Saturday</span>
+        <ul>
+          <li>Design</li>
+        </ul>
+      </div>
+      <div class="sprint-day">
+        <span class="sprint-day-label">Sunday</span>
+        <ul>
+          <li>Design</li>
+          <li>Slide Deck</li>
+          <li>Video</li>
+        </ul>
+      </div>
+      <div class="sprint-day">
+        <span class="sprint-day-label">Monday</span>
+        <ul>
+          <li>Final Touches</li>
+          <li>Submission</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 01 / OVERVIEW ===== -->
+    <section class="case-section" aria-label="Project Overview">
+      <div class="section-eyebrow"><span class="section-num">01</span>Overview</div>
+      <div class="content-full">
+        <h2>The Challenge &amp; Sense...</h2>
+        <p>FigBuild 2026 challenged us to design a tool that quantifies human sensory experience. We chose <em>olfaction</em>, the most primal and emotionally-charged sense.</p>
+        <ul>
+          <li><strong>The Sense:</strong> Olfaction: smell and its connection to memory and emotional regulation.</li>
+          <li><strong>The Output:</strong> A wearable-integrated mobile ecosystem for scent-mapping.</li>
+          <li><strong>Tools:</strong> Figma, FigJam, Figma Slides, Google Gemini AI.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 02 / THE PROBLEM ===== -->
+    <section class="case-section" aria-label="The Problem">
+      <div class="section-eyebrow"><span class="section-num">02</span>The Problem</div>
+      <div class="content-full">
+        <h2>An Invisible Language...</h2>
+        <p><em>"Smell is the most overlooked human sense, yet the most powerful link to our subconscious memory."</em></p>
+        <ol>
+          <li><strong>The Gap:</strong> Society prioritizes visual and auditory data, leaving olfactory experiences unquantified and fleeting.</li>
+          <li><strong>The Insight:</strong> Users lack a vocabulary for scent. Without a way to "save" a smell, we lose the emotional and environmental context associated with it.</li>
+          <li><strong>The Goal:</strong> Transform chemical signals into a tangible, digital archive to support emotional grounding and memory retrieval.</li>
+        </ol>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 03 / THE ECOSYSTEM ===== -->
+    <section class="case-section" aria-label="The Ecosystem">
+      <div class="section-eyebrow"><span class="section-num">03</span>The Ecosystem</div>
+      <div class="content-full">
+        <h2>Detect. Archive. Map.</h2>
+        <p>Three interconnected layers form the Linger ecosystem, each addressing a distinct phase of the sensory experience.</p>
+      </div>
+
+      <div class="content-row">
+        <div class="text-col">
+          <h2>A. Detect: The Wearable</h2>
+          <p>A speculative wearable that senses ambient chemical compounds in real-time. Users "capture" a scent as a <strong>Memory Signal</strong>.</p>
+          <ul>
+            <li>Generative <strong>Orbs</strong> represent each captured scent.</li>
+            <li>Color encodes chemical family (Floral, Earthy, Synthetic).</li>
+            <li>Texture and vibrancy reflect emotional state at time of capture.</li>
+          </ul>
+        </div>
+        <div class="image-col">
+          <img src="./assets/linger-detect.png" alt="Linger wearable interface showing scent detection and orb visualization">
+        </div>
+      </div>
+
+      <div class="content-row reverse">
+        <div class="text-col">
+          <h2>B. Library: The Sensory Archive</h2>
+          <p>A personal database of olfactory history. Each entry logs <strong>Date, Geo-Location, Mood,</strong> and <strong>Scent Intensity</strong>.</p>
+          <ul>
+            <li>Enables scent-based reflection; revisit moments through a non-linear, sensory lens.</li>
+            <li>Surfaces emotional and environmental context that was previously invisible.</li>
+          </ul>
+        </div>
+        <div class="image-col">
+          <img src="./assets/linger-library.png" alt="Linger sensory library showing scent history entries with mood and location data">
+        </div>
+      </div>
+
+      <div class="content-row">
+        <div class="text-col">
+          <h2>C. Map: Olfactory Navigation</h2>
+          <p>A spatial visualization of the user's "Scent-Scape." View saved signals, discover similar scents in the wild, or follow <strong>Scent Trails</strong>.</p>
+          <ul>
+            <li>Transforms ordinary environments into interactive, grounding experiences.</li>
+            <li>Reduces sensory overstimulation by making the environment navigable.</li>
+          </ul>
+        </div>
+        <div class="image-col">
+          <img src="./assets/linger-map.png" alt="Linger olfactory map showing spatial scent visualization and trails">
+        </div>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 04 / DESIGN EXECUTION ===== -->
+    <section class="case-section" aria-label="Design Execution and Craft">
+      <div class="section-eyebrow"><span class="section-num">04</span>Design Execution &amp; Craft</div>
+
+      <div class="content-full">
+        <h2>Visualizing the Invisible...</h2>
+        <p>Digital screens have no symbolic language for smell. We developed a visual system built on <strong>chromatic orbs</strong> as the core metaphor.</p>
+        <ul>
+          <li><strong>Vibrancy</strong> = Scent Intensity.</li>
+          <li><strong>Hue</strong> = Chemical Family (Floral, Earthy, Synthetic).</li>
+          <li><strong>Diffusion</strong> = Scent Longevity &amp; Range.</li>
+        </ul>
+      </div>
+
+      <!-- Demo Video -->
+      <div class="content-full">
+        <h2>Demo...</h2>
+        <video
+          controls
+          style="width:100%;border-radius:var(--radius-md);background:var(--bg-secondary);"
+          aria-label="Linger prototype demo video">
+          <source src="./assets/linger-demo.mp4" type="video/mp4">
+          Your browser does not support the video element.
+        </video>
+      </div>
+
+      <!-- Slide Deck / Case Study PDF -->
+      <div class="content-full">
+        <h2>Slide Deck...</h2>
+        <object
+          data="./assets/linger.pdf"
+          type="application/pdf"
+          title="Linger case study slide deck"
+          style="border:1px solid var(--border-solid);border-radius:var(--radius-md);width:100%;height:680px;display:block;">
+          <p style="padding:24px 0;">
+            PDF preview not available in this browser.
+            <a href="./assets/linger.pdf" target="_blank" rel="noopener noreferrer" class="case-btn" style="display:inline-flex;margin-top:12px;">
+              Open Slide Deck
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+          </p>
+        </object>
+      </div>
+
+      <!-- Figma Prototype Link -->
+      <div class="content-full">
+        <h2>Interactive Prototype...</h2>
+        <p>Explore the full interactive prototype in Figma.</p>
+        <a href="https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Linger interactive prototype in Figma">
+          Open in Figma
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== 05 / RESPONSIBILITY ===== -->
+    <section class="case-section" aria-label="Responsibility and Safeguards">
+      <div class="section-eyebrow"><span class="section-num">05</span>Responsibility &amp; Safeguards</div>
+      <div class="content-full">
+        <h2>Designing with Care...</h2>
+        <p>Olfactory data is deeply personal. We built safeguards into the core of the product.</p>
+        <ul>
+          <li><strong>Ghost Zones:</strong> User-defined areas where scent detection is automatically disabled to protect the privacy of others.</li>
+          <li><strong>Relevance-Based Filtering:</strong> To prevent "Sensory Fatigue," the app only surfaces signals that align with the user's current wellness goals, keeping information overload in check.</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 06 / REFLECTION ===== -->
+    <section class="case-section" aria-label="Reflection and Future Growth">
+      <div class="section-eyebrow"><span class="section-num">06</span>Reflection &amp; Future Growth</div>
+      <div class="content-full">
+        <h2>What We Learned &amp; What's Next...</h2>
+        <p>Designing for a "hidden" sense within a 83-hour window pushed us to balance scientific accuracy with emotional resonance in every decision.</p>
+
+        <div class="reflection-grid">
+          <div class="reflection-card reflection-card--wide">
+            <h3>Key Lesson...</h3>
+            <ul>
+              <li><strong>Give Users Control of Interpretation</strong>
+                <ul class="skill-detail">
+                  <li>Designing for hidden senses means providing users with authorship over meaning, not just raw data.</li>
+                </ul>
+              </li>
+              <li><strong>Speculative Design Needs Grounding</strong>
+                <ul class="skill-detail">
+                  <li>Every speculative element (the wearable, the orbs, the ghost zones) needed a real human need anchoring it.</li>
+                </ul>
+              </li>
+              <li><strong>Visual Language is the Product</strong>
+                <ul class="skill-detail">
+                  <li>When the sense itself can't be displayed, the visual metaphor becomes the entire user experience.</li>
+                </ul>
+              </li>
+              <li><strong>AI-Assisted Ideation</strong>
+                <ul class="skill-detail">
+                  <li>Using Google Gemini for brainstorming accelerated workshopping significantly within the 83-hour constraint.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>The Sprint...</h3>
+            <ul>
+              <li><strong>Biggest Challenge:</strong> Day 1 brainstorming ran well over time. We struggled to decisively land on a concept the whole team wanted to pursue.
+                <ul class="skill-detail">
+                  <li>For next time: set a hard time cap for each phase, collect everyone's top ideas up front, and actively call out when the team is drifting past the deadline.</li>
+                </ul>
+              </li>
+              <li>Balancing scientific accuracy with emotional resonance within an 83-hour window.</li>
+              <li>Keeping every speculative design decision grounded in real human emotional needs, not just novelty.</li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>What's Next...</h3>
+            <ul>
+              <li>Multisensory haptic integration for scent playback.</li>
+              <li>Social "Scent-Sharing" features for shared memory experiences.</li>
+              <li>Long-term studies on Linger's impact on Alzheimer's and memory-related wellness.</li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>Tools Used...</h3>
+            <ul>
+              <li>Figma: UI design, prototyping, and components.</li>
+              <li>FigJam: Collaborative ideation and workshopping.</li>
+              <li>Figma Slides: Designathon presentation.</li>
+              <li>Google Gemini AI: Brainstorming and concept acceleration.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer-component></footer-component>
+
+  <script src="./layout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+
+    // Extend cursor hover to page-specific elements
+    addCursorHover('.process-icon, .overview-card, .stat-card, .reflection-card');
+
+    /* ==================== HERO ENTRANCE ==================== */
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6, delay: 0.15 })
+      .from('.case-hero h1',        { y: 50, opacity: 0, duration: 0.9 }, '-=0.35')
+      .from('.case-tagline',        { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
+      .from('.case-hero .subtitle', { y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
+      .from('.case-btn',            { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
+
+    /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
+    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+
+      gsap.from('.meta-item', {
+        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
+      });
+
+      gsap.from('.case-showcase', {
+        y: 50, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-showcase', start: 'top 85%' }
+      });
+
+      gsap.from('.overview-card', {
+        y: 40, opacity: 0, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: '.overview-grid', start: 'top 82%' }
+      });
+
+      gsap.from('.stat-card', {
+        y: 30, opacity: 0, duration: 0.5, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-stats', start: 'top 85%' }
+      });
+
+      gsap.from('.process-pipeline-card', {
+        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: '.process-pipeline', start: 'top 85%' }
+      });
+      gsap.from('.process-step', {
+        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.process-pipeline', start: 'top 80%' }
+      });
+
+      gsap.utils.toArray('.section-eyebrow').forEach(el => {
+        gsap.from(el, {
+          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' }
+        });
+      });
+
+      gsap.utils.toArray('.case-divider').forEach(div => {
+        gsap.from(div, {
+          width: 0, duration: 0.8, ease: 'power2.inOut',
+          scrollTrigger: { trigger: div, start: 'top 90%' }
+        });
+      });
+
+      gsap.utils.toArray('.content-row').forEach(row => {
+        gsap.from(row.querySelectorAll('.text-col, .image-col'), {
+          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: row, start: 'top 80%' }
+        });
+      });
+
+      gsap.utils.toArray('.content-full').forEach(section => {
+        gsap.from(section, {
+          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 85%' }
+        });
+      });
+
+      gsap.from('.reflection-card', {
+        y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: '.reflection-grid', start: 'top 82%' }
+      });
+
+      /* Header hide/show on scroll */
+      let lastScroll = 0;
+      const headerEl = document.querySelector('header');
+      ScrollTrigger.create({
+        start: 'top top', end: 99999,
+        onUpdate: self => {
+          const y = self.scroll();
+          gsap.to(headerEl, {
+            y: (y > lastScroll && y > 100) ? -100 : 0,
+            duration: 0.35,
+            ease: y > lastScroll ? 'power2.in' : 'power2.out'
+          });
+          lastScroll = y;
+        }
+      });
+
+      gsap.from('footer', {
+        opacity: 0, y: 28, duration: 0.7,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
+      });
+    });
+
+    /* ==================== MARQUEE — seamless infinite scroll ==================== */
+    document.querySelectorAll('.marquee-track').forEach(track => {
+      const wrap = track.closest('.marquee-wrap');
+      const origChildren = Array.from(track.children);
+      const measureClone = track.cloneNode(true);
+      measureClone.style.position = 'absolute';
+      measureClone.style.visibility = 'hidden';
+      document.body.appendChild(measureClone);
+      const oneSetWidth = measureClone.scrollWidth;
+      document.body.removeChild(measureClone);
+
+      const copies = Math.ceil(window.innerWidth / oneSetWidth) + 2;
+      for (let i = 0; i < copies; i++) {
+        origChildren.forEach(child => track.appendChild(child.cloneNode(true)));
+      }
+
+      const speed = 30;
+      let offset = 0, paused = false, lastTime = null;
+
+      wrap.addEventListener('mouseenter', () => { paused = true; });
+      wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
+
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let motionOk = !motionQuery.matches;
+      motionQuery.addEventListener('change', e => { motionOk = !e.matches; });
+
+      function animate(now) {
+        if (!paused && motionOk) {
+          if (lastTime !== null) {
+            const dt = (now - lastTime) / 1000;
+            offset -= speed * dt;
+            if (Math.abs(offset) >= oneSetWidth) offset += oneSetWidth;
+            track.style.transform = 'translateX(' + offset + 'px)';
+          }
+          lastTime = now;
+        } else { lastTime = null; }
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    });
+  </script>
+
+</body>
+</html>

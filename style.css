@@ -885,6 +885,11 @@ main {
   line-height: 1.2; letter-spacing: -0.72px; color: var(--text-primary); margin-bottom: 24px;
 }
 .content-full > p { font-size: 16px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 24px; }
+.content-full ul, .content-full ol { padding-left: 24px; margin-bottom: 8px; }
+.content-full ul { list-style: disc; }
+.content-full ol { list-style: decimal; }
+.content-full li { font-size: 16px; line-height: 1.65; color: var(--text-secondary); letter-spacing: -0.09px; margin-bottom: 6px; }
+.content-full li strong { color: var(--text-primary); }
 
 /* Prototyping comparison */
 .proto-compare {
