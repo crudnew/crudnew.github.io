@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-contrast="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeAct: Reimagining Local Volunteering — Chris Rudnew</title>
+  <meta name="description" content="WeAct case study — Making local volunteering easier to find and commit to. UX Research, Design, and Prototyping by Chris Rudnew.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header-component></header-component>
+
+  <main id="main-content" class="case-main">
+
+    <!-- ===== HERO ===== -->
+    <section class="case-hero" aria-labelledby="case-heading">
+      <p class="case-eyebrow">Case Study</p>
+      <h1 id="case-heading">WeAct</h1>
+      <p class="case-tagline">Reimagining Local Volunteering</p>
+      <p class="subtitle">Making local volunteering easier to find and commit to.</p>
+      <a href="https://drive.google.com/file/d/1oeNJXXVI3CQq3b7DsUA_jdK6QgXrs4yU/view?usp=drive_link" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Google Drive Case Study">
+        Open Full Case Study
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+    </section>
+
+    <!-- Project Meta -->
+    <div class="case-meta" aria-label="Project details">
+      <div class="meta-item">
+        <span class="meta-label">Timeline</span>
+        <span class="meta-value">Fall 2025 · 12 Weeks</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Team</span>
+        <span class="meta-value">4 Members</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">UX Research &amp; Design</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Context</span>
+        <span class="meta-value">University of Toronto</span>
+      </div>
+    </div>
+
+    <!-- Phone Mockups + Logo -->
+    <section class="case-showcase" aria-label="WeAct app showcase">
+      <div class="phone-pair">
+        <img src="./assets/weact-phone-volunteer.png" alt="WeAct app volunteer screen on iPhone">
+        <img src="./assets/weact-phone-listview.png" alt="WeAct app list view screen on iPhone">
+      </div>
+      <img class="case-logo-img" src="./assets/weact-logo.png" alt="WeAct logo">
+    </section>
+
+    <!-- ===== OVERVIEW BAND ===== -->
+    <section class="case-band" aria-label="Project overview">
+      <div class="case-band-inner">
+        <div class="overview-grid">
+          <div class="overview-card">
+            <h3>The Problem</h3>
+            <p>Locals want to volunteer, but can't easily find opportunities that fit their schedules, interests, and life-goals.</p>
+          </div>
+          <div class="overview-card">
+            <h3>My Role</h3>
+            <div class="role-columns">
+              <ul>
+                <li>UX Research</li>
+                <li>UX/UI Design</li>
+                <li>Insight Synthesis</li>
+                <li>Workflow Simplification</li>
+                <li>Wireframing</li>
+              </ul>
+              <ul>
+                <li>Prototyping</li>
+                <li>Testing</li>
+                <li>Iteration</li>
+                <li>Collaboration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-stats">
+          <div class="stat-card">
+            <span class="stat-number">8</span>
+            <span class="stat-label">User Interviews</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">8</span>
+            <span class="stat-label">Usability Tests</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Team Members</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">12</span>
+            <span class="stat-label">Week Timeline</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Marquee -->
+    <div class="marquee-wrap" aria-label="Team members">
+      <div class="marquee-track">
+        <span class="marquee-name">Chris Rudnew</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Ka Yi Gloria Lai</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Michelle Liu</span>
+        <span class="marquee-sep">|</span>
+        <span class="marquee-name">Suebin Moon</span>
+        <span class="marquee-sep">|</span>
+      </div>
+    </div>
+
+    <!-- Process Pipeline -->
+    <div class="process-pipeline">
+      <div class="process-pipeline-card">
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <span class="process-label">Research</span>
+        </div>
+        <span class="process-arrow">
+          <svg viewBox="0 0 28 18" fill="none"><path d="M2 9h24M20 3l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="14" width="16" height="6" rx="1"/><rect x="6" y="8" width="12" height="6" rx="1"/><rect x="8" y="2" width="8" height="6" rx="1"/></svg>
+          </div>
+          <span class="process-label">Synthesis</span>
+        </div>
+        <span class="process-arrow">
+          <svg viewBox="0 0 28 18" fill="none"><path d="M2 9h24M20 3l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+          </div>
+          <span class="process-label">Ideation</span>
+        </div>
+        <span class="process-arrow">
+          <svg viewBox="0 0 28 18" fill="none"><path d="M2 9h24M20 3l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="2" x2="8" y2="5"/><line x1="16" y1="2" x2="16" y2="5"/><line x1="8" y1="19" x2="8" y2="22"/><line x1="16" y1="19" x2="16" y2="22"/><line x1="2" y1="8" x2="5" y2="8"/><line x1="2" y1="16" x2="5" y2="16"/><line x1="19" y1="8" x2="22" y2="8"/><line x1="19" y1="16" x2="22" y2="16"/><rect x="5" y="5" width="14" height="14" rx="1"/></svg>
+          </div>
+          <span class="process-label">Prototyping</span>
+        </div>
+        <span class="process-arrow">
+          <svg viewBox="0 0 28 18" fill="none"><path d="M2 9h24M20 3l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="process-label">Testing</span>
+        </div>
+        <span class="process-arrow">
+          <svg viewBox="0 0 28 18" fill="none"><path d="M2 9h24M20 3l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="process-step">
+          <div class="process-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          </div>
+          <span class="process-label">Iteration</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 01 / RESEARCH ===== -->
+    <section class="case-section" aria-label="Research, Synthesis and Ideation">
+      <div class="section-eyebrow"><span class="section-num">01</span>Research &amp; Discovery</div>
+      <div class="content-row">
+        <div class="text-col">
+          <h2>Research, Synthesis and Ideation...</h2>
+          <ul>
+            <li>Comparative/Competitor Analysis</li>
+            <li>Pain Points &amp; Motivations</li>
+            <li>Journey Mapping</li>
+            <li>Personas</li>
+            <li>User Interviews</li>
+          </ul>
+        </div>
+        <div class="image-col">
+          <img src="./assets/weact-journey-map.png" alt="WeAct user journey map showing the volunteer discovery and commitment flow">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 02 / INSIGHTS ===== -->
+    <section class="case-section" aria-label="Key Insights">
+      <div class="section-eyebrow"><span class="section-num">02</span>Key Insights</div>
+      <div class="content-row reverse">
+        <div class="text-col">
+          <h2>People are Very Busy...</h2>
+          <p>In both our primary and secondary research, time constraints were the dominant barrier to motivation and engagement with local causes.</p>
+        </div>
+        <div class="image-col">
+          <div class="persona-carousel" aria-label="User personas carousel">
+            <div class="persona-track">
+              <img src="./assets/weact-persona1.png" alt="User persona 1">
+              <img src="./assets/weact-persona2.png" alt="User persona 2">
+              <img src="./assets/weact-persona3.png" alt="User persona 3">
+            </div>
+            <div class="carousel-btns">
+              <button class="carousel-btn" aria-label="Previous persona" data-dir="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="carousel-btn" aria-label="Next persona" data-dir="1">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-row">
+        <div class="text-col">
+          <h2>Insights to Design...</h2>
+          <p>We wanted to ensure that our users were <em>heard</em>, so we took our data and collaborated to design the best outcomes.</p>
+          <ol>
+            <li>Opportunities rarely align with schedule/location.</li>
+            <li>Applying takes too long and has too much repetition.</li>
+            <li>Users struggle to see the impact of their contributions.</li>
+            <li>Scheduling reminders are fragmented and tiresome.</li>
+          </ol>
+        </div>
+        <div class="image-col">
+          <img src="./assets/weact-transcript.png" alt="Interview transcript analysis">
+        </div>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 03 / PROTOTYPING ===== -->
+    <section class="case-section" aria-label="Prototyping">
+      <div class="section-eyebrow"><span class="section-num">03</span>Design &amp; Prototyping</div>
+      <div class="content-full">
+        <h2>Prototyping...</h2>
+        <p>Iteration based on research, ideation and feedback.</p>
+      </div>
+      <div class="proto-compare" aria-label="Lo-fi to Hi-fi comparison">
+        <img src="./assets/weact-lofi.png" alt="Lo-fidelity wireframes">
+        <span class="proto-brace" aria-hidden="true">}</span>
+        <img src="./assets/weact-hifi.png" alt="Hi-fidelity prototype screens">
+      </div>
+    </section>
+
+    <!-- ===== 04 / TESTING ===== -->
+    <section class="case-section" aria-label="Testing">
+      <div class="section-eyebrow"><span class="section-num">04</span>Usability Testing</div>
+      <div class="content-row reverse">
+        <div class="text-col">
+          <h2>Testing...</h2>
+          <p>Prior to the final Hi-Fi prototype, each group member conducted 2 Usability Testing sessions while observing an additional session whilst taking notes.</p>
+        </div>
+        <div class="image-col">
+          <img src="./assets/weact-interview-questions.png" alt="Interview questions and usability testing materials">
+        </div>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 05 / OUTCOMES ===== -->
+    <section class="case-section" aria-label="Key Outcomes">
+      <div class="section-eyebrow"><span class="section-num">05</span>Outcomes &amp; Impact</div>
+      <div class="content-full" style="text-align: center;">
+        <h2>Key Outcomes &amp; Deliverables...</h2>
+        <p>Hi-Fidelity deliverables &mdash; created by me.</p>
+        <img class="deliverables-img" src="./assets/weact-deliverables.png" alt="Hi-fidelity prototype deliverables showing multiple app screens">
+      </div>
+
+      <div class="content-row">
+        <div class="text-col">
+          <h2>What Was Solved?</h2>
+          <ul>
+            <li>Opportunities to get involved are now easy to find and sign-up for.</li>
+            <li>Reduction in friction from the application process.</li>
+            <li>Volunteers can now commit to opportunities, schedule them with ease, and track their impact with confidence.</li>
+          </ul>
+        </div>
+        <div class="image-col">
+          <img class="outcomes-img" src="./assets/weact-outcomes.png" alt="Final app outcome screens">
+        </div>
+      </div>
+    </section>
+
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- ===== 06 / REFLECTION ===== -->
+    <section class="case-section" aria-label="Skills and Reflection">
+      <div class="section-eyebrow"><span class="section-num">06</span>Reflection</div>
+      <div class="content-full">
+        <h2>Skills Built &amp; Reflection...</h2>
+        <p>I am <em>proud</em> to have worked on a project focused on community wellbeing and encouraging people to support one another.</p>
+
+        <div class="reflection-grid">
+          <div class="reflection-card reflection-card--wide">
+            <h3>Skills Built...</h3>
+            <ul>
+              <li><strong>Research &amp; Insight Synthesis</strong>
+                <ul class="skill-detail">
+                  <li>Interviewing, testing, pattern extraction, and forming actionable insights.</li>
+                </ul>
+              </li>
+              <li><strong>User-Centered Design</strong>
+                <ul class="skill-detail">
+                  <li>Translating needs and pain points to direction and flows.</li>
+                </ul>
+              </li>
+              <li><strong>Interaction Design</strong>
+                <ul class="skill-detail">
+                  <li>Reducing friction, clarifying navigation, and designing efficient flows.</li>
+                </ul>
+              </li>
+              <li><strong>Collaboration and Communication</strong>
+                <ul class="skill-detail">
+                  <li>2 presentations, skill sharing, meetings, and project collaboration.</li>
+                </ul>
+              </li>
+              <li><strong>Design Tools</strong>
+                <ul class="skill-detail">
+                  <li>Figma &mdash; prototyping, wireframes, components and assets.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>Things I Learned...</h3>
+            <ul>
+              <li>How to balance user needs with real-world constraints, both in terms of organizational factors (such as time and expectations) and practical limitations (such as technical feasibility and scope).</li>
+              <li>Grounding decisions in solid evidence.</li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>Challenges...</h3>
+            <ul>
+              <li>Balancing different user needs and assigning priorities, such as focusing more on discovery layout over impact visualization.</li>
+            </ul>
+          </div>
+
+          <div class="reflection-card">
+            <h3>Improvements for Next Time...</h3>
+            <ul>
+              <li>Conduct usability testing earlier to determine a better prioritization order.</li>
+              <li>Expand the diversity of testing participants to catch edge cases.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer-component></footer-component>
+
+  <script src="./layout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+
+    // Extend cursor hover to page-specific elements
+    addCursorHover('.process-icon, .overview-card, .stat-card, .reflection-card');
+
+    /* ==================== HERO ENTRANCE ==================== */
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from('.case-eyebrow',       { y: 20, opacity: 0, duration: 0.6, delay: 0.15 })
+      .from('.case-hero h1',       { y: 50, opacity: 0, duration: 0.9 }, '-=0.35')
+      .from('.case-tagline',       { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
+      .from('.case-hero .subtitle',{ y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
+      .from('.case-btn',           { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
+
+    /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
+    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+
+      /* Project meta */
+      gsap.from('.meta-item', {
+        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
+      });
+
+      /* Showcase */
+      gsap.from('.case-showcase', {
+        y: 50, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-showcase', start: 'top 85%' }
+      });
+
+      /* Overview cards */
+      gsap.from('.overview-card', {
+        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+        scrollTrigger: { trigger: '.overview-grid', start: 'top 82%' }
+      });
+
+      /* Stat cards */
+      gsap.from('.stat-card', {
+        y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-stats', start: 'top 85%' }
+      });
+
+      /* Process pipeline */
+      gsap.from('.process-pipeline-card', {
+        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: '.process-pipeline', start: 'top 85%' }
+      });
+      gsap.from('.process-step', {
+        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.process-pipeline', start: 'top 80%' }
+      });
+
+      /* Section eyebrows */
+      gsap.utils.toArray('.section-eyebrow').forEach(el => {
+        gsap.from(el, {
+          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' }
+        });
+      });
+
+      /* Case dividers */
+      gsap.utils.toArray('.case-divider').forEach(div => {
+        gsap.from(div, {
+          width: 0, duration: 0.8, ease: 'power2.inOut',
+          scrollTrigger: { trigger: div, start: 'top 90%' }
+        });
+      });
+
+      /* Content rows */
+      gsap.utils.toArray('.content-row').forEach(row => {
+        gsap.from(row.querySelectorAll('.text-col, .image-col'), {
+          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: row, start: 'top 80%' }
+        });
+      });
+
+      /* Full-width content */
+      gsap.utils.toArray('.content-full').forEach(section => {
+        gsap.from(section, {
+          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 85%' }
+        });
+      });
+
+      /* Prototype comparison */
+      gsap.from('.proto-compare', {
+        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: '.proto-compare', start: 'top 82%' }
+      });
+
+      /* Reflection cards */
+      gsap.from('.reflection-card', {
+        y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: '.reflection-grid', start: 'top 82%' }
+      });
+
+      /* Header hide/show on scroll */
+      let lastScroll = 0;
+      const headerEl = document.querySelector('header');
+      ScrollTrigger.create({
+        start: 'top top', end: 99999,
+        onUpdate: self => {
+          const y = self.scroll();
+          gsap.to(headerEl, {
+            y: (y > lastScroll && y > 100) ? -100 : 0,
+            duration: 0.35,
+            ease: y > lastScroll ? 'power2.in' : 'power2.out'
+          });
+          lastScroll = y;
+        }
+      });
+
+      /* Footer */
+      gsap.from('footer', {
+        opacity: 0, y: 28, duration: 0.7,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
+      });
+    });
+
+    /* ==================== MARQUEES — seamless infinite scroll ==================== */
+    document.querySelectorAll('.marquee-track').forEach(track => {
+      const wrap = track.closest('.marquee-wrap');
+      const origChildren = Array.from(track.children);
+      const measureClone = track.cloneNode(true);
+      measureClone.style.position = 'absolute';
+      measureClone.style.visibility = 'hidden';
+      document.body.appendChild(measureClone);
+      const oneSetWidth = measureClone.scrollWidth;
+      document.body.removeChild(measureClone);
+
+      const copies = Math.ceil(window.innerWidth / oneSetWidth) + 2;
+      for (let i = 0; i < copies; i++) {
+        origChildren.forEach(child => track.appendChild(child.cloneNode(true)));
+      }
+
+      const speed = 30;
+      let offset = 0, paused = false, lastTime = null;
+
+      wrap.addEventListener('mouseenter', () => { paused = true; });
+      wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
+
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let motionOk = !motionQuery.matches;
+      motionQuery.addEventListener('change', e => { motionOk = !e.matches; });
+
+      function animate(now) {
+        if (!paused && motionOk) {
+          if (lastTime !== null) {
+            const dt = (now - lastTime) / 1000;
+            offset -= speed * dt;
+            if (Math.abs(offset) >= oneSetWidth) offset += oneSetWidth;
+            track.style.transform = 'translateX(' + offset + 'px)';
+          }
+          lastTime = now;
+        } else { lastTime = null; }
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    });
+
+    /* ==================== PERSONA CAROUSEL ==================== */
+    (function() {
+      const track = document.querySelector('.persona-track');
+      if (!track) return;
+      const images = track.querySelectorAll('img');
+      let current = 0;
+
+      document.querySelectorAll('.carousel-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dir = parseInt(btn.getAttribute('data-dir'));
+          current = (current + dir + images.length) % images.length;
+          track.style.transform = `translateX(-${current * 100}%)`;
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
