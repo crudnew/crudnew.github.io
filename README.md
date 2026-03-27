@@ -1,6 +1,6 @@
 # Chris Rudnew — UX Portfolio
 
-Personal UX/UI design portfolio. Built as a single-page static site, designed in **Figma** and developed with **Claude Code**.
+Personal UX/UI design portfolio. Built as a static site, designed in **Figma** and developed with **Claude Code**.
 
 ## Stack
 
@@ -10,33 +10,26 @@ Personal UX/UI design portfolio. Built as a single-page static site, designed in
 - Glassmorphism surfaces with `backdrop-filter` + `@supports` fallback
 - WCAG AAA contrast, semantic HTML5, custom focus states
 - Dark mode + high-contrast mode toggles
+- Shared layout via `layout.js` web components (`<header-component>`, `<footer-component>`)
 
 ## Project Structure
 
 ```
 /
-├── index.html          # Entire site — fonts, styles, markup, and scripts
+├── index.html              # Homepage — hero, project cards, background bento
+├── style.css               # Global design tokens and component styles
+├── layout.js               # Header, footer, cursor, and settings web components
+├── about.html              # About Me page
+├── weact.html              # Project 1: WeAct case study
+├── crimemap.html           # Project 2: Crime Map case study
+├── linger.html             # Project 3: Linger scent-mapping ecosystem (FigBuild 2026)
 └── assets/
     ├── Homepage-WeAct.png
     ├── Homepage-CrimeMap.png
-    └── Homepage-Placeholder.png
+    ├── linger-logo.png
+    ├── linger-demo.mp4
+    └── ...
 ```
-
-## Deploying to GitHub Pages
-
-1. Push this repo to GitHub (repo name: `<username>.github.io` for a user site, or any name for a project site)
-2. Go to **Settings → Pages → Source → Deploy from branch → main / root**
-3. Add your project screenshots to `assets/` before pushing
-4. Done — GitHub Pages serves `index.html` from the root automatically
-
-## Before You Deploy Checklist
-
-- [x] Add `assets/Homepage-WeAct.png`
-- [x] Add `assets/Homepage-CrimeMap.png`
-- [x] Add `assets/Homepage-Placeholder.png`
-- [ ] Add MacEwan University logo URL to bento card 01 (`src=""` in the `.bento-logo` img)
-- [ ] Add University of Toronto logo URL to bento card 02 (`src=""` in the `.bento-logo` img)
-- [ ] Update the `href="#"` links on project cards to point to real case study pages
 
 ## Tools Used
 
