@@ -430,6 +430,79 @@ main {
   box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-lg);
   border-color: var(--accent);
 }
+
+/* ---- Linger card: wavy chromatic glow on hover ---- */
+/*
+  Uses filter: drop-shadow() — renders strictly outside the card boundary
+  (respects overflow:hidden so nothing bleeds inside). Four coloured
+  drop-shadow layers each drift to different edges over time, giving an
+  organic liquid-light feel rather than a mechanical spin.
+  The transition handles smooth fade-in/out on hover enter/leave.
+*/
+.card--linger {
+  transition:
+    transform     0.4s var(--ease),
+    box-shadow    0.4s var(--ease),
+    border-color  0.3s ease,
+    filter        0.55s ease;
+}
+.card--linger:hover {
+  /* suppress the generic drop-shadow; keep inner top highlight */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  border-color: rgba(210, 192, 255, 0.52);
+  animation: linger-wave 5s ease-in-out infinite;
+}
+
+@keyframes linger-wave {
+  /*
+    Each stop is a different hue drifting to a different edge.
+    Offsets shift independently so colours appear to flow around
+    the card rather than rotate in lockstep.
+    Pastel palette: soft lavender, baby blue, blush pink, mint.
+  */
+  0% {
+    filter:
+      drop-shadow(-5px -7px 18px rgba(188, 158, 255, 0.60))
+      drop-shadow( 7px  2px 24px rgba(150, 210, 255, 0.50))
+      drop-shadow(-1px  8px 30px rgba(255, 188, 228, 0.42))
+      drop-shadow( 6px -5px 22px rgba(148, 238, 210, 0.36));
+  }
+  20% {
+    filter:
+      drop-shadow( 2px -8px 22px rgba(150, 210, 255, 0.62))
+      drop-shadow(-6px  6px 20px rgba(188, 158, 255, 0.48))
+      drop-shadow( 8px -3px 26px rgba(148, 238, 210, 0.40))
+      drop-shadow(-7px  3px 28px rgba(255, 188, 228, 0.38));
+  }
+  40% {
+    filter:
+      drop-shadow( 7px  5px 20px rgba(255, 188, 228, 0.58))
+      drop-shadow(-4px -7px 26px rgba(148, 238, 210, 0.50))
+      drop-shadow( 5px  8px 16px rgba(188, 158, 255, 0.44))
+      drop-shadow(-8px  1px 30px rgba(150, 210, 255, 0.36));
+  }
+  60% {
+    filter:
+      drop-shadow(-6px  7px 24px rgba(148, 238, 210, 0.56))
+      drop-shadow( 8px -4px 18px rgba(255, 188, 228, 0.50))
+      drop-shadow(-5px -6px 28px rgba(150, 210, 255, 0.42))
+      drop-shadow( 3px  8px 20px rgba(188, 158, 255, 0.38));
+  }
+  80% {
+    filter:
+      drop-shadow( 4px -6px 22px rgba(188, 158, 255, 0.58))
+      drop-shadow(-7px  3px 28px rgba(150, 210, 255, 0.48))
+      drop-shadow( 6px  7px 18px rgba(255, 188, 228, 0.42))
+      drop-shadow(-3px -8px 24px rgba(148, 238, 210, 0.38));
+  }
+  100% {
+    filter:
+      drop-shadow(-5px -7px 18px rgba(188, 158, 255, 0.60))
+      drop-shadow( 7px  2px 24px rgba(150, 210, 255, 0.50))
+      drop-shadow(-1px  8px 30px rgba(255, 188, 228, 0.42))
+      drop-shadow( 6px -5px 22px rgba(148, 238, 210, 0.36));
+  }
+}
 .card-image {
   position: relative; width: 100%;
   aspect-ratio: 4 / 3; overflow: hidden;
