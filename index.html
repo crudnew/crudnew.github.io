@@ -271,10 +271,11 @@
 
       /* ==================== HEADER HIDE / SHOW ==================== */
       let lastScroll = 0;
-      const headerEl = document.querySelector('header');
+      let headerEl;
       ScrollTrigger.create({
         start: 'top top', end: 99999,
         onUpdate: self => {
+          if (!headerEl) headerEl = document.querySelector('body > header');
           const y = self.scroll();
           gsap.to(headerEl, {
             y: (y > lastScroll && y > 100) ? -100 : 0,

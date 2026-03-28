@@ -176,7 +176,7 @@ button:focus-visible {
 /* ============================================================
    HEADER — Glassmorphism
 ============================================================ */
-header {
+body > header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 44px;
   border-bottom: 1px solid var(--border);
@@ -187,10 +187,10 @@ header {
   position: sticky; top: 0; z-index: 100;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
-[data-theme="dark"] header { background: rgba(23,17,14,0.88); }
+[data-theme="dark"] body > header { background: rgba(23,17,14,0.88); }
 @supports not (backdrop-filter: blur(1px)) {
-  header { background: var(--surface-solid); }
-  [data-theme="dark"] header { background: var(--surface-solid); }
+  body > header { background: var(--surface-solid); }
+  [data-theme="dark"] body > header { background: var(--surface-solid); }
 }
 
 .header-name {
@@ -964,12 +964,12 @@ main {
    REDUCED TRANSPARENCY
 ============================================================ */
 @media (prefers-reduced-transparency: reduce) {
-  header, .hero, .card, .bento-card, .process-pipeline-card,
+  body > header, .hero, .card, .bento-card, .process-pipeline-card,
   .overview-card, .stat-card, .reflection-card {
     background: var(--surface-solid) !important;
     backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
   }
-  [data-theme="dark"] header,
+  [data-theme="dark"] body > header,
   [data-theme="dark"] .hero,
   [data-theme="dark"] .card,
   [data-theme="dark"] .bento-card,
@@ -985,7 +985,7 @@ main {
    RESPONSIVE — TABLET  800–1279px
 ============================================================ */
 @media (max-width: 1279px) {
-  header { padding: 16px 28px; }
+  body > header { padding: 16px 28px; }
   /* Homepage */
   main { padding: 60px 28px; gap: 52px; }
   .hero { padding: 52px 44px; }
@@ -1030,7 +1030,7 @@ main {
    RESPONSIVE — MOBILE  1–799px
 ============================================================ */
 @media (max-width: 799px) {
-  header { padding: 14px 18px; }
+  body > header { padding: 14px 18px; }
   .header-name { font-size: 18px; }
   nav.header-links a { font-size: 0; gap: 0; }
   nav.header-links a svg { width: 20px; height: 20px; }
