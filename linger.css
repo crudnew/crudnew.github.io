@@ -1249,9 +1249,15 @@ body > header {
 body > header a,
 body > header nav a,
 body > header .nav-logo { color: rgba(15, 50, 100, 0.90) !important; }
+
+/* Dark mode header: light text on deep navy bg — fixes WCAG AA failure */
 [data-theme="dark"] body > header {
   background: linear-gradient(180deg, rgba(8, 28, 68, 0.90) 0%, rgba(5, 18, 50, 0.94) 100%);
 }
+[data-theme="dark"] body > header a,
+[data-theme="dark"] body > header nav a,
+[data-theme="dark"] body > header .header-name,
+[data-theme="dark"] body > header .nav-logo { color: rgba(210, 235, 255, 0.96) !important; }
 
 /* ---- Hero title: gradient text ---- */
 .case-hero h1 {
@@ -1321,7 +1327,7 @@ body > header .nav-logo { color: rgba(15, 50, 100, 0.90) !important; }
 
 /* ---- Case meta strip ---- */
 .meta-item { border-left-color: rgba(60, 140, 228, 0.30); }
-.meta-label { color: #0c6ab8; }
+.meta-label { color: #004a8f; } /* darkened from #0c6ab8 — passes AA on all body bg pastels */
 
 /* ---- Overview band: transparent so the orb backdrop shows through the cards ---- */
 .case-band {
@@ -1568,7 +1574,7 @@ body > header .nav-logo { color: rgba(15, 50, 100, 0.90) !important; }
   color: rgba(18, 58, 115, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.72);
 }
-.section-eyebrow { color: rgba(22, 75, 160, 0.88); }
+.section-eyebrow { color: rgba(8, 50, 140, 0.96); } /* darkened: ~7:1 on lightest body bg pastels */
 
 /* ---- Cursor ---- */
 .cursor-ring { border-color: rgba(30, 140, 230, 0.40); }
@@ -1671,6 +1677,7 @@ footer {
 [data-theme="dark"] .bento-card p  { color: rgba(185, 218, 250, 0.88); }
 [data-theme="dark"] .section-num { background: rgba(20, 55, 140, 0.55); color: rgba(190, 225, 255, 0.95); border-color: rgba(80, 150, 255, 0.35); }
 [data-theme="dark"] .section-eyebrow { color: rgba(150, 200, 255, 0.88); }
+[data-theme="dark"] .meta-label { color: rgba(140, 200, 255, 0.92) !important; } /* was #0c6ab8 — dark blue invisible on dark bg */
 [data-theme="dark"] .case-btn {
   background: rgba(20, 55, 140, 0.55) !important;
   color: rgba(200, 230, 255, 0.95) !important;
@@ -1781,6 +1788,11 @@ footer {
 [data-theme="dark"][data-contrast="high"] .sprint-day li { background: #111111 !important; border-color: #FFFFFF !important; }
 [data-theme="dark"][data-contrast="high"] .case-btn { background: #FFFFFF !important; color: #000000 !important; border-color: #FFFFFF !important; }
 [data-theme="dark"][data-contrast="high"] body > header { background: #000000 !important; border-bottom-color: #FFFFFF !important; }
+/* Dark+HC header text: white on black — WCAG AAA (21:1) */
+[data-theme="dark"][data-contrast="high"] body > header a,
+[data-theme="dark"][data-contrast="high"] body > header nav a,
+[data-theme="dark"][data-contrast="high"] body > header .header-name,
+[data-theme="dark"][data-contrast="high"] body > header .nav-logo { color: #FFFFFF !important; }
 [data-theme="dark"][data-contrast="high"] footer { background: #000000 !important; border-top-color: #FFFFFF !important; }
 
 /* ============================================================
