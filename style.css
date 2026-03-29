@@ -308,6 +308,12 @@ footer a:hover { opacity: 0.82; }
 .footer-copyright {
   font-size: 13px; color: rgba(255,255,255,0.55); text-align: center;
 }
+[data-theme="dark"][data-contrast="high"] footer a {
+  color: #000000;
+}
+[data-theme="dark"][data-contrast="high"] .footer-copyright {
+  color: #1A1A1A;
+}
 
 /* ============================================================
    DIVIDER
@@ -512,6 +518,58 @@ main {
   object-position: top center;
   transition: transform 0.55s var(--ease), filter 0.55s ease;
 }
+/* ---- WeAct card: heartbeat glow on hover ---- */
+/*
+  Two-beat "lub-dub" pulse using #0A4A84.
+  The double-peak happens in the first 40% of the cycle;
+  the remaining 60% is the resting pause — giving ~60 BPM at 1s duration.
+*/
+.card--weact {
+  transition:
+    transform     0.4s var(--ease),
+    box-shadow    0.4s var(--ease),
+    border-color  0.3s ease,
+    filter        0.55s ease;
+}
+.card--weact:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  border-color: rgba(10, 74, 132, 0.45);
+  animation: weact-heartbeat 3s ease-in-out infinite;
+}
+
+@keyframes weact-heartbeat {
+  0%   { filter: drop-shadow(0 0  8px rgba(10, 74, 132, 0.18)); }
+  50%  { filter: drop-shadow(0 0 20px rgba(10, 74, 132, 0.50)) drop-shadow(0 0 36px rgba(10, 74, 132, 0.22)); }
+  100% { filter: drop-shadow(0 0  8px rgba(10, 74, 132, 0.18)); }
+}
+
+/* ---- Crime Map card: radar glow tracing the border clockwise ---- */
+/*
+  Uses filter: drop-shadow() with animated x/y offsets to make a red glow
+  appear to travel clockwise around the outside of the card.
+  Top → right → bottom → left → top. No extra elements needed.
+*/
+.card--crimemap {
+  transition:
+    transform     0.4s var(--ease),
+    box-shadow    0.4s var(--ease),
+    border-color  0.3s ease,
+    filter        0.55s ease;
+}
+.card--crimemap:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  border-color: rgba(204, 20, 20, 0.30);
+  animation: radar-trace 4.5s linear infinite;
+}
+
+@keyframes radar-trace {
+  0%   { filter: drop-shadow(  0px -12px 10px rgba(204, 20, 20, 0.38)); }
+  25%  { filter: drop-shadow( 12px   0px 10px rgba(204, 20, 20, 0.38)); }
+  50%  { filter: drop-shadow(  0px  12px 10px rgba(204, 20, 20, 0.38)); }
+  75%  { filter: drop-shadow(-12px   0px 10px rgba(204, 20, 20, 0.38)); }
+  100% { filter: drop-shadow(  0px -12px 10px rgba(204, 20, 20, 0.38)); }
+}
+
 /* WeAct card — contain so full image (phones + logo) is visible */
 .card--weact .card-image { background: var(--surface-solid); }
 .card--weact .card-image img { object-fit: contain; object-position: center; }
@@ -540,6 +598,17 @@ main {
   border: 1px solid rgba(255,255,255,0.2);
   backdrop-filter: blur(8px);
   border-radius: 4px; padding: 4px 10px;
+}
+.card-overlay-date {
+  display: inline-block; align-self: flex-start;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px;
+  color: #FFD98A;
+  background: rgba(255,200,100,0.18);
+  border: 1px solid rgba(255,200,100,0.35);
+  backdrop-filter: blur(8px);
+  border-radius: 4px; padding: 4px 10px;
+  margin-bottom: 8px;
 }
 .card-overlay-impact { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.92); }
 .card-overlay-impact strong { color: #fff; font-weight: 600; }
