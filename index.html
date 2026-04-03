@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=10">
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -26,13 +26,20 @@
 
     <!-- Hero -->
     <div class="hero-wrapper">
+      <div class="hero-liquid-bg" aria-hidden="true">
+        <canvas class="liquid-canvas"></canvas>
+      </div>
       <section class="hero" aria-labelledby="hero-heading">
-        <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
-        <h1 id="hero-heading">Designing at the intersection of <span class="highlight">users, systems,<span class="underline-draw" aria-hidden="true"></span></span> and business.</h1>
-        <p class="hero-subtitle">
-          CS and Business grad completing a Master's in UX Design at the University of Toronto. I design accessible interfaces that balance user needs, technical constraints, and business goals.
-        </p>
+        <div class="hero-text-backdrop">
+          <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
+          <h1 id="hero-heading">Designing at the intersection of <span class="highlight">users, systems,<span class="underline-draw" aria-hidden="true"></span></span> and business.</h1>
+          <p class="hero-subtitle">
+            CS and Business grad completing a Master's in UX Design at the University of Toronto. I design accessible interfaces that balance user needs, technical constraints, and business goals.
+          </p>
+        </div>
       </section>
+      <!-- Glass dome sheen — rim highlights + dome gradient, sits above hero content -->
+      <div class="hero-glass-sheen" aria-hidden="true"></div>
     </div>
 
     <hr class="divider" aria-hidden="true">
@@ -191,6 +198,100 @@
   <!-- Shared layout (header, footer, settings, cursor) -->
   <script src="./layout.js"></script>
 
+  <!-- Liquid wave canvas animation -->
+  <script>
+  (function () {
+    const canvas = document.querySelector('.liquid-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const SCALE = 4;
+
+    const PALETTE = [
+      [ 72,  46,  14],
+      [ 90,  60,  22],
+      [110,  74,  30],
+      [135,  95,  44],
+      [158, 114,  58],
+      [178, 135,  74],
+      [200, 158, 100],
+      [222, 190, 140],
+      [240, 218, 178],
+      [252, 240, 212],
+      [255, 252, 240],
+      [238, 214, 170],
+      [185, 142,  82],
+    ];
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function getColor(v) {
+      const n = PALETTE.length - 1;
+      const i = Math.min(Math.floor(v * n), n - 1);
+      const t = v * n - i;
+      const a = PALETTE[i], b = PALETTE[i + 1];
+      return [lerp(a[0],b[0],t)|0, lerp(a[1],b[1],t)|0, lerp(a[2],b[2],t)|0];
+    }
+    function hash(ix, iy) {
+      let h = (Math.imul(ix, 374761393) + Math.imul(iy, 668265263)) | 0;
+      h = Math.imul(h ^ (h >>> 13), 1274126177);
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
+    }
+    function noise(x, y) {
+      const ix = Math.floor(x), iy = Math.floor(y);
+      const fx = x - ix, fy = y - iy;
+      const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+      const a = hash(ix,iy), b = hash(ix+1,iy), c = hash(ix,iy+1), d = hash(ix+1,iy+1);
+      return a + (b-a)*ux + (c-a)*uy + (a-b-c+d)*ux*uy;
+    }
+    function fbm(x, y) {
+      return noise(x,     y    ) * 0.5000
+           + noise(x*2.1, y*2.1) * 0.2500
+           + noise(x*4.3, y*4.3) * 0.1250
+           + noise(x*8.7, y*8.7) * 0.0625;
+    }
+    function liquid(x, y, t) {
+      const a1 = t*0.4, a2 = t*0.3+1.9;
+      const q1x = fbm(x+Math.cos(a1)*0.9,       y+Math.sin(a1)*0.9);
+      const q1y = fbm(x+Math.cos(a2)*0.9+5.2,   y+Math.sin(a2)*0.9+1.3);
+      const wx = x+2.8*q1x, wy = y+2.8*q1y;
+      const q2x = fbm(wx+Math.sin(t*0.25)*0.6,       wy-Math.cos(t*0.20)*0.6);
+      const q2y = fbm(wx-Math.cos(t*0.22)*0.6+3.7,   wy+Math.sin(t*0.28)*0.6+7.1);
+      return fbm(x+2.4*q2x, y+2.4*q2y);
+    }
+
+    function resize() {
+      canvas.width  = Math.max(1, Math.ceil(canvas.offsetWidth  / SCALE));
+      canvas.height = Math.max(1, Math.ceil(canvas.offsetHeight / SCALE));
+    }
+    function draw(ts) {
+      const t = ts * 0.00028;
+      const w = canvas.width, h = canvas.height;
+      const id = ctx.createImageData(w, h);
+      const d = id.data;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const v = liquid(x/w*2.2, y/h*1.8, t);
+          const sharp = Math.pow(Math.max(0, Math.min(1, v)), 0.9);
+          const [r,g,b] = getColor(sharp);
+          const i = (y*w+x)*4;
+          d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=255;
+        }
+      }
+      ctx.putImageData(id, 0, 0);
+      if (!canvas._stopped) requestAnimationFrame(draw);
+    }
+
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      draw(0);
+    } else {
+      requestAnimationFrame(draw);
+    }
+  })();
+  </script>
+
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -202,12 +303,16 @@
     addCursorHover('.card, .bento-card');
 
     /* ==================== HERO ENTRANCE ==================== */
+    // Hide all hero layers before animation starts — prevents flash of unstyled layers
+    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
+
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.hero',           { y: 60, opacity: 0, duration: 1,   delay: 0.2 })
-      .from('.hero-eyebrow',   { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
-      .from('.hero h1',        { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
-      .to('.underline-draw',   { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-      .from('.hero-subtitle',  { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+      // All three layers rise and fade in together as one unit
+      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+      .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+      .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
+      .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+      .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
@@ -268,7 +373,8 @@
 
     /* ==================== HERO PARALLAX ==================== */
     mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
-      gsap.to('.hero', {
+      // Animate the whole wrapper so canvas bg, section, and sheen all move together
+      gsap.to('.hero-wrapper', {
         yPercent: -4, ease: 'none',
         scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
       });
