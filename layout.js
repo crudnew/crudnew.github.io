@@ -78,6 +78,12 @@ function initLayout() {
     el.outerHTML = HEADER_HTML;
   });
 
+  /* Typewriter — type name in on every page load */
+  const _nameEl = document.querySelector('.header-name');
+  if (_nameEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    _twIn(_nameEl);
+  }
+
   /* Replace <footer-component> */
   document.querySelectorAll('footer-component').forEach(el => {
     el.outerHTML = FOOTER_HTML;
@@ -164,9 +170,72 @@ function addCursorHover(selector) {
   });
 }
 
+/* ============================================================
+   TYPEWRITER — header name
+   Types in on load, erases fast on internal navigation.
+============================================================ */
+const _TW_NAME    = 'Chris Rudnew';
+const _TW_TYPE_MS = 68;   // ms per char — type in
+const _TW_ERASE_MS = 26;  // ms per char — erase (faster)
+
+function _twIn(el) {
+  let i = 0;
+  el.textContent = '';
+  function tick() {
+    i++;
+    el.textContent = _TW_NAME.slice(0, i) + (i < _TW_NAME.length ? '|' : '');
+    if (i < _TW_NAME.length) setTimeout(tick, _TW_TYPE_MS);
+  }
+  setTimeout(tick, 260); // small lead delay
+}
+
+function _twOut(el, cb) {
+  let s = el.textContent.replace('|', '').length;
+  if (s === 0) { cb(); return; }
+  function tick() {
+    s--;
+    el.textContent = _TW_NAME.slice(0, s) + '|';
+    if (s > 0) setTimeout(tick, _TW_ERASE_MS);
+    else { el.textContent = ''; cb(); }
+  }
+  tick();
+}
+
+/* Intercept internal link clicks — erase name then navigate */
+document.addEventListener('click', function (e) {
+  if (e.defaultPrevented) return;
+  const link = e.target.closest('a[href]');
+  if (!link) return;
+  if (link.target === '_blank') return;           // external tab
+  if (link.protocol === 'mailto:') return;        // email
+  if (link.protocol === 'tel:') return;           // phone
+  if (link.hostname !== location.hostname) return; // off-site
+  if (link.href === location.href) return;         // same page
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  e.preventDefault();
+  const dest = link.href;
+  const nameEl = document.querySelector('.header-name');
+  if (nameEl) {
+    _twOut(nameEl, () => { location.href = dest; });
+  } else {
+    location.href = dest;
+  }
+});
+
 /* Run after DOM is ready (handles both async and defer loading) */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initLayout);
 } else {
   initLayout();
 }
+
+/* Re-run typewriter when page is restored from bfcache (back/forward button) */
+window.addEventListener('pageshow', function (e) {
+  if (!e.persisted) return;
+  const nameEl = document.querySelector('.header-name');
+  if (nameEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    _twIn(nameEl);
+  }
+});

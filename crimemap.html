@@ -6,30 +6,64 @@
   <title>Crime Map — Chris Rudnew</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./crimemap.css" />
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
   <style>
-    /* CrimeMap hero — breathing room + dark canvas text overrides */
-    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; }
-    /* Dark glass card rim + red shadow */
-    .hero-wrapper .case-hero {
-      border-color: rgba(255,255,255,0.10) !important;
-      box-shadow: 0 6px 48px rgba(0,0,0,0.70), 0 2px 16px rgba(180,0,0,0.22), 0 1px 0 rgba(255,255,255,0.08) !important;
+    /* Hero card breathing room */
+    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
+    @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
+    @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
+
+    /* Engraved h1 — carved into the frosted glass */
+    .hero-wrapper .case-hero h1 {
+      background: none;
+      -webkit-background-clip: initial; background-clip: initial;
+      -webkit-text-fill-color: rgba(210, 170, 170, 0.82);
+      color: rgba(210, 170, 170, 0.82);
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.70),
+        0 -1px 0 rgba(255, 240, 240, 0.18);
     }
-    /* Force light text on dark canvas */
-    .hero-wrapper .case-hero .case-eyebrow { color: rgba(255,90,90,0.90); letter-spacing: 3px; }
-    .hero-wrapper .case-hero h1,
-    .hero-wrapper .case-hero .case-tagline,
-    .hero-wrapper .case-hero .subtitle { color: rgba(255,255,255,0.92); }
-    /* Heavily frosted text backdrop — mutes animation behind text for accessibility */
-    .hero-wrapper .case-hero .hero-text-backdrop {
-      background: rgba(10,8,8,0.72);
-      backdrop-filter: blur(22px) saturate(0.8);
-      -webkit-backdrop-filter: blur(22px) saturate(0.8);
-      border: 1px solid rgba(255,255,255,0.10);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 20px rgba(0,0,0,0.40);
+    .hero-wrapper .case-hero .case-tagline { color: rgba(244, 160, 160, 0.88) !important; -webkit-text-fill-color: initial; }
+    .hero-wrapper .case-hero .subtitle { color: rgba(200, 200, 210, 0.90) !important; }
+
+    /* Main screenshot — full-width contained */
+    .crimemap-screenshot {
+      width: 100%; max-width: 980px;
+      border-radius: 24px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.70), 0 0 0 1px rgba(220,38,38,0.18);
+      display: block;
     }
+    .crimemap-screenshot-wrap {
+      width: 100%; max-width: 1212px;
+      padding: 0 64px 64px;
+      display: flex; justify-content: center;
+    }
+    @media (max-width: 1023px) { .crimemap-screenshot-wrap { padding: 0 28px 48px; } }
+    @media (max-width: 799px)  { .crimemap-screenshot-wrap { padding: 0 18px 36px; } }
+
+    /* Tech stack columns */
+    .tech-stack-grid {
+      display: flex; gap: 24px; flex-wrap: wrap; margin-top: 16px;
+    }
+    .tech-col {
+      flex: 1; min-width: 180px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+    }
+    .tech-col-label {
+      font-family: var(--font-heading);
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--accent); margin-bottom: 14px; display: block;
+    }
+    .tech-col ul { list-style: disc; padding-left: 18px; }
+    .tech-col li { font-size: 15px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 4px; }
+    @media (max-width: 799px) { .tech-stack-grid { flex-direction: column; } }
   </style>
 </head>
 <body>
@@ -41,10 +75,10 @@
 
     <!-- ① HERO -->
     <div class="hero-wrapper">
-      <div class="hero-liquid-bg" aria-hidden="true">
-        <canvas class="liquid-canvas"></canvas>
-      </div>
       <section class="case-hero" aria-labelledby="case-heading">
+        <div class="hero-liquid-bg" aria-hidden="true">
+          <canvas class="liquid-canvas"></canvas>
+        </div>
         <div class="hero-text-backdrop">
           <p class="case-eyebrow">Case Study — Capstone Project</p>
           <h1 id="case-heading">Crime Map</h1>
@@ -54,6 +88,7 @@
       </section>
       <div class="hero-glass-sheen" aria-hidden="true"></div>
     </div>
+
 
     <!-- ② META -->
     <div class="case-meta">
@@ -76,11 +111,11 @@
     </div>
 
     <!-- ③ HERO IMAGE -->
-    <div style="width:100%;max-width:1212px;padding:0 64px 64px;display:flex;justify-content:center;">
+    <div class="crimemap-screenshot-wrap">
       <img
+        class="crimemap-screenshot"
         src="./assets/crimemap-main-screen.png"
         alt="Crime Map application — main interface showing a map of Edmonton with crime markers"
-        style="width:100%;max-width:980px;border-radius:24px;box-shadow:var(--shadow-lg);"
       />
     </div>
 
@@ -149,7 +184,7 @@
           <img
             src="./assets/crimemap-assault-example.png"
             alt="Assault example shown on the Crime Map interface"
-            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+            style="max-width:100%;"
           />
         </div>
       </div>
@@ -168,7 +203,7 @@
           <img
             src="./assets/crimemap-pie-chart.png"
             alt="Pie chart showing crime type distribution"
-            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+            style="max-width:100%;"
           />
         </div>
         <div class="text-col">
@@ -215,7 +250,7 @@
           <img
             src="./assets/crimemap-bar-chart.png"
             alt="Bar chart showing crime statistics by neighbourhood"
-            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+            style="max-width:100%;"
           />
         </div>
       </div>
@@ -232,9 +267,9 @@
       <div class="content-full">
         <h2>Components...</h2>
         <p><strong>HTML, JavaScript, Apache, MySQL.</strong></p>
-        <div style="display:flex;gap:48px;flex-wrap:wrap;margin-top:8px;">
-          <div style="flex:1;min-width:180px;">
-            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Front-End</p>
+        <div class="tech-stack-grid">
+          <div class="tech-col">
+            <span class="tech-col-label">Front-End</span>
             <ul>
               <li>HTML5</li>
               <li>CSS</li>
@@ -243,16 +278,16 @@
               <li>Google Maps API</li>
             </ul>
           </div>
-          <div style="flex:1;min-width:180px;">
-            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Back-End</p>
+          <div class="tech-col">
+            <span class="tech-col-label">Back-End</span>
             <ul>
               <li>PHP (database connection)</li>
               <li>Apache2 (server)</li>
-              <li>Special thanks to Cybera for having a public IP for everyone to use.</li>
+              <li>Special thanks to Cybera for the public IP.</li>
             </ul>
           </div>
-          <div style="flex:1;min-width:180px;">
-            <p style="margin-bottom:8px;color:var(--text-primary);font-weight:600;">Database</p>
+          <div class="tech-col">
+            <span class="tech-col-label">Database</span>
             <ul>
               <li>MySQL</li>
             </ul>
@@ -323,7 +358,7 @@
           <img
             src="./assets/crimemap-er-diagram.png"
             alt="ER diagram showing database table relationships"
-            style="border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-width:100%;"
+            style="max-width:100%;"
           />
         </div>
       </div>
@@ -435,9 +470,11 @@
     gsap.registerPlugin(ScrollTrigger);
 
     /* ── Hero entrance ── */
-    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
+    gsap.set(['.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
+    gsap.set('.hero-liquid-bg', { opacity: 0 });
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+      .to(['.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+      .to('.hero-liquid-bg', { opacity: 1, duration: 1 }, '<')
       .from('.case-eyebrow', { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
       .from('h1',            { y: 24, opacity: 0, duration: 0.7 }, '-=0.50')
       .from('.case-tagline', { y: 18, opacity: 0, duration: 0.6 }, '-=0.45')
