@@ -304,8 +304,13 @@ footer a {
   text-align: center; transition: opacity 0.2s ease;
 }
 footer a:hover { opacity: 0.82; }
+[data-theme="dark"] footer { background: var(--bg-secondary); }
+[data-theme="dark"][data-contrast="high"] footer {
+  background: rgba(8, 14, 40, 0.97);
+  border-top-color: var(--border);
+}
 .footer-copyright {
-  font-size: 13px; color: rgba(255,255,255,0.55); text-align: center;
+  font-size: 13px; color: rgba(255,255,255,0.90); text-align: center;
 }
 
 /* ============================================================
@@ -1218,16 +1223,29 @@ main {
 [data-theme="dark"] .case-hero .subtitle { color: rgba(157, 187, 232, 0.90); }
 [data-theme="dark"] .case-eyebrow { color: rgba(122, 174, 224, 0.85); }
 
-/* Dark mode CTA — keep white text legible on navy glass */
+/* Dark mode CTA — use accent-btn-bg (#3A74C0) for 4.73:1 white text contrast */
 [data-theme="dark"] .case-btn {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-btn-bg);
+  border-color: var(--accent-btn-bg);
   box-shadow: 0 4px 16px rgba(0, 10, 40, 0.44);
 }
 [data-theme="dark"] .case-btn:hover {
   background: #5A94E0;
   border-color: #5A94E0;
   box-shadow: 0 8px 24px rgba(0, 10, 40, 0.55);
+}
+/* Dark+HC CTA — invert to outlined so #AACCFF text reads on dark bg (12.98:1) */
+[data-theme="dark"][data-contrast="high"] .case-btn {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: none;
+}
+[data-theme="dark"][data-contrast="high"] .case-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  box-shadow: none;
 }
 
 /* ============================================================

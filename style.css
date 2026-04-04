@@ -306,14 +306,9 @@ footer a {
   text-align: center; transition: opacity 0.2s ease;
 }
 footer a:hover { opacity: 0.82; }
+[data-theme="dark"] footer { background: var(--bg-secondary); }
 .footer-copyright {
-  font-size: 13px; color: rgba(255,255,255,0.55); text-align: center;
-}
-[data-theme="dark"][data-contrast="high"] footer a {
-  color: #000000;
-}
-[data-theme="dark"][data-contrast="high"] .footer-copyright {
-  color: #1A1A1A;
+  font-size: 13px; color: rgba(255,255,255,0.90); text-align: center;
 }
 
 /* ============================================================
@@ -698,6 +693,7 @@ main {
     rgba(20,14,10,0.1) 60%,
     transparent 100%);
   opacity: 0; transition: opacity 0.4s ease;
+  overflow: hidden;
 }
 .card:hover .card-overlay { opacity: 1; }
 .card-overlay-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
@@ -750,6 +746,12 @@ main {
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .btn:hover { background: var(--accent-btn-bg); border-color: var(--accent-btn-bg); color: #fff; }
+[data-theme="dark"] .btn:hover,
+[data-theme="dark"] .case-btn:hover {
+  background: var(--bg);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
 .btn svg { width: 13px; height: 13px; transition: transform 0.2s ease, filter 0.2s ease; }
 .btn:hover svg { transform: translateX(3px); filter: brightness(10); }
 
@@ -1102,7 +1104,7 @@ main {
 .section-num {
   font-family: var(--font-heading);
   font-size: 13px; font-weight: 700;
-  color: var(--accent);
+  color: var(--text-primary);
   background: var(--accent-light);
   padding: 4px 10px;
   border-radius: 6px;

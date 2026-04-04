@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=10">
+  <link rel="stylesheet" href="./style.css?v=11">
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -145,9 +145,27 @@
           <header class="bento-header" aria-hidden="true">
             <span class="bento-number">01</span>
             <span class="bento-sep">/</span>
+            <span class="bento-label">Design &amp; Research</span>
+          </header>
+          <h3 id="bento-1-heading">Master of Information (UXD) @ UofT</h3>
+          <div class="bento-logo-wrap">
+            <!--
+              Add University of Toronto logo by replacing the src:
+              src="https://www.utoronto.ca/[path-to-logo]"
+            -->
+            <img class="bento-logo" src="./assets/UofT-Logo.png" alt="University of Toronto crest" onerror="this.style.display='none'">
+            <span class="bento-logo-text">University of Toronto, Ontario</span>
+          </div>
+          <p>I focus on user-centered design and research, user interface design, and information architecture. I specialize in turning complex requirements into structured, accessible interfaces that prioritize user needs and task flow.</p>
+        </article>
+
+        <article class="bento-card" aria-labelledby="bento-2-heading">
+          <header class="bento-header" aria-hidden="true">
+            <span class="bento-number">02</span>
+            <span class="bento-sep">/</span>
             <span class="bento-label">Technical</span>
           </header>
-          <h3 id="bento-1-heading">B.Sc. Computer Science &amp; Business Studies</h3>
+          <h3 id="bento-2-heading">B.Sc. Computer Science &amp; Business Studies</h3>
           <div class="bento-logo-wrap">
             <!--
               Add MacEwan University's logo by replacing the src:
@@ -158,24 +176,6 @@
             <span class="bento-logo-text">MacEwan University, Alberta</span>
           </div>
           <p>My background is in software architecture and organizational logic. I design with an understanding of technical constraints and system requirements, ensuring that high-fidelity concepts are actually feasible for production.</p>
-        </article>
-
-        <article class="bento-card" aria-labelledby="bento-2-heading">
-          <header class="bento-header" aria-hidden="true">
-            <span class="bento-number">02</span>
-            <span class="bento-sep">/</span>
-            <span class="bento-label">Design &amp; Research</span>
-          </header>
-          <h3 id="bento-2-heading">Master of Information (UXD) @ UofT</h3>
-          <div class="bento-logo-wrap">
-            <!--
-              Add University of Toronto logo by replacing the src:
-              src="https://www.utoronto.ca/[path-to-logo]"
-            -->
-            <img class="bento-logo" src="./assets/UofT-Logo.png" alt="University of Toronto crest" onerror="this.style.display='none'">
-            <span class="bento-logo-text">University of Toronto, Ontario</span>
-          </div>
-          <p>I focus on user-centered design and research, user interface design, and information architecture. I specialize in turning complex requirements into structured, accessible interfaces that prioritize user needs and task flow.</p>
         </article>
 
         <article class="bento-card" aria-labelledby="bento-3-heading">
@@ -208,19 +208,19 @@
     const SCALE = 4;
 
     const PALETTE = [
-      [ 72,  46,  14],
-      [ 90,  60,  22],
-      [110,  74,  30],
-      [135,  95,  44],
-      [158, 114,  58],
-      [178, 135,  74],
-      [200, 158, 100],
-      [222, 190, 140],
-      [240, 218, 178],
-      [252, 240, 212],
-      [255, 252, 240],
-      [238, 214, 170],
-      [185, 142,  82],
+      [ 62,  40,  22],
+      [ 80,  54,  30],
+      [100,  70,  42],
+      [124,  90,  58],
+      [146, 110,  76],
+      [166, 130,  96],
+      [186, 152, 118],
+      [208, 178, 148],
+      [226, 204, 178],
+      [238, 218, 196],
+      [244, 230, 212],
+      [228, 206, 178],
+      [172, 136, 100],
     ];
 
     function lerp(a, b, t) { return a + (b - a) * t; }

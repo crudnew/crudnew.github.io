@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./linger.css">
+  <link rel="stylesheet" href="./linger.css?v=2">
   <style>
     /* Hero card breathing room, side padding, button alignment */
     .case-main .hero-wrapper {
@@ -39,17 +39,6 @@
     }
 
     /* ── Dark mode — deep navy/midnight blue, not grey ────── */
-    /* Dim the canvas directly — reliable across all browsers */
-    [data-theme="dark"] .liquid-canvas {
-      filter: brightness(0.32) saturate(0.80);
-    }
-    /* Dark navy tint layer over the dimmed canvas */
-    [data-theme="dark"] .hero-liquid-bg::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(4, 12, 45, 0.55);
-      z-index: 1; pointer-events: none;
-    }
     /* Outer card — deep navy glass */
     [data-theme="dark"] .hero-wrapper .case-hero {
       background: rgba(6, 20, 62, 0.58) !important;
@@ -613,13 +602,20 @@
       const t = (ts || 0) * 0.001;
       const w = canvas.width, h = canvas.height;
       const s = Math.min(w, h);
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
+      if (isDark) {
+        // Dark navy background — shapes draw at full opacity, clearly visible
+        ctx.fillStyle = '#060E22';
+        ctx.fillRect(0, 0, w, h);
+      } else {
       // ── Background: sky-blue fading to lavender (matches ref) ──
       const bgG = ctx.createLinearGradient(0, 0, w, h);
       bgG.addColorStop(0,   '#b8d6ec');
       bgG.addColorStop(0.45,'#c4d4ec');
       bgG.addColorStop(1,   '#d2cce8');
       ctx.fillStyle = bgG; ctx.fillRect(0, 0, w, h);
+      } // end light mode background
 
       // ── Soft disk shapes — gradient ellipses, NO ctx.filter for 60fps ──
       // Each disk: scale CTM to rx×ry, draw radial gradient unit-circle

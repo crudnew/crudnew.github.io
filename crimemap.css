@@ -816,6 +816,9 @@ main {
   [data-contrast="high"] body > header { background: rgba(255,255,255,0.97) !important; }
   [data-contrast="high"] .hero-wrapper .case-hero,
   [data-contrast="high"] .overview-card { background: rgba(255,255,255,0.97) !important; }
+  /* dark+HC overrides — more specific, must come after the HC rules above */
+  [data-theme="dark"][data-contrast="high"] body > header { background: rgba(0,0,0,0.98) !important; }
+  [data-theme="dark"][data-contrast="high"] .overview-card { background: rgba(0,0,0,0.98) !important; }
 }
 
 /* ============================================================

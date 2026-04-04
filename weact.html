@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./weact.css">
+  <link rel="stylesheet" href="./weact.css?v=2">
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
   <style>
     /* Hero card breathing room */
@@ -34,12 +34,6 @@
     .hero-wrapper .case-hero .hero-text-backdrop .case-eyebrow { color: #0D3B82 !important; }
 
     /* Dark mode hero glass */
-    [data-theme="dark"] .liquid-canvas { filter: brightness(0.28) saturate(0.80); }
-    [data-theme="dark"] .hero-liquid-bg::after {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(4, 10, 30, 0.55);
-      z-index: 1; pointer-events: none;
-    }
     [data-theme="dark"] .hero-wrapper .case-hero {
       background: rgba(8, 18, 55, 0.58) !important;
       border-color: rgba(60, 120, 220, 0.20) !important;
@@ -488,7 +482,13 @@
     function draw(ts) {
       const t = ts * 0.001;
       const w = canvas.width, h = canvas.height;
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
+      if (isDark) {
+        // Dark navy background — nodes/connections stay full white opacity, clearly visible
+        ctx.fillStyle = '#060E22';
+        ctx.fillRect(0, 0, w, h);
+      } else {
       // ── Base gradient: airy/open (top) → deep/committed (bottom) ──
       // Mid-tone shifted to warm grey-blue to break the ocean feel.
       const base = ctx.createLinearGradient(0, 0, 0, h);
@@ -521,6 +521,7 @@
         ctx.fillRect(-rx, -rx, rx * 2, rx * 2);
         ctx.restore();
       });
+      } // end else (light mode background)
 
       // ── Update nodes: move + repel each other to prevent clustering ──
       for (let i = 0; i < NODES.length; i++) {
