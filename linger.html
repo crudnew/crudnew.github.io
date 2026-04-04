@@ -11,6 +11,71 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./linger.css">
   <style>
+    /* Hero card breathing room, side padding, button alignment */
+    .case-main .hero-wrapper {
+      margin-top: 64px !important; margin-bottom: 48px !important;
+      width: calc(100% - 88px) !important;
+    }
+    @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
+    @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
+    .hero-wrapper .case-btn { margin-top: 0; }
+    /* Outer glass card — near-invisible, let the gradient mesh show */
+    .hero-wrapper .case-hero {
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(255,255,255,0.55) !important;
+      box-shadow: 0 8px 40px rgba(80,100,160,0.10), inset 0 1px 0 rgba(255,255,255,0.70) !important;
+    }
+    /* Inner panel — translucent, let the animation breathe through */
+    .hero-wrapper .case-hero .hero-text-backdrop {
+      background: rgba(255,255,255,0.28);
+      backdrop-filter: blur(22px) saturate(1.15);
+      -webkit-backdrop-filter: blur(22px) saturate(1.15);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.70), 0 4px 24px rgba(80,100,160,0.08);
+    }
+    /* WCAG AA (light) — eyebrow tag needs darkening at 28% opacity (~4.2→5.2:1) */
+    .hero-wrapper .case-hero .hero-text-backdrop .case-tag {
+      color: #0A4F8A !important;
+    }
+
+    /* ── Dark mode — deep navy/midnight blue, not grey ────── */
+    /* Dim the canvas directly — reliable across all browsers */
+    [data-theme="dark"] .liquid-canvas {
+      filter: brightness(0.32) saturate(0.80);
+    }
+    /* Dark navy tint layer over the dimmed canvas */
+    [data-theme="dark"] .hero-liquid-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(4, 12, 45, 0.55);
+      z-index: 1; pointer-events: none;
+    }
+    /* Outer card — deep navy glass */
+    [data-theme="dark"] .hero-wrapper .case-hero {
+      background: rgba(6, 20, 62, 0.58) !important;
+      border-color: rgba(100, 165, 255, 0.18) !important;
+      box-shadow: 0 6px 48px rgba(2,8,30,0.55), 0 2px 12px rgba(2,8,30,0.35), inset 0 1px 0 rgba(120,180,255,0.14) !important;
+    }
+    /* Inner panel — midnight blue frosted glass */
+    [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop {
+      background: rgba(5, 16, 52, 0.72);
+      backdrop-filter: blur(22px) saturate(1.1);
+      -webkit-backdrop-filter: blur(22px) saturate(1.1);
+      border: 1px solid rgba(100, 165, 255, 0.14);
+      box-shadow: inset 0 1px 0 rgba(120,180,255,0.12), 0 2px 20px rgba(2,8,30,0.40);
+    }
+    /* WCAG AA (dark) — light text on midnight blue */
+    [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop .case-tag {
+      color: #8bbfee !important; /* light periwinkle — 5.2:1 */
+    }
+    [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop h1 {
+      color: #e8f2ff !important; /* near-white blue — 15:1 */
+    }
+    [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop .hero-tagline,
+    [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop p {
+      color: #c2d8f5 !important; /* light blue — 8.5:1 */
+    }
+
     /* Drop shadows on all case study images */
     .phone-pair img       { box-shadow: var(--shadow-lg); }
     .image-col img        { box-shadow: var(--shadow-md); border-radius: var(--radius-md); max-height: 420px; width: auto; max-width: 100%; }
@@ -114,16 +179,24 @@
   <main id="main-content" class="case-main">
 
     <!-- ===== HERO ===== -->
-    <section class="case-hero" aria-labelledby="case-heading">
-      <p class="case-eyebrow">FigBuild 2026 &middot; Designathon</p>
-      <h1 id="case-heading">Linger</h1>
-      <p class="case-tagline">Because some moments should linger.</p>
-      <p class="subtitle">A multi-feature mobile app for scent-mapping, with a speculative wearable concept, designed in 83 hours.</p>
-      <a href="https://devpost.com/software/s-jkcvdn" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="View Linger on Devpost">
-        View on Devpost
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-      </a>
-    </section>
+    <div class="hero-wrapper">
+      <div class="hero-liquid-bg" aria-hidden="true">
+        <canvas class="liquid-canvas"></canvas>
+      </div>
+      <section class="case-hero" aria-labelledby="case-heading">
+        <div class="hero-text-backdrop">
+          <p class="case-eyebrow">FigBuild 2026 &middot; Designathon</p>
+          <h1 id="case-heading">Linger</h1>
+          <p class="case-tagline">Because some moments should linger.</p>
+          <p class="subtitle">A multi-feature mobile app for scent-mapping, with a speculative wearable concept, designed in 83 hours.</p>
+          <a href="https://devpost.com/software/s-jkcvdn" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="View Linger on Devpost">
+            View on Devpost
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </div>
+      </section>
+      <div class="hero-glass-sheen" aria-hidden="true"></div>
+    </div>
 
     <!-- Project Meta -->
     <div class="case-meta" aria-label="Project details">
@@ -488,6 +561,143 @@
   <footer-component></footer-component>
 
   <script src="./layout.js"></script>
+
+  <!-- Linger: Frutiger Aero — shimmery light water bg, glassy orbs bouncing -->
+  <script>
+  (function () {
+    const canvas = document.querySelector('.liquid-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // ── Soft disk shapes — app palette: teal + dusty-pink + periwinkle ──
+    const DISKS = [
+      // Teal/cyan blob, upper-left
+      { nx:0.16, ny:0.22, rx:0.28, ry:0.18, rot:-0.20, c:'28,168,192',  a:0.55, spd:0.42, ph:0.0 },
+      // Soft dusty-pink, right side
+      { nx:0.84, ny:0.27, rx:0.11, ry:0.43, rot: 0.06, c:'215,148,165', a:0.52, spd:0.35, ph:1.8 },
+      // Periwinkle/lavender, lower-left
+      { nx:0.24, ny:0.90, rx:0.33, ry:0.18, rot: 0.14, c:'172,178,228', a:0.68, spd:0.38, ph:4.2 },
+      // Medium blue, lower-centre
+      { nx:0.52, ny:0.84, rx:0.24, ry:0.13, rot: 0.22, c:'148,178,222', a:0.55, spd:0.32, ph:5.4 },
+      // Light sky-blue, top-right
+      { nx:0.65, ny:0.15, rx:0.20, ry:0.12, rot:-0.08, c:'155,215,235', a:0.48, spd:0.48, ph:3.0 },
+      // Periwinkle oval, left-centre
+      { nx:0.08, ny:0.52, rx:0.22, ry:0.14, rot:-0.30, c:'100,140,210', a:0.50, spd:0.40, ph:2.6 },
+    ];
+
+    // ── Large glass orbs — teal-dominant, matching app orb colours ──
+    const LARGE_ORBS = [
+      // Big teal sphere, lower-right
+      { nx:0.92, ny:0.95, r:0.28, spd:0.38, ph:0.0,
+        s0:'255,255,255', s1:'188,232,225', s2:'38,172,195', s3:'88,142,205' },
+      // Pale periwinkle partial orb, lower-centre
+      { nx:0.30, ny:1.08, r:0.38, spd:0.30, ph:2.5,
+        s0:'255,255,255', s1:'215,218,245', s2:'178,188,235', s3:'195,178,238' },
+    ];
+
+    // ── Small glass dots — teal and dusty-pink to match app orb palette ──
+    const DOTS = [
+      { nx:0.13, ny:0.12, r: 8, c:'210,138,155', ph:0.0 }, // dusty pink
+      { nx:0.75, ny:0.13, r:10, c:'38,178,205',  ph:1.5 }, // teal
+      { nx:0.22, ny:0.50, r: 7, c:'38,178,205',  ph:3.0 }, // teal
+      { nx:0.93, ny:0.46, r: 7, c:'210,138,155', ph:4.5 }, // dusty pink
+      { nx:0.09, ny:0.84, r: 7, c:'38,178,205',  ph:2.2 }, // teal
+    ];
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+
+    function draw(ts) {
+      const t = (ts || 0) * 0.001;
+      const w = canvas.width, h = canvas.height;
+      const s = Math.min(w, h);
+
+      // ── Background: sky-blue fading to lavender (matches ref) ──
+      const bgG = ctx.createLinearGradient(0, 0, w, h);
+      bgG.addColorStop(0,   '#b8d6ec');
+      bgG.addColorStop(0.45,'#c4d4ec');
+      bgG.addColorStop(1,   '#d2cce8');
+      ctx.fillStyle = bgG; ctx.fillRect(0, 0, w, h);
+
+      // ── Soft disk shapes — gradient ellipses, NO ctx.filter for 60fps ──
+      // Each disk: scale CTM to rx×ry, draw radial gradient unit-circle
+      DISKS.forEach(d => {
+        // Drift: two independent sine waves per axis for organic figure-8 feel
+        const ox = Math.sin(t * d.spd        + d.ph)         * 0.10
+                 + Math.sin(t * d.spd * 0.61 + d.ph + 2.1)   * 0.04;
+        const oy = Math.cos(t * d.spd * 0.78 + d.ph + 1.1)   * 0.08
+                 + Math.cos(t * d.spd * 0.53 + d.ph + 3.7)   * 0.03;
+        // Gentle rotation sway
+        const ra = d.rot + Math.sin(t * d.spd * 0.4 + d.ph)  * 0.14;
+        // Subtle scale breathe
+        const sc = 1 + Math.sin(t * d.spd * 0.5 + d.ph * 1.3) * 0.06;
+        const rx = d.rx * w * sc;
+        const ry = d.ry * h * sc;
+        ctx.save();
+        ctx.translate((d.nx + ox) * w, (d.ny + oy) * h);
+        ctx.rotate(ra);
+        ctx.scale(rx, ry);
+        // Radial gradient in local (unit) space — soft falloff at edge
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+        g.addColorStop(0,    `rgba(${d.c},${d.a})`);
+        g.addColorStop(0.55, `rgba(${d.c},${(d.a * 0.75).toFixed(2)})`);
+        g.addColorStop(1,    `rgba(${d.c},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
+      // ── Large glass orbs — sharp, gradient like ref orb image ──
+      LARGE_ORBS.forEach(o => {
+        const px = (o.nx + Math.sin(t * o.spd        + o.ph) * 0.05) * w;
+        const py = (o.ny + Math.cos(t * o.spd * 0.78 + o.ph) * 0.04) * h;
+        const r  = o.r * Math.min(w, h);
+        // Outer glow halo
+        const glow = ctx.createRadialGradient(px, py, r * 0.5, px, py, r * 1.8);
+        glow.addColorStop(0, `rgba(${o.s2},0.18)`);
+        glow.addColorStop(1, `rgba(${o.s2},0)`);
+        ctx.fillStyle = glow; ctx.fillRect(px-r*1.8, py-r*1.8, r*3.6, r*3.6);
+        // Glass body: specular → warm highlight → main → lavender rim
+        const hx = px - r*0.34, hy = py - r*0.28;
+        const sg = ctx.createRadialGradient(hx, hy, 0, px, py, r);
+        sg.addColorStop(0,    `rgba(${o.s0},0.96)`);
+        sg.addColorStop(0.12, `rgba(${o.s1},0.92)`);
+        sg.addColorStop(0.40, `rgba(${o.s2},0.88)`);
+        sg.addColorStop(0.72, `rgba(${o.s3},0.62)`);
+        sg.addColorStop(1,    `rgba(${o.s2},0.06)`);
+        ctx.fillStyle = sg;
+        ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // ── Small glass dots — iridescent spheres, ref positions ──
+      DOTS.forEach(d => {
+        const px = d.nx * w + Math.sin(t * 0.22 + d.ph) * 4;
+        const py = d.ny * h + Math.cos(t * 0.18 + d.ph) * 3;
+        const r  = d.r;
+        const gl = ctx.createRadialGradient(px, py, 0, px, py, r * 3);
+        gl.addColorStop(0, `rgba(${d.c},0.22)`); gl.addColorStop(1, `rgba(${d.c},0)`);
+        ctx.fillStyle = gl; ctx.fillRect(px-r*3, py-r*3, r*6, r*6);
+        const sp = ctx.createRadialGradient(px-r*0.32, py-r*0.28, 0, px, py, r);
+        sp.addColorStop(0,    'rgba(255,255,255,0.96)');
+        sp.addColorStop(0.18, `rgba(${d.c},0.92)`);
+        sp.addColorStop(0.68, `rgba(${d.c},0.50)`);
+        sp.addColorStop(1,    `rgba(${d.c},0.10)`);
+        ctx.fillStyle = sp;
+        ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+      });
+
+      if (!canvas._stopped) requestAnimationFrame(draw);
+    }
+
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(); }
+    else { requestAnimationFrame(draw); }
+  })();
+  </script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
@@ -498,9 +708,11 @@
     addCursorHover('.process-icon, .overview-card, .stat-card, .reflection-card');
 
     /* ==================== HERO ENTRANCE ==================== */
+    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6, delay: 0.15 })
-      .from('.case-hero h1',        { y: 50, opacity: 0, duration: 0.9 }, '-=0.35')
+      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+      .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+      .from('.case-hero h1',        { y: 50, opacity: 0, duration: 0.9 }, '-=0.45')
       .from('.case-tagline',        { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
       .from('.case-hero .subtitle', { y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
       .from('.case-btn',            { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
