@@ -10,6 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+  <style>
+    /* More breathing room above the hero card */
+    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; }
+    /* Strip the asymmetric margin-top that case-btn adds */
+    .hero-wrapper .case-btn { margin-top: 0; }
+  </style>
 </head>
 <body>
 
@@ -19,16 +25,24 @@
   <main id="main-content" class="case-main">
 
     <!-- ===== HERO ===== -->
-    <section class="case-hero" aria-labelledby="case-heading">
-      <p class="case-eyebrow">Case Study</p>
-      <h1 id="case-heading">WeAct</h1>
-      <p class="case-tagline">Reimagining Local Volunteering</p>
-      <p class="subtitle">Making local volunteering easier to find and commit to.</p>
-      <a href="https://drive.google.com/file/d/1oeNJXXVI3CQq3b7DsUA_jdK6QgXrs4yU/view?usp=drive_link" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Google Drive Case Study">
-        Open Full Case Study
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-      </a>
-    </section>
+    <div class="hero-wrapper">
+      <div class="hero-liquid-bg" aria-hidden="true">
+        <canvas class="liquid-canvas"></canvas>
+      </div>
+      <section class="case-hero" aria-labelledby="case-heading">
+        <div class="hero-text-backdrop">
+          <p class="case-eyebrow">Case Study</p>
+          <h1 id="case-heading">WeAct</h1>
+          <p class="case-tagline">Reimagining Local Volunteering</p>
+          <p class="subtitle">Making local volunteering easier to find and commit to.</p>
+          <a href="https://drive.google.com/file/d/1oeNJXXVI3CQq3b7DsUA_jdK6QgXrs4yU/view?usp=drive_link" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Google Drive Case Study">
+            Open Full Case Study
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </div>
+      </section>
+      <div class="hero-glass-sheen" aria-hidden="true"></div>
+    </div>
 
     <!-- Project Meta -->
     <div class="case-meta" aria-label="Project details">
@@ -373,6 +387,184 @@
   <footer-component></footer-component>
 
   <script src="./layout.js"></script>
+
+  <!-- WeAct: Calming → Strengthening → Active gradient animation -->
+  <script>
+  (function () {
+    const canvas = document.querySelector('.liquid-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // Drifting cloud layers — elliptical, slow, atmospheric. No shafts (too underwater).
+    // bx/by = base centre (0–1), rx/ry = radii as fraction of canvas,
+    // ox/oy = drift amplitude, spd = breath speed, base/pulse = opacity range
+    const DRIFT_CLOUDS = [
+      // Large bright source near top — the "sky opening"
+      { bx:0.50, by:0.00, rx:0.88, ry:0.58, base:0.62, pulse:0.14, spd:0.26, ph:0.0, ox:0.05, oy:0.03 },
+      // Left wandering puff
+      { bx:0.16, by:0.30, rx:0.58, ry:0.38, base:0.32, pulse:0.12, spd:0.18, ph:1.8, ox:0.10, oy:0.05 },
+      // Right wandering puff
+      { bx:0.84, by:0.26, rx:0.55, ry:0.34, base:0.28, pulse:0.10, spd:0.15, ph:3.5, ox:0.09, oy:0.04 },
+      // Mid soft glow — drifts gently
+      { bx:0.50, by:0.55, rx:0.62, ry:0.36, base:0.20, pulse:0.08, spd:0.21, ph:5.1, ox:0.06, oy:0.03 },
+      // Top-right wisp
+      { bx:0.76, by:0.07, rx:0.42, ry:0.26, base:0.24, pulse:0.10, spd:0.23, ph:2.3, ox:0.11, oy:0.04 },
+    ];
+
+    // Fewer nodes, slower, with repulsion to stop clustering
+    const MAX_V = 0.00010;
+    const NODES = Array.from({length: 9}, () => ({
+      nx: 0.1 + Math.random() * 0.8,
+      ny: 0.1 + Math.random() * 0.8,
+      vx: (Math.random() - 0.5) * MAX_V * 0.8,
+      vy: (Math.random() - 0.5) * MAX_V * 0.8,
+      phase: Math.random() * Math.PI * 2,
+    }));
+    let sparks = [];
+
+    function maybeSpark() {
+      if (sparks.length >= 2 || Math.random() > 0.004) return;
+      for (let i = 0; i < NODES.length; i++) {
+        for (let j = i + 1; j < NODES.length; j++) {
+          const dx = NODES[j].nx - NODES[i].nx, dy = NODES[j].ny - NODES[i].ny;
+          if (Math.sqrt(dx*dx + dy*dy) < 0.35 && Math.random() < 0.12) {
+            sparks.push({ from: i, to: j, p: 0, spd: 0.003 + Math.random()*0.004 });
+            return;
+          }
+        }
+      }
+    }
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+
+    function draw(ts) {
+      const t = ts * 0.001;
+      const w = canvas.width, h = canvas.height;
+
+      // ── Base gradient: airy/open (top) → deep/committed (bottom) ──
+      // Mid-tone shifted to warm grey-blue to break the ocean feel.
+      const base = ctx.createLinearGradient(0, 0, 0, h);
+      base.addColorStop(0,    '#FAFCFF');   // near-white, barely tinted
+      base.addColorStop(0.20, '#DBE8F2');   // soft overcast sky
+      base.addColorStop(0.50, '#7D8E9A');   // warm grey-blue — foggy, not oceanic
+      base.addColorStop(0.78, '#274F72');   // deepening, purposeful
+      base.addColorStop(1,    '#094A84');   // WeAct deep blue
+      ctx.fillStyle = base;
+      ctx.fillRect(0, 0, w, h);
+
+      // ── Drifting elliptical cloud blobs ──
+      DRIFT_CLOUDS.forEach(c => {
+        const b = (Math.sin(t * c.spd + c.ph) + 1) * 0.5;
+        const alpha = c.base + c.pulse * b;
+        // Sinusoidal drift so clouds slowly wander
+        const cx = (c.bx + Math.sin(t * c.spd * 0.45 + c.ph) * c.ox) * w;
+        const cy = (c.by + Math.cos(t * c.spd * 0.33 + c.ph + 1.1) * c.oy) * h;
+        const rx = c.rx * w;
+        const ry = c.ry * h;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(1, ry / rx);   // squish circle into ellipse (wider than tall)
+        const cloud = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+        cloud.addColorStop(0,    `rgba(255,255,255,${alpha})`);
+        cloud.addColorStop(0.30, `rgba(255,255,255,${alpha * 0.50})`);
+        cloud.addColorStop(0.65, `rgba(255,255,255,${alpha * 0.15})`);
+        cloud.addColorStop(1,    'rgba(255,255,255,0)');
+        ctx.fillStyle = cloud;
+        ctx.fillRect(-rx, -rx, rx * 2, rx * 2);
+        ctx.restore();
+      });
+
+      // ── Update nodes: move + repel each other to prevent clustering ──
+      for (let i = 0; i < NODES.length; i++) {
+        for (let j = i + 1; j < NODES.length; j++) {
+          const dx = NODES[j].nx - NODES[i].nx, dy = NODES[j].ny - NODES[i].ny;
+          const dist = Math.sqrt(dx*dx + dy*dy) || 0.001;
+          if (dist < 0.22) {
+            const f = (0.22 - dist) * 0.000012 / dist;
+            NODES[i].vx -= dx * f; NODES[i].vy -= dy * f;
+            NODES[j].vx += dx * f; NODES[j].vy += dy * f;
+          }
+        }
+      }
+      NODES.forEach(n => {
+        n.vx = Math.max(-MAX_V, Math.min(MAX_V, n.vx));
+        n.vy = Math.max(-MAX_V, Math.min(MAX_V, n.vy));
+        n.nx += n.vx; n.ny += n.vy;
+        if (n.nx < 0) { n.nx = 0; n.vx =  Math.abs(n.vx); }
+        if (n.nx > 1) { n.nx = 1; n.vx = -Math.abs(n.vx); }
+        if (n.ny < 0) { n.ny = 0; n.vy =  Math.abs(n.vy); }
+        if (n.ny > 1) { n.ny = 1; n.vy = -Math.abs(n.vy); }
+      });
+
+      // ── Topographic arcs — curved bezier connections ──
+      const CDIST = 0.42;
+      ctx.lineWidth = 1.1;
+      for (let i = 0; i < NODES.length; i++) {
+        for (let j = i + 1; j < NODES.length; j++) {
+          const dx = NODES[j].nx - NODES[i].nx, dy = NODES[j].ny - NODES[i].ny;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < CDIST) {
+            const x1 = NODES[i].nx*w, y1 = NODES[i].ny*h;
+            const x2 = NODES[j].nx*w, y2 = NODES[j].ny*h;
+            const len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+            const perpX = -(y2-y1) / len, perpY = (x2-x1) / len;
+            const curve = (20 + (i*3+j)%4*14) * ((i+j)%2===0 ? 1 : -1);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.quadraticCurveTo((x1+x2)*0.5+perpX*curve, (y1+y2)*0.5+perpY*curve, x2, y2);
+            ctx.strokeStyle = `rgba(255,255,255,${(1-dist/CDIST)*0.40})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // ── Sparks ──
+      maybeSpark();
+      sparks = sparks.filter(s => s.p <= 1);
+      sparks.forEach(s => {
+        s.p += s.spd;
+        const a = NODES[s.from], b = NODES[s.to];
+        const px = (a.nx+(b.nx-a.nx)*s.p)*w, py = (a.ny+(b.ny-a.ny)*s.p)*h;
+        const g = ctx.createRadialGradient(px, py, 0, px, py, 7);
+        g.addColorStop(0, 'rgba(255,255,255,0.95)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI*2);
+        ctx.fillStyle = g; ctx.fill();
+      });
+
+      // ── Nodes — purely gradient-based cloudy puffs, no hard edges ──
+      NODES.forEach(n => {
+        const px = n.nx*w, py = n.ny*h;
+        // Outer large aura — wide, very faint
+        const aura = ctx.createRadialGradient(px, py, 0, px, py, 92);
+        aura.addColorStop(0,    'rgba(255,255,255,0.28)');
+        aura.addColorStop(0.38, 'rgba(255,255,255,0.12)');
+        aura.addColorStop(0.72, 'rgba(255,255,255,0.03)');
+        aura.addColorStop(1,    'rgba(255,255,255,0)');
+        ctx.beginPath(); ctx.arc(px, py, 92, 0, Math.PI*2);
+        ctx.fillStyle = aura; ctx.fill();
+        // Inner bright puff — soft centre, no hard dot
+        const puff = ctx.createRadialGradient(px, py, 0, px, py, 26);
+        puff.addColorStop(0,    'rgba(255,255,255,0.60)');
+        puff.addColorStop(0.45, 'rgba(255,255,255,0.22)');
+        puff.addColorStop(1,    'rgba(255,255,255,0)');
+        ctx.beginPath(); ctx.arc(px, py, 26, 0, Math.PI*2);
+        ctx.fillStyle = puff; ctx.fill();
+      });
+
+      if (!canvas._stopped) requestAnimationFrame(draw);
+    }
+
+    resize();
+    new ResizeObserver(resize).observe(canvas);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(0); }
+    else { requestAnimationFrame(draw); }
+  })();
+  </script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
@@ -383,12 +575,14 @@
     addCursorHover('.process-icon, .overview-card, .stat-card, .reflection-card');
 
     /* ==================== HERO ENTRANCE ==================== */
+    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.case-eyebrow',       { y: 20, opacity: 0, duration: 0.6, delay: 0.15 })
-      .from('.case-hero h1',       { y: 50, opacity: 0, duration: 0.9 }, '-=0.35')
-      .from('.case-tagline',       { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
-      .from('.case-hero .subtitle',{ y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
-      .from('.case-btn',           { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
+      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+      .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+      .from('.case-hero h1',        { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
+      .from('.case-tagline',        { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
+      .from('.case-hero .subtitle', { y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
+      .from('.case-btn',            { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
