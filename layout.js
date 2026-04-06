@@ -13,6 +13,13 @@ const HEADER_HTML = `
   <a href="/" class="header-name" aria-label="Chris Rudnew — home">Chris Rudnew</a>
   <div class="header-right">
     <nav class="header-links" aria-label="Primary navigation">
+      <a href="/about.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        About
+      </a>
       <a href="https://linkedin.com/in/chris-rudnew" rel="noopener noreferrer" target="_blank">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
           <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -49,6 +56,7 @@ const HEADER_HTML = `
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
+          <span class="settings-state" aria-hidden="true"></span>
         </button>
         <button class="settings-bubble" role="switch" aria-checked="false"
           id="contrast-toggle-btn" aria-label="Toggle high contrast mode" data-tooltip="High Contrast">
@@ -57,6 +65,14 @@ const HEADER_HTML = `
             <path d="M12 3v18" stroke-width="1.5"/>
             <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/>
           </svg>
+          <span class="settings-state" aria-hidden="true"></span>
+        </button>
+        <button class="settings-bubble" role="switch" aria-checked="false"
+          id="motion-toggle-btn" aria-label="Toggle reduced motion" data-tooltip="Reduce Motion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span class="settings-state" aria-hidden="true"></span>
         </button>
       </div>
     </div>
@@ -66,8 +82,39 @@ const HEADER_HTML = `
 /* ---- Footer HTML ---- */
 const FOOTER_HTML = `
 <footer>
-  <a href="/about.html">About Me</a>
-  <p class="footer-copyright">&copy; 2026 Chris Rudnew</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="/about.html">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      About Me
+    </a>
+    <a href="https://linkedin.com/in/chris-rudnew" rel="noopener noreferrer" target="_blank">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+      LinkedIn
+    </a>
+    <a href="mailto:crudnew@gmail.com">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+      Contact
+    </a>
+  </nav>
+  <div class="footer-bottom">
+    <p class="footer-copyright">&copy; 2026 Chris Rudnew</p>
+    <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+      Back to top
+    </button>
+  </div>
 </footer>`;
 
 /* ---- Inject components + initialise everything ---- */
@@ -80,7 +127,7 @@ function initLayout() {
 
   /* Typewriter — type name in on every page load */
   const _nameEl = document.querySelector('.header-name');
-  if (_nameEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (_nameEl && motionOk()) {
     _twIn(_nameEl);
   }
 
@@ -92,12 +139,42 @@ function initLayout() {
   /* ---- Settings & Accessibility ---- */
   const darkToggle     = document.getElementById('dark-toggle-btn');
   const contrastToggle = document.getElementById('contrast-toggle-btn');
+  const motionToggle   = document.getElementById('motion-toggle-btn');
 
-  if (!darkToggle || !contrastToggle) return; // guard if header wasn't injected
+  /* ---- Header hide / show on scroll ---- */
+  const _header = document.querySelector('body > header');
+  if (_header) {
+    _header.style.transition = 'background 0.3s ease, border-color 0.3s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1)';
+    let _lastY = window.scrollY;
+    window.addEventListener('scroll', function () {
+      const y = window.scrollY;
+      _header.style.transform = (y > _lastY && y > 80) ? 'translateY(-110%)' : 'translateY(0)';
+      _lastY = y;
+    }, { passive: true });
+  }
+
+  if (!darkToggle || !contrastToggle || !motionToggle) return; // guard if header wasn't injected
 
   // Sync button state with current attribute (set early in <head>)
-  if (document.documentElement.getAttribute('data-theme')    === 'dark')   darkToggle.setAttribute('aria-checked', 'true');
-  if (document.documentElement.getAttribute('data-contrast') === 'high')   contrastToggle.setAttribute('aria-checked', 'true');
+  if (document.documentElement.getAttribute('data-theme')    === 'dark')    darkToggle.setAttribute('aria-checked', 'true');
+  if (document.documentElement.getAttribute('data-contrast') === 'high')    contrastToggle.setAttribute('aria-checked', 'true');
+  if (document.documentElement.getAttribute('data-motion')   === 'reduced') motionToggle.setAttribute('aria-checked', 'true');
+
+  /* ---- On/Off pop-out helper ---- */
+  function _showState(btn, isOn) {
+    const el = btn.querySelector('.settings-state');
+    if (!el) return;
+    el.textContent = isOn ? 'On' : 'Off';
+    el.classList.remove('settings-state--exit');
+    el.classList.add('settings-state--visible');
+    clearTimeout(btn._stateTimer);
+    btn._stateTimer = setTimeout(() => {
+      el.classList.add('settings-state--exit');
+      setTimeout(() => {
+        el.classList.remove('settings-state--visible', 'settings-state--exit');
+      }, 250);
+    }, 1200);
+  }
 
   darkToggle.addEventListener('click', function () {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -105,6 +182,7 @@ function initLayout() {
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     this.setAttribute('aria-checked', String(!isDark));
+    _showState(this, !isDark);
   });
 
   contrastToggle.addEventListener('click', function () {
@@ -113,6 +191,17 @@ function initLayout() {
     document.documentElement.setAttribute('data-contrast', next);
     localStorage.setItem('contrast', next);
     this.setAttribute('aria-checked', String(!isHigh));
+    _showState(this, !isHigh);
+  });
+
+  motionToggle.addEventListener('click', function () {
+    const isReduced = document.documentElement.getAttribute('data-motion') === 'reduced';
+    const next = isReduced ? 'normal' : 'reduced';
+    localStorage.setItem('motion', next);
+    this.setAttribute('aria-checked', String(!isReduced));
+    _showState(this, !isReduced);
+    // Reload so GSAP and CSS pre-hides are applied correctly from the start
+    setTimeout(() => location.reload(), 700);
   });
 
   /* Settings bubble hover / keyboard */
@@ -146,8 +235,12 @@ function initLayout() {
   window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
   (function tick() {
-    dx += (mx - dx) * 0.18;
-    dy += (my - dy) * 0.18;
+    if (motionOk()) {
+      dx += (mx - dx) * 0.18;
+      dy += (my - dy) * 0.18;
+    } else {
+      dx = mx; dy = my;
+    }
     dot.style.cssText  = `left:${mx - 4}px;top:${my - 4}px`;
     ring.style.cssText = `left:${dx - 18}px;top:${dy - 18}px`;
     requestAnimationFrame(tick);
@@ -157,6 +250,13 @@ function initLayout() {
   addCursorHover('a, button');
 
   if ('ontouchstart' in window) { dot.style.display = 'none'; ring.style.display = 'none'; }
+}
+
+/* Public helper — returns true when motion animations are allowed.
+   Checks both the manual toggle and the OS preference.               */
+function motionOk() {
+  return document.documentElement.getAttribute('data-motion') !== 'reduced' &&
+         !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 /* Public helper — call from any page to extend cursor hover targets.
@@ -212,6 +312,7 @@ document.addEventListener('click', function (e) {
   if (link.hostname !== location.hostname) return; // off-site
   if (link.href === location.href) return;         // same page
 
+  if (document.documentElement.getAttribute('data-motion') === 'reduced') return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   e.preventDefault();
@@ -235,7 +336,9 @@ if (document.readyState === 'loading') {
 window.addEventListener('pageshow', function (e) {
   if (!e.persisted) return;
   const nameEl = document.querySelector('.header-name');
-  if (nameEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (nameEl &&
+      document.documentElement.getAttribute('data-motion') !== 'reduced' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     _twIn(nameEl);
   }
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-contrast="normal">
+<html lang="en" data-theme="light" data-contrast="normal" data-motion="normal">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./crimemap.css?v=2" />
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
     /* Hero card breathing room */
     .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
@@ -467,9 +467,14 @@
     }
 
     resize();
-    new ResizeObserver(resize).observe(canvas);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(0); }
-    else { requestAnimationFrame(draw); }
+    if (!motionOk()) {
+      canvas._stopped = true;
+      draw(5000);
+      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+    } else {
+      new ResizeObserver(resize).observe(canvas);
+      requestAnimationFrame(draw);
+    }
   })();
   </script>
 
@@ -477,17 +482,74 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
 
     /* ── Hero entrance ── */
-    gsap.set(['.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
-    gsap.set('.hero-liquid-bg', { opacity: 0 });
-    gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .to(['.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
-      .to('.hero-liquid-bg', { opacity: 1, duration: 1 }, '<')
-      .from('.case-eyebrow', { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
-      .from('h1',            { y: 24, opacity: 0, duration: 0.7 }, '-=0.50')
-      .from('.case-tagline', { y: 18, opacity: 0, duration: 0.6 }, '-=0.45')
-      .from('.subtitle',     { y: 16, opacity: 0, duration: 0.5 }, '-=0.40');
+    if (motionOk()) {
+      gsap.set(['.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
+      gsap.set('.hero-liquid-bg', { opacity: 0 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(['.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+        .to('.hero-liquid-bg', { opacity: 1, duration: 1 }, '<')
+        .from('.case-eyebrow', { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+        .from('h1',            { y: 24, opacity: 0, duration: 0.7 }, '-=0.50')
+        .from('.case-tagline', { y: 18, opacity: 0, duration: 0.6 }, '-=0.45')
+        .from('.subtitle',     { y: 16, opacity: 0, duration: 0.5 }, '-=0.40');
+    }
+
+    /* ── Scroll animations ── */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+
+      /* Project meta */
+      gsap.from('.meta-item', {
+        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
+      });
+
+      /* Overview cards */
+      gsap.from('.overview-card', {
+        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+        scrollTrigger: { trigger: '.overview-grid', start: 'top 82%' }
+      });
+
+      /* Section eyebrows */
+      gsap.utils.toArray('.section-eyebrow').forEach(el => {
+        gsap.from(el, {
+          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' }
+        });
+      });
+
+      /* Case dividers */
+      gsap.utils.toArray('.case-divider').forEach(div => {
+        gsap.from(div, {
+          width: 0, duration: 0.8, ease: 'power2.inOut',
+          scrollTrigger: { trigger: div, start: 'top 90%' }
+        });
+      });
+
+      /* Content rows */
+      gsap.utils.toArray('.content-row').forEach(row => {
+        gsap.from(row.querySelectorAll('.text-col, .image-col'), {
+          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: row, start: 'top 80%' }
+        });
+      });
+
+      /* Full-width content */
+      gsap.utils.toArray('.content-full').forEach(section => {
+        gsap.from(section, {
+          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 85%' }
+        });
+      });
+
+      /* Footer */
+      gsap.from('footer', {
+        opacity: 0, y: 28, duration: 0.7,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
+      });
+    });
   </script>
 
   <script>
@@ -513,12 +575,8 @@
       wrap.addEventListener('mouseenter', () => { paused = true; });
       wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
 
-      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let motionOk = !motionQuery.matches;
-      motionQuery.addEventListener('change', e => { motionOk = !e.matches; });
-
       function animate(now) {
-        if (!paused && motionOk) {
+        if (!paused && motionOk()) {
           if (lastTime !== null) {
             const dt = (now - lastTime) / 1000;
             offset -= speed * dt;

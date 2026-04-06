@@ -186,7 +186,7 @@ body > header {
   position: sticky; top: 0; z-index: 100;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
-[data-theme="dark"] body > header { background: rgba(23,17,14,0.88); }
+[data-theme="dark"] body > header { background: rgba(23, 17, 14, 0.88); }
 @supports not (backdrop-filter: blur(1px)) {
   body > header { background: var(--surface-solid); }
   [data-theme="dark"] body > header { background: var(--surface-solid); }
@@ -212,12 +212,13 @@ nav.header-links a {
 }
 nav.header-links a:nth-child(1) { animation-delay: 0.1s; }
 nav.header-links a:nth-child(2) { animation-delay: 0.2s; }
+nav.header-links a:nth-child(3) { animation-delay: 0.3s; }
 nav.header-links a:hover { color: var(--text-primary); }
 nav.header-links a svg {
-  width: 19px; height: 19px; opacity: 0.6;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  width: 19px; height: 19px;
+  transition: transform 0.2s ease;
 }
-nav.header-links a:hover svg { transform: translateY(-1px); opacity: 1; }
+nav.header-links a:hover svg { transform: translateY(-1px); }
 
 /* Settings bubble */
 .settings-wrap { position: relative; display: flex; align-items: center; }
@@ -286,27 +287,76 @@ nav.header-links a:hover svg { transform: translateY(-1px); opacity: 1; }
 [data-theme="dark"] .settings-bubble .icon-moon { display: block; }
 [data-theme="dark"] .settings-bubble .icon-sun  { display: none; }
 
+/* ---- Settings On/Off state pill ---- */
+.settings-bubble { overflow: visible; }
+.settings-state {
+  position: absolute; right: calc(100% + 8px);
+  background: var(--surface-solid); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2px 8px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  color: var(--text-secondary); white-space: nowrap; pointer-events: none;
+  opacity: 0; visibility: hidden; transform: translateX(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
+}
+.settings-state--visible {
+  opacity: 1; visibility: visible; transform: translateX(0);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0s;
+}
+.settings-state--exit {
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+/* ---- Reduced motion ---- */
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation: none !important;
+  scroll-behavior: auto !important;
+}
+[data-motion="reduced"] .hero-liquid-bg,
+[data-motion="reduced"] .hero-glass-sheen,
+[data-motion="reduced"] .case-hero { opacity: 1 !important; transform: none !important; }
+
 /* ============================================================
    FOOTER
 ============================================================ */
 footer {
-  background: var(--accent);
-  border-top: 1px solid var(--border-solid);
+  background: var(--surface-solid);
+  background: var(--surface);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 4px; padding: 22px 64px; width: 100%;
+  align-items: center; gap: 16px;
+  padding: 28px 44px; width: 100%;
   transition: background 0.3s ease;
 }
-footer a {
-  font-family: var(--font-heading);
-  font-weight: 600; font-size: 22px;
-  color: #fff; text-decoration: underline;
-  text-align: center; transition: opacity 0.2s ease;
+.footer-links {
+  display: flex; gap: 32px; align-items: center; flex-wrap: wrap; justify-content: center;
 }
-footer a:hover { opacity: 0.82; }
+.footer-links a {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+  text-decoration: none; color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.footer-links a:hover { color: var(--text-primary); }
+.footer-links a svg { width: 17px; height: 17px; transition: transform 0.2s ease; }
+.footer-links a:hover svg { transform: translateY(-1px); }
+.footer-bottom {
+  position: relative; display: flex; align-items: center; width: 100%;
+}
 .footer-copyright {
-  font-size: 13px; color: rgba(255,255,255,0.55); text-align: center;
+  position: absolute; left: 50%; transform: translateX(-50%);
+  font-size: 13px; color: var(--text-muted); white-space: nowrap;
 }
+.footer-top-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  font-size: 13px; color: var(--text-muted);
+  transition: color 0.2s ease; margin-left: auto;
+}
+.footer-top-btn:hover { color: var(--text-primary); }
 
 /* ============================================================
    DIVIDER
@@ -1167,6 +1217,8 @@ main {
   .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
   .bento-card h3 { font-size: 18px; }
   footer { padding: 16px 20px; }
+  .footer-links { gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
   /* Case study */
   .case-hero { padding: 60px 18px 32px; gap: 16px; }
   .case-hero h1 { font-size: 48px; letter-spacing: -1.5px; }
@@ -1328,31 +1380,14 @@ main { position: relative; z-index: 1; contain: layout style; }
 body > header { position: sticky; top: 0; z-index: 100; }
 footer { position: relative; z-index: 1; }
 
-/* ---- Header: very light frosted glass ---- */
+/* ---- Header: enhanced Frutiger Aero frosted glass ---- */
 body > header {
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.32) 100%
-  );
-  backdrop-filter: blur(30px) saturate(2.0) brightness(1.08);
-  -webkit-backdrop-filter: blur(30px) saturate(2.0) brightness(1.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.90),
-    0 4px 24px rgba(80, 130, 200, 0.14);
+  background: var(--surface);
+  backdrop-filter: blur(30px) saturate(1.8) brightness(1.05);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8) brightness(1.05);
+  border-bottom: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 var(--border-hi);
 }
-body > header a,
-body > header nav a,
-body > header .nav-logo { color: rgba(15, 50, 100, 0.90) !important; }
-
-/* Dark mode header: light text on deep navy bg — fixes WCAG AA failure */
-[data-theme="dark"] body > header {
-  background: linear-gradient(180deg, rgba(8, 28, 68, 0.90) 0%, rgba(5, 18, 50, 0.94) 100%);
-}
-[data-theme="dark"] body > header a,
-[data-theme="dark"] body > header nav a,
-[data-theme="dark"] body > header .header-name,
-[data-theme="dark"] body > header .nav-logo { color: rgba(210, 235, 255, 0.96) !important; }
 
 /* ---- Hero title: gradient text ---- */
 .case-hero h1 {
@@ -1676,16 +1711,10 @@ body > header .nav-logo { color: rgba(15, 50, 100, 0.90) !important; }
 .cursor-ring.hovering { border-color: #1a90d4; }
 .cursor-dot { background: #1a90d4; }
 
-/* ---- Footer: solid deep navy — no blur needed at bottom of page ---- */
+/* ---- Footer: uses page accent colour, consistent with all pages ---- */
 footer {
-  background: linear-gradient(180deg,
-    rgba(12, 55, 120, 0.96) 0%,
-    rgba(8, 35, 88, 0.99) 100%
-  );
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-top: 1px solid rgba(180, 220, 255, 0.28);
-  box-shadow: inset 0 1px 0 rgba(180, 220, 255, 0.18);
 }
 
 /* ---- Phone pair & image columns: glass card frames (no backdrop-filter for perf) ---- */
@@ -1750,6 +1779,19 @@ footer {
   --glass-border-t: rgba(160, 210, 255, 0.55);
   --glass-border-b: rgba(8, 28, 80, 0.60);
   --glass-shadow:   0 8px 36px rgba(0, 10, 50, 0.45), inset 0 1px 0 rgba(160, 210, 255, 0.45);
+}
+/* Override brown dark-mode tokens with Aero blue palette for header/footer/settings */
+[data-theme="dark"] {
+  --surface:        rgba(8, 28, 68, 0.88);
+  --surface-solid:  #091C44;
+  --border:         rgba(80, 140, 255, 0.22);
+  --border-hi:      rgba(160, 210, 255, 0.18);
+  --text-primary:   #EEF4FF;
+  --text-secondary: rgba(185, 218, 250, 0.88);
+  --text-muted:     rgba(140, 185, 240, 0.68);
+  --accent:         rgba(120, 180, 255, 0.80);
+  --accent-text:    rgba(200, 230, 255, 0.95);
+  --accent-light:   rgba(20, 60, 160, 0.38);
 }
 [data-theme="dark"] .overview-card,
 [data-theme="dark"] .reflection-card {
@@ -1853,6 +1895,9 @@ footer {
   backdrop-filter: none !important;
   border-top: 2px solid #FFFFFF !important;
 }
+[data-contrast="high"] .footer-links a,
+[data-contrast="high"] .footer-top-btn { color: #FFFFFF !important; }
+[data-contrast="high"] .footer-copyright { color: rgba(255,255,255,0.75) !important; }
 
 /* Dark + High Contrast */
 [data-theme="dark"][data-contrast="high"] body { background: #000000 !important; }
@@ -1889,6 +1934,12 @@ footer {
 [data-theme="dark"][data-contrast="high"] body > header .header-name,
 [data-theme="dark"][data-contrast="high"] body > header .nav-logo { color: #FFFFFF !important; }
 [data-theme="dark"][data-contrast="high"] footer { background: #000000 !important; border-top-color: #FFFFFF !important; }
+/* Fix peach --accent tokens inherited from base dark+HC block — use white for maximum contrast */
+[data-theme="dark"][data-contrast="high"] {
+  --accent:      #FFFFFF;
+  --accent-text: #FFFFFF;
+  --accent-light: #1A1A1A;
+}
 
 /* ============================================================
    LINGER PAGE TRANSITION — overrides the global vt animation

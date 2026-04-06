@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-contrast="normal">
+<html lang="en" data-theme="light" data-contrast="normal" data-motion="normal">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=12">
   <!-- Theme restore: runs before first paint to avoid flash -->
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
 <body>
@@ -282,11 +282,12 @@
     }
 
     resize();
-    new ResizeObserver(resize).observe(canvas);
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      draw(0);
+    if (!motionOk()) {
+      canvas._stopped = true;
+      draw(5000);
+      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
     } else {
+      new ResizeObserver(resize).observe(canvas);
       requestAnimationFrame(draw);
     }
   })();
@@ -303,19 +304,18 @@
     addCursorHover('.card, .bento-card');
 
     /* ==================== HERO ENTRANCE ==================== */
-    // Hide all hero layers before animation starts — prevents flash of unstyled layers
-    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
-
-    gsap.timeline({ defaults: { ease: 'power3.out' } })
-      // All three layers rise and fade in together as one unit
-      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
-      .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
-      .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
-      .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-      .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+    if (motionOk()) {
+      gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+        .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+        .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
+        .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+        .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+    }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
-    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
       gsap.set('.card',            { opacity: 0, y: 50 });
       gsap.set('.bento-card',      { opacity: 0 });
       gsap.set('.divider',         { width: 0 });
@@ -351,50 +351,34 @@
     });
 
     /* ==================== MAGNETIC BUTTONS ==================== */
-    // Max 8px movement so button never clips card edge
-    const MAX_MAGNETIC = 8;
-
-    document.querySelectorAll('.btn-magnetic').forEach(wrap => {
-      const btn = wrap.querySelector('.btn');
-      wrap.addEventListener('mousemove', e => {
-        const r = wrap.getBoundingClientRect();
-        const rawX = (e.clientX - r.left  - r.width  / 2) * 0.18;
-        const rawY = (e.clientY - r.top   - r.height / 2) * 0.18;
-        gsap.to(btn, {
-          x: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawX)),
-          y: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawY)),
-          duration: 0.3, ease: 'power2.out'
+    if (motionOk()) {
+      const MAX_MAGNETIC = 8;
+      document.querySelectorAll('.btn-magnetic').forEach(wrap => {
+        const btn = wrap.querySelector('.btn');
+        wrap.addEventListener('mousemove', e => {
+          const r = wrap.getBoundingClientRect();
+          const rawX = (e.clientX - r.left  - r.width  / 2) * 0.18;
+          const rawY = (e.clientY - r.top   - r.height / 2) * 0.18;
+          gsap.to(btn, {
+            x: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawX)),
+            y: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawY)),
+            duration: 0.3, ease: 'power2.out'
+          });
+        });
+        wrap.addEventListener('mouseleave', () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
         });
       });
-      wrap.addEventListener('mouseleave', () => {
-        gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
-      });
-    });
+    }
 
     /* ==================== HERO PARALLAX ==================== */
-    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
       // Animate the whole wrapper so canvas bg, section, and sheen all move together
       gsap.to('.hero-wrapper', {
         yPercent: -4, ease: 'none',
         scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
       });
 
-      /* ==================== HEADER HIDE / SHOW ==================== */
-      let lastScroll = 0;
-      let headerEl;
-      ScrollTrigger.create({
-        start: 'top top', end: 99999,
-        onUpdate: self => {
-          if (!headerEl) headerEl = document.querySelector('body > header');
-          const y = self.scroll();
-          gsap.to(headerEl, {
-            y: (y > lastScroll && y > 100) ? -100 : 0,
-            duration: 0.35,
-            ease: y > lastScroll ? 'power2.in' : 'power2.out'
-          });
-          lastScroll = y;
-        }
-      });
 
       /* ==================== FOOTER ==================== */
       gsap.from('footer', {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-contrast="normal">
+<html lang="en" data-theme="light" data-contrast="normal" data-motion="normal">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,7 +129,7 @@
     @media (max-width: 900px) { .linger-brand-wrap { padding: 32px 28px 0; } }
     @media (max-width: 600px) { .linger-brand-wrap { padding: 24px 18px 0; } }
   </style>
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);})();</script>
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
 </head>
 <body>
 
@@ -688,9 +688,14 @@
     }
 
     resize();
-    new ResizeObserver(resize).observe(canvas);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(); }
-    else { requestAnimationFrame(draw); }
+    if (!motionOk()) {
+      canvas._stopped = true;
+      draw(5000);
+      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+    } else {
+      new ResizeObserver(resize).observe(canvas);
+      requestAnimationFrame(draw);
+    }
   })();
   </script>
 
@@ -704,17 +709,19 @@
     addCursorHover('.process-icon, .overview-card, .stat-card, .reflection-card');
 
     /* ==================== HERO ENTRANCE ==================== */
-    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
-    gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
-      .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
-      .from('.case-hero h1',        { y: 50, opacity: 0, duration: 0.9 }, '-=0.45')
-      .from('.case-tagline',        { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
-      .from('.case-hero .subtitle', { y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
-      .from('.case-btn',            { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
+    if (motionOk()) {
+      gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 60 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+        .from('.case-eyebrow',        { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+        .from('.case-hero h1',        { y: 50, opacity: 0, duration: 0.9 }, '-=0.45')
+        .from('.case-tagline',        { y: 30, opacity: 0, duration: 0.7 }, '-=0.45')
+        .from('.case-hero .subtitle', { y: 25, opacity: 0, duration: 0.6 }, '-=0.35')
+        .from('.case-btn',            { y: 20, opacity: 0, duration: 0.5 }, '-=0.25');
+    }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
-    mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
 
       gsap.from('.meta-item', {
         y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
@@ -822,12 +829,8 @@
       wrap.addEventListener('mouseenter', () => { paused = true; });
       wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
 
-      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let motionOk = !motionQuery.matches;
-      motionQuery.addEventListener('change', e => { motionOk = !e.matches; });
-
       function animate(now) {
-        if (!paused && motionOk) {
+        if (!paused && motionOk()) {
           if (lastTime !== null) {
             const dt = (now - lastTime) / 1000;
             offset -= speed * dt;
