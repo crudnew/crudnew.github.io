@@ -8,8 +8,10 @@ Personal UX/UI design portfolio. Built as a static site, designed in **Figma** a
 - [GSAP 3.12.5](https://gsap.com/) + ScrollTrigger for animations
 - [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) + [Inter](https://fonts.google.com/specimen/Inter) via Google Fonts
 - Glassmorphism surfaces with `backdrop-filter` + `@supports` fallback
-- WCAG AAA contrast, semantic HTML5, custom focus states
-- Dark mode + high-contrast mode toggles
+- Custom liquid canvas animation — vanilla JS, fractal Brownian motion noise (no Three.js)
+- Engraved/embossed CSS text effects via layered `text-shadow` and `box-shadow`
+- WCAG AA contrast, semantic HTML5, custom focus states
+- Dark mode, high-contrast mode, and reduced-motion/transparency support
 - Shared layout via `layout.js` web components (`<header-component>`, `<footer-component>`)
 
 ## Project Structure
