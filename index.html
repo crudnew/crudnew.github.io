@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=12">
+  <link rel="stylesheet" href="./style.css?v=16">
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -66,7 +66,7 @@
             </div>
           </div>
           <div class="card-text">
-            <h3>Linger: Scent-Mapping Ecosystem</h3>
+            <h3>Linger</h3>
             <p>A speculative wearable and mobile app for capturing, archiving, and navigating olfactory experiences.</p>
             <div class="btn-magnetic">
               <a href="./linger.html" class="btn" aria-label="More about Linger: Scent-Mapping Ecosystem">
@@ -167,12 +167,6 @@
           </header>
           <h3 id="bento-2-heading">B.Sc. Computer Science &amp; Business Studies</h3>
           <div class="bento-logo-wrap">
-            <!--
-              Add MacEwan University's logo by replacing the src:
-              src="https://www.macewan.ca/[path-to-logo]"
-              The text fallback is shown automatically if the image fails.
-            -->
-            <img class="bento-logo" src="./assets/MacEwan-Logo.png" alt="MacEwan University wordmark" onerror="this.style.display='none'">
             <span class="bento-logo-text">MacEwan University, Alberta</span>
           </div>
           <p>My background is in software architecture and organizational logic. I design with an understanding of technical constraints and system requirements, ensuring that high-fidelity concepts are actually feasible for production.</p>
@@ -350,26 +344,6 @@
       });
     });
 
-    /* ==================== MAGNETIC BUTTONS ==================== */
-    if (motionOk()) {
-      const MAX_MAGNETIC = 8;
-      document.querySelectorAll('.btn-magnetic').forEach(wrap => {
-        const btn = wrap.querySelector('.btn');
-        wrap.addEventListener('mousemove', e => {
-          const r = wrap.getBoundingClientRect();
-          const rawX = (e.clientX - r.left  - r.width  / 2) * 0.18;
-          const rawY = (e.clientY - r.top   - r.height / 2) * 0.18;
-          gsap.to(btn, {
-            x: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawX)),
-            y: Math.max(-MAX_MAGNETIC, Math.min(MAX_MAGNETIC, rawY)),
-            duration: 0.3, ease: 'power2.out'
-          });
-        });
-        wrap.addEventListener('mouseleave', () => {
-          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
-        });
-      });
-    }
 
     /* ==================== HERO PARALLAX ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
@@ -387,6 +361,7 @@
       });
     }); // end mm.add desktop
   </script>
+
 
 </body>
 </html>
