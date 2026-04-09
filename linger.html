@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./linger.css?v=2">
+  <link rel="stylesheet" href="./linger.css?v=3">
   <style>
     /* Hero card breathing room, side padding, button alignment */
     .case-main .hero-wrapper {
@@ -186,6 +186,9 @@
       </section>
       <div class="hero-glass-sheen" aria-hidden="true"></div>
     </div>
+
+    <!-- Speculative design note -->
+    <p class="speculative-note">&#42; Some features discussed are speculative and not all are implemented in the prototype. Speculative design was central to the FigBuild 2026 brief by Figma.</p>
 
     <!-- Project Meta -->
     <div class="case-meta" aria-label="Project details">
@@ -448,15 +451,98 @@
         </object>
       </div>
 
-      <!-- Figma Prototype Link -->
+      <!-- Figma Prototype Embed -->
       <div class="content-full">
         <h2>Interactive Prototype...</h2>
-        <p>Explore the full interactive prototype in Figma.</p>
-        <a href="https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open Linger interactive prototype in Figma">
-          Open in Figma
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-        </a>
+        <p>Select a flow to explore below.</p>
+
+        <div class="proto-tabs" role="tablist" aria-label="Prototype flows">
+          <button class="proto-tab active" role="tab" aria-selected="true"  data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=468-12312%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=468%3A12312">Scent Capture</button>
+          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=267-541%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=267%3A541">Scent Tracking</button>
+          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=362-8240%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=362%3A8240">Scent Library</button>
+          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=620-2574%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=620%3A2574">Scent Emission</button>
+          <span class="proto-tab-indicator" aria-hidden="true"></span>
+        </div>
+
+        <div class="proto-embed-wrap">
+          <div class="proto-loader" id="proto-loader" aria-hidden="true">
+            <div class="proto-loader-shimmer"></div>
+            <div class="proto-loader-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="17" r="1"/></svg>
+              <span>Loading prototype…</span>
+            </div>
+          </div>
+          <iframe
+            id="proto-iframe"
+            title="Linger interactive prototype"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <p class="proto-embed-fallback">
+          <a id="proto-open-link" href="https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312" class="case-btn" target="_blank" rel="noopener noreferrer" aria-label="Open prototype in Figma">
+            Open in Figma
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </p>
       </div>
+
+      <script>
+        (function () {
+          const openLinks = {
+            'Scent Capture':  'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312',
+            'Scent Tracking': 'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=267-541&scaling=scale-down&content-scaling=fixed&starting-point-node-id=267%3A541',
+            'Scent Library':  'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=362-8240&scaling=scale-down&content-scaling=fixed&starting-point-node-id=362%3A8240',
+            'Scent Emission': 'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=620-2574&scaling=scale-down&content-scaling=fixed&starting-point-node-id=620%3A2574',
+          };
+          const tabs      = document.querySelectorAll('.proto-tab');
+          const iframe    = document.getElementById('proto-iframe');
+          const loader    = document.getElementById('proto-loader');
+          const openLink  = document.getElementById('proto-open-link');
+          const indicator = document.querySelector('.proto-tab-indicator');
+
+          function moveIndicator(tab) {
+            indicator.style.left  = tab.offsetLeft + 'px';
+            indicator.style.width = tab.offsetWidth + 'px';
+          }
+
+          function loadFlow(tab) {
+            // Show loader, unload previous
+            loader.classList.add('visible');
+            iframe.classList.remove('loaded');
+            iframe.src = 'about:blank';
+
+            // Small tick lets about:blank settle before new src
+            requestAnimationFrame(function () {
+              iframe.src = tab.dataset.src;
+              openLink.href = openLinks[tab.textContent.trim()];
+            });
+          }
+
+          iframe.addEventListener('load', function () {
+            if (iframe.src === 'about:blank' || iframe.src === '') return;
+            loader.classList.remove('visible');
+            iframe.classList.add('loaded');
+          });
+
+          // Init indicator on first tab
+          moveIndicator(tabs[0]);
+
+          // Load first flow immediately
+          loadFlow(tabs[0]);
+
+          tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+              if (tab.classList.contains('active')) return;
+              tabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+              tab.classList.add('active');
+              tab.setAttribute('aria-selected', 'true');
+              moveIndicator(tab);
+              loadFlow(tab);
+            });
+          });
+        })();
+      </script>
     </section>
 
     <hr class="case-divider" aria-hidden="true">

@@ -712,7 +712,7 @@ main {
 .case-hero h1 {
   font-family: var(--font-heading);
   font-size: 88px; font-weight: 700;
-  line-height: 1; letter-spacing: -3px;
+  line-height: 1.1; letter-spacing: -3px;
   color: var(--text-primary);
 }
 .case-tagline {
@@ -725,6 +725,18 @@ main {
   color: var(--text-secondary);
   max-width: 600px; letter-spacing: -0.12px;
 }
+.speculative-note {
+  font-size: 13px; line-height: 1.5;
+  font-style: italic;
+  color: var(--text-secondary);
+  width: 100%; max-width: 1212px;
+  padding: 10px 64px 48px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  box-sizing: border-box;
+}
+@media (max-width: 1023px) { .speculative-note { padding: 10px 44px 48px; } }
+@media (max-width: 799px)  { .speculative-note { padding: 10px 28px 40px; } }
 .case-btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 8px; padding: 14px 50px; margin-top: 8px;
@@ -1034,6 +1046,110 @@ main {
 .content-full ol { list-style: decimal; }
 .content-full li { font-size: 16px; line-height: 1.65; color: var(--text-secondary); letter-spacing: -0.09px; margin-bottom: 6px; }
 .content-full li strong { color: var(--text-primary); }
+
+/* Figma prototype tabs */
+.proto-tabs {
+  position: relative;
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.proto-tab {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 10px 20px 12px;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  z-index: 1;
+}
+.proto-tab:hover { color: var(--text-primary); }
+.proto-tab.active { color: var(--accent); }
+.proto-tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Figma prototype embed */
+.proto-embed-wrap {
+  position: relative;
+  width: 100%;
+  height: 820px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  margin-bottom: 24px;
+  background: var(--bg-secondary);
+}
+.proto-embed-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.proto-embed-wrap iframe.loaded { opacity: 1; }
+
+/* Loader */
+.proto-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+}
+.proto-loader.visible { opacity: 1; pointer-events: auto; }
+.proto-loader-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    var(--bg-secondary) 40%,
+    rgba(255,255,255,0.18) 50%,
+    var(--bg-secondary) 60%
+  );
+  background-size: 200% 100%;
+  animation: proto-shimmer 1.4s ease infinite;
+}
+@keyframes proto-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.proto-loader-icon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  z-index: 1;
+}
+.proto-loader-icon svg { opacity: 0.5; animation: proto-pulse 1.6s ease-in-out infinite; }
+.proto-loader-icon span { font-size: 13px; font-weight: 500; opacity: 0.6; letter-spacing: 0.02em; }
+@keyframes proto-pulse {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  50%       { opacity: 0.7;  transform: translateY(-3px); }
+}
+
+.proto-embed-fallback { margin-top: 0; }
 
 /* Prototyping comparison */
 .proto-compare {

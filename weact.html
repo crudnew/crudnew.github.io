@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./weact.css?v=2">
+  <link rel="stylesheet" href="./weact.css?v=3">
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
     /* Hero card breathing room */
@@ -640,82 +640,85 @@
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
 
+      const ST = (trigger, start) => ({ trigger, start, once: true });
+      const CP = 'transform,opacity';
+
       /* Project meta */
       gsap.from('.meta-item', {
-        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
+        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.case-meta', 'top 88%')
       });
 
       /* Showcase */
       gsap.from('.case-showcase', {
-        y: 50, opacity: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.case-showcase', start: 'top 85%' }
+        y: 50, opacity: 0, duration: 1, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.case-showcase', 'top 85%')
       });
 
       /* Overview cards */
       gsap.from('.overview-card', {
-        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
-        scrollTrigger: { trigger: '.overview-grid', start: 'top 82%' }
+        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.overview-grid', 'top 82%')
       });
 
       /* Stat cards */
       gsap.from('.stat-card', {
-        y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.case-stats', start: 'top 85%' }
+        y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.case-stats', 'top 88%')
       });
 
       /* Process pipeline */
       gsap.from('.process-pipeline-card', {
-        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: '.process-pipeline', start: 'top 85%' }
+        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.process-pipeline', 'top 85%')
       });
       gsap.from('.process-step', {
-        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.process-pipeline', start: 'top 80%' }
+        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.process-pipeline', 'top 80%')
       });
 
       /* Section eyebrows */
       gsap.utils.toArray('.section-eyebrow').forEach(el => {
         gsap.from(el, {
-          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%' }
+          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out', clearProps: CP,
+          scrollTrigger: ST(el, 'top 88%')
         });
       });
 
       /* Case dividers */
       gsap.utils.toArray('.case-divider').forEach(div => {
         gsap.from(div, {
-          width: 0, duration: 0.8, ease: 'power2.inOut',
-          scrollTrigger: { trigger: div, start: 'top 90%' }
+          width: 0, duration: 0.8, ease: 'power2.inOut', clearProps: 'width',
+          scrollTrigger: ST(div, 'top 90%')
         });
       });
 
       /* Content rows */
       gsap.utils.toArray('.content-row').forEach(row => {
         gsap.from(row.querySelectorAll('.text-col, .image-col'), {
-          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
-          scrollTrigger: { trigger: row, start: 'top 80%' }
+          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out', clearProps: CP,
+          scrollTrigger: ST(row, 'top 80%')
         });
       });
 
       /* Full-width content */
       gsap.utils.toArray('.content-full').forEach(section => {
         gsap.from(section, {
-          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: section, start: 'top 85%' }
+          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out', clearProps: CP,
+          scrollTrigger: ST(section, 'top 85%')
         });
       });
 
       /* Prototype comparison */
       gsap.from('.proto-compare', {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: '.proto-compare', start: 'top 82%' }
+        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.proto-compare', 'top 82%')
       });
 
       /* Reflection cards */
       gsap.from('.reflection-card', {
-        y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out',
-        scrollTrigger: { trigger: '.reflection-grid', start: 'top 82%' }
+        y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out', clearProps: CP,
+        scrollTrigger: ST('.reflection-grid', 'top 82%')
       });
 
       /* Header hide/show on scroll */
@@ -792,6 +795,43 @@
           track.style.transform = `translateX(-${current * 100}%)`;
         });
       });
+    })();
+  </script>
+
+  <!-- Lightbox -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="lightbox-close" aria-label="Close image viewer">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script>
+    (function () {
+      const lb     = document.getElementById('lightbox');
+      const lbImg  = document.getElementById('lightbox-img');
+      const lbClose = document.getElementById('lightbox-close');
+
+      function open(src, alt) {
+        lbImg.src = src;
+        lbImg.alt = alt || '';
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        lb.classList.remove('active');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      // Target imgs inside case sections, exclude hero showcase & persona carousel (has its own UX)
+      document.querySelectorAll('.case-section img, .content-full img').forEach(function (img) {
+        img.classList.add('zoomable');
+        img.addEventListener('click', function () { open(img.src, img.alt); });
+      });
+
+      lbClose.addEventListener('click', close);
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
     })();
   </script>
 
