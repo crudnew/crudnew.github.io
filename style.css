@@ -1587,6 +1587,201 @@ main {
 }
 
 /* ============================================================
+   HIGH CONTRAST MODE — Full component overrides
+   Activates when data-contrast="high" (light or dark).
+   Strips every glass/translucency effect so all text meets
+   WCAG AAA against a solid background. Variables already
+   set correct colors; these rules override hardcoded rgba
+   values and remove decorative shadows / backdrop-filters.
+============================================================ */
+
+/* Body — remove paper grain texture */
+[data-contrast="high"] body {
+  background-image: none;
+  background-color: var(--bg);
+}
+
+/* Hide only the decorative blobs, keep the liquid canvas */
+[data-contrast="high"] .hero-wrapper::before,
+[data-contrast="high"] .hero-wrapper::after { display: none; }
+
+/* Hero card — warm brown dim over the animation for contrast */
+[data-contrast="high"] .hero,
+[data-contrast="high"] .hero-wrapper .case-hero {
+  background: rgba(62, 40, 22, 0.52);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-theme="dark"][data-contrast="high"] .hero,
+[data-theme="dark"][data-contrast="high"] .hero-wrapper .case-hero {
+  background: rgba(0, 0, 0, 0.68);
+}
+
+/* Text backdrop — near-opaque so text pops cleanly off the animation */
+[data-contrast="high"] .hero-text-backdrop {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 2px 16px rgba(90,58,18,0.15);
+}
+[data-theme="dark"][data-contrast="high"] .hero-text-backdrop {
+  background: rgba(0, 0, 0, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 16px rgba(0,0,0,0.30);
+}
+
+/* Hero text — solid colors, no text-shadow */
+[data-contrast="high"] .hero-eyebrow {
+  color: var(--text-secondary);
+  text-shadow: none;
+  box-shadow: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+[data-contrast="high"] .hero h1 {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+[data-contrast="high"] .hero h1 .highlight {
+  color: var(--accent-text);
+  text-shadow: none;
+}
+[data-contrast="high"] .hero-subtitle {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+[data-contrast="high"] .underline-draw {
+  background: var(--text-primary);
+}
+
+/* Project cards — solid glass-free surface */
+[data-contrast="high"] .card {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-contrast="high"] .card::before,
+[data-contrast="high"] .card::after { display: none; }
+[data-contrast="high"] .card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--text-primary);
+}
+[data-contrast="high"] .card-text {
+  border-top: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-contrast="high"] .card-text h3 {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+[data-contrast="high"] .card-text p {
+  color: var(--text-secondary);
+  text-shadow: none;
+}
+
+/* Card button */
+[data-contrast="high"] .card .btn {
+  background: var(--accent-light);
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  text-shadow: none;
+}
+[data-contrast="high"] .card .btn:hover {
+  background: var(--accent-btn-bg);
+  border-color: var(--accent-btn-bg);
+  color: var(--bg);
+  transform: none;
+  box-shadow: none;
+}
+[data-contrast="high"] .card .btn svg { filter: none; }
+[data-contrast="high"] .card .btn:hover svg { filter: brightness(10); transform: translateX(3px); }
+
+/* Bento grid cards */
+[data-contrast="high"] .bento-card {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-contrast="high"] .bento-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--text-primary);
+}
+
+/* Header */
+[data-contrast="high"] body > header {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 2px solid var(--border);
+  box-shadow: none;
+}
+
+/* Footer */
+[data-contrast="high"] footer {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top: 2px solid var(--border);
+  box-shadow: none;
+}
+
+/* Settings bubbles */
+[data-contrast="high"] .settings-btn,
+[data-contrast="high"] .settings-bubble {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+
+/* Overview cards (case study / about page Why Me band) */
+[data-contrast="high"] .overview-card {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-contrast="high"] .overview-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Reflection cards */
+[data-contrast="high"] .reflection-card {
+  background: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 2px solid var(--border);
+  box-shadow: none;
+}
+[data-contrast="high"] .reflection-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Dividers */
+[data-contrast="high"] .divider,
+[data-contrast="high"] .case-divider { background: var(--border); }
+
+/* Stronger focus ring */
+[data-contrast="high"] :focus-visible {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+/* ============================================================
    REDUCED MOTION
 ============================================================ */
 @media (prefers-reduced-motion: reduce) {
