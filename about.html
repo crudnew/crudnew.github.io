@@ -3,12 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Me — Chris Rudnew</title>
+  <title>About — Chris Rudnew</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
   <meta name="description" content="About Chris Rudnew — UX/UI Designer and Researcher.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=11">
+  <link rel="stylesheet" href="./style.css?v=16">
+  <style>
+  /* ============================================================
+     ABOUT PAGE — .about-card: project-card glass for text panels
+     Fresh class (no conflicts with style.css reflection-card rules).
+  ============================================================ */
+  .about-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    padding: 36px;
+    background:
+      radial-gradient(ellipse at 28% 0%, rgba(255,255,255,0.18) 0%, transparent 55%),
+      rgba(205, 190, 168, 0.44);
+    backdrop-filter: blur(26px) saturate(1.2) brightness(1.01);
+    -webkit-backdrop-filter: blur(26px) saturate(1.2) brightness(1.01);
+    box-shadow:
+      inset 0  2px 0 rgba(255, 255, 255, 0.88),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.10),
+      inset  2px 0 0 rgba(255, 255, 255, 0.55),
+      inset -2px 0 0 rgba(0, 0, 0, 0.07),
+      0 4px 24px rgba(62, 40, 22, 0.12),
+      0 1px 4px  rgba(62, 40, 22, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
+  }
+  [data-theme="dark"] .about-card {
+    background:
+      radial-gradient(ellipse at 28% 0%, rgba(255,255,255,0.07) 0%, transparent 60%),
+      rgba(30, 20, 14, 0.60);
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+
+  /* Diagonal top-left sheen */
+  .about-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    pointer-events: none; z-index: 0;
+    background: linear-gradient(
+      132deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.05) 28%,
+      transparent 50%
+    );
+  }
+
+  /* Rim highlight overlay */
+  .about-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    pointer-events: none; z-index: 10;
+    box-shadow:
+      inset 0  1px 0 rgba(255, 255, 255, 0.72),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+      inset  1px 0 0 rgba(255, 255, 255, 0.40),
+      inset -1px 0 0 rgba(0, 0, 0, 0.08);
+  }
+
+  /* Hover lift */
+  .about-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      inset 0  2px 0 rgba(255, 255, 255, 0.88),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.10),
+      inset  2px 0 0 rgba(255, 255, 255, 0.55),
+      inset -2px 0 0 rgba(0, 0, 0, 0.07),
+      0 16px 40px rgba(62, 40, 22, 0.22),
+      0 8px 20px rgba(62, 40, 22, 0.14);
+    border-color: rgba(255, 255, 255, 0.65);
+  }
+
+  /* Raise content above the ::before sheen */
+  .about-card > * { position: relative; z-index: 1; }
+
+  /* Engraved headings — WCAG AA (~8:1 on glass bg) */
+  .about-card h2, .about-card h3 {
+    color: rgba(26, 22, 20, 0.82);
+    text-shadow:
+      0  2px 0   rgba(255, 255, 255, 0.95),
+      0 -1px 0   rgba(0, 0, 0, 0.28),
+      1px 0  0   rgba(255, 255, 255, 0.40),
+      0  2px 8px rgba(0, 0, 0, 0.08);
+  }
+  [data-theme="dark"] .about-card h2,
+  [data-theme="dark"] .about-card h3 {
+    color: rgba(245, 240, 234, 0.88);
+    text-shadow:
+      0  2px 0   rgba(0, 0, 0, 0.70),
+      0 -1px 0   rgba(255, 255, 255, 0.16),
+      0  2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Engraved body text — WCAG AA (~6:1 on glass bg) */
+  .about-card p, .about-card li {
+    color: rgba(26, 22, 20, 0.76);
+    text-shadow:
+      0  1px 0   rgba(255, 255, 255, 0.85),
+      0 -1px 0   rgba(0, 0, 0, 0.18),
+      0  1px 5px rgba(0, 0, 0, 0.06);
+  }
+  .about-card strong {
+    color: rgba(26, 22, 20, 0.88);
+    text-shadow:
+      0  1px 0 rgba(255, 255, 255, 0.90),
+      0 -1px 0 rgba(0, 0, 0, 0.22);
+  }
+  [data-theme="dark"] .about-card p,
+  [data-theme="dark"] .about-card li {
+    color: rgba(245, 240, 234, 0.78);
+    text-shadow:
+      0  1px 0 rgba(0, 0, 0, 0.55),
+      0 -1px 0 rgba(255, 255, 255, 0.10);
+  }
+  </style>
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
 </head>
@@ -20,38 +135,62 @@
 
   <main id="main-content" class="case-main">
 
-    <!-- ① Hero -->
-    <section class="case-hero" style="padding-bottom:48px;">
-      <h1>About me</h1>
-    </section>
+    <!-- Hero — same glass panel + liquid canvas as index -->
+    <div class="hero-wrapper">
+      <div class="hero-liquid-bg" aria-hidden="true">
+        <canvas class="liquid-canvas"></canvas>
+      </div>
+      <section class="hero" aria-labelledby="about-heading">
+        <div class="hero-text-backdrop">
+          <p class="hero-eyebrow" aria-hidden="true">Designer &amp; Researcher</p>
+          <h1 id="about-heading">About Me</h1>
+          <span class="underline-draw" aria-hidden="true"></span>
+          <p class="hero-subtitle">UX/UI designer with a CS and business foundation, building accessible and user-centered digital experiences.</p>
+        </div>
+      </section>
+      <div class="hero-glass-sheen" aria-hidden="true"></div>
+    </div>
 
-    <!-- ② Intro: Portrait + Bio -->
-    <section class="case-section">
+    <hr class="divider" aria-hidden="true">
+
+    <!-- Intro: Portrait + Bio -->
+    <section class="case-section" aria-labelledby="bio-heading">
       <div class="content-row">
+
+        <!-- Portrait in a glass frame -->
         <div class="image-col">
-          <img
-            src="./assets/about-portrait.jpg"
-            alt="A portrait of Chris Rudnew."
-            style="border-radius:var(--radius-md); width:100%; max-width:420px; height:500px; object-fit:cover; object-position:top;">
+          <div class="reflection-card" style="padding:0; overflow:hidden; width:100%; max-width:420px; flex-shrink:0;">
+            <img
+              src="./assets/about-portrait.jpg"
+              alt="A portrait of Chris Rudnew."
+              style="width:100%; height:500px; object-fit:cover; object-position:top; display:block;">
+          </div>
         </div>
+
+        <!-- Bio text in a glass card -->
         <div class="text-col">
-          <h2>Chris Rudnew</h2>
-          <p><strong>WHO AM I?</strong><br>
-            I'm a <em>UX/UI designer and researcher</em> with a foundation in computer science and business studies, focused on building accessible and user-centered digital experiences.</p>
-          <p><strong>BACKGROUND:</strong><br>
-            I'm a first-year student completing a <em>Master of Information, concentrating in User Experience Design,</em> at the University of Toronto, Canada.</p>
-          <p>I earned a <em>Bachelor of Science in Computer Science with a minor in Business Studies</em>, in Edmonton, Alberta, Canada.</p>
-          <p>This combination gives me a strong foundation alongside an understanding of product strategy and user needs, while allowing me to work fluently alongside designers, researchers, and engineers.</p>
+          <div class="about-card">
+            <h2 id="bio-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:20px;">Chris Rudnew</h2>
+            <p><strong>WHO AM I?</strong><br>
+              I'm a <em>UX/UI designer and researcher</em> with a foundation in computer science and business studies, focused on building accessible and user-centered digital experiences.</p>
+            <p style="margin-top:14px;"><strong>BACKGROUND:</strong><br>
+              I'm a first-year student completing a <em>Master of Information, concentrating in User Experience Design,</em> at the University of Toronto, Canada.</p>
+            <p style="margin-top:14px;">I earned a <em>Bachelor of Science in Computer Science with a minor in Business Studies</em>, in Edmonton, Alberta, Canada.</p>
+            <p style="margin-top:14px;">This combination gives me a strong foundation alongside an understanding of product strategy and user needs, while allowing me to work fluently alongside designers, researchers, and engineers.</p>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ③ Why Me — case-band with overview cards -->
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- Why Me — full-width band with glass overview cards -->
     <div class="case-band">
       <div class="case-band-inner">
         <h2 style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; color:var(--text-primary); margin-bottom:32px;">Why Me?</h2>
         <div class="overview-grid">
-          <div class="overview-card">
+          <div class="overview-card about-card">
             <h3>What I Bring</h3>
             <ul>
               <li>A strong academic foundation, allowing me to design with both users and feasibility in mind.</li>
@@ -59,7 +198,7 @@
               <li>The ability to collaborate and communicate effectively and enthusiastically across multiple disciplines, helping align researchers, designers, and engineers while keeping spirits high.</li>
             </ul>
           </div>
-          <div class="overview-card">
+          <div class="overview-card about-card">
             <h3>How I Work</h3>
             <p>I value collaboration, curiosity, creativity, and grounding design decisions in evidence. I enjoy working in diverse environments and see every project as an opportunity for personal and professional growth.</p>
             <p style="margin-top:16px;">Open communication, respect, and humor (where appropriate) help teams thrive, and I aspire to be someone who can create a positive and productive team environment.</p>
@@ -68,41 +207,50 @@
       </div>
     </div>
 
-    <!-- ④ The Human Part + photo gallery -->
-    <section class="case-section">
+    <hr class="case-divider" aria-hidden="true">
+
+    <!-- The Human Part: text card + glass-framed gallery -->
+    <section class="case-section" aria-labelledby="human-heading">
+
       <div class="content-full">
-        <h2>The Human Part...</h2>
-        <p>I'm interested in how things work, and how people experience them. I love learning new things, and being able to apply them to all aspects of my life.</p>
-        <p>Outside of UX, I enjoy the usual things like gaming, spending time with friends, or getting immersed in a new series. I'm influenced by a wide range of music and visual styles, and while I often lean toward minimalism and neutrality, I also appreciate bold ideas when they're executed with intention.</p>
-        <p>I'm very comfortable in conversation, enjoy exchanging ideas, love learning new things, and I try my best to make the people around me feel included. I'm quite spontaneous, but when it comes to education or work, I enjoy thinking things through so that decisions feel grounded, not rushed.</p>
+        <div class="about-card">
+          <h2 id="human-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:16px;">The Human Part...</h2>
+          <p>I'm interested in how things work, and how people experience them. I love learning new things, and being able to apply them to all aspects of my life.</p>
+          <p style="margin-top:12px;">Outside of UX, I enjoy the usual things like gaming, spending time with friends, or getting immersed in a new series. I'm influenced by a wide range of music and visual styles, and while I often lean toward minimalism and neutrality, I also appreciate bold ideas when they're executed with intention.</p>
+          <p style="margin-top:12px;">I'm very comfortable in conversation, enjoy exchanging ideas, love learning new things, and I try my best to make the people around me feel included. I'm quite spontaneous, but when it comes to education or work, I enjoy thinking things through so that decisions feel grounded, not rushed.</p>
+        </div>
       </div>
-      <!-- Gallery -->
-      <div style="display:flex; gap:24px; padding:8px 64px 64px; width:100%; max-width:1212px; box-sizing:border-box;">
-        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+
+      <!-- Gallery: each image in a glass card frame -->
+      <div class="about-gallery" style="display:flex; gap:20px; padding:24px 64px 64px; width:100%; max-width:1212px; box-sizing:border-box;">
+        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
           <img src="./assets/about-gallery-1.png"
                alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover;">
+               style="width:100%; height:100%; object-fit:cover; display:block;">
         </div>
-        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
           <img src="./assets/about-gallery-2.png"
                alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover;">
+               style="width:100%; height:100%; object-fit:cover; display:block;">
         </div>
-        <div style="flex:1; border-radius:var(--radius-md); overflow:hidden; height:280px;">
+        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
           <img src="./assets/about-gallery-3.png"
                alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover;">
+               style="width:100%; height:100%; object-fit:cover; display:block;">
         </div>
       </div>
+
     </section>
 
-    <hr class="case-divider" style="margin:0 auto;">
+    <hr class="case-divider" aria-hidden="true">
 
-    <!-- ⑤ A Fun Fact -->
+    <!-- Fun Fact in a glass card -->
     <section class="case-section">
       <div class="content-full" style="padding-bottom:96px;">
-        <h2>A Fun Fact</h2>
-        <p>I took a philosophy course during my undergrad degree that ended up shaping me more than I expected. It changed how I approach questions, conversations, people, viewpoints, and more! I'm convinced that everyone should try it at least once!</p>
+        <div class="about-card">
+          <h2 id="fun-fact-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:16px;">A Fun Fact</h2>
+          <p>I took a philosophy course during my undergrad degree that ended up shaping me more than I expected. It changed how I approach questions, conversations, people, viewpoints, and more! I'm convinced that everyone should try it at least once!</p>
+        </div>
       </div>
     </section>
 
@@ -112,6 +260,183 @@
 
   <!-- Shared layout (header, footer, settings, cursor) -->
   <script src="./layout.js"></script>
+
+  <!-- Liquid wave canvas animation (identical to index.html) -->
+  <script>
+  (function () {
+    const canvas = document.querySelector('.liquid-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const SCALE = 4;
+
+    const PALETTE = [
+      [ 62,  40,  22],
+      [ 80,  54,  30],
+      [100,  70,  42],
+      [124,  90,  58],
+      [146, 110,  76],
+      [166, 130,  96],
+      [186, 152, 118],
+      [208, 178, 148],
+      [226, 204, 178],
+      [238, 218, 196],
+      [244, 230, 212],
+      [228, 206, 178],
+      [172, 136, 100],
+    ];
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function getColor(v) {
+      const n = PALETTE.length - 1;
+      const i = Math.min(Math.floor(v * n), n - 1);
+      const t = v * n - i;
+      const a = PALETTE[i], b = PALETTE[i + 1];
+      return [lerp(a[0],b[0],t)|0, lerp(a[1],b[1],t)|0, lerp(a[2],b[2],t)|0];
+    }
+    function hash(ix, iy) {
+      let h = (Math.imul(ix, 374761393) + Math.imul(iy, 668265263)) | 0;
+      h = Math.imul(h ^ (h >>> 13), 1274126177);
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
+    }
+    function noise(x, y) {
+      const ix = Math.floor(x), iy = Math.floor(y);
+      const fx = x - ix, fy = y - iy;
+      const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+      const a = hash(ix,iy), b = hash(ix+1,iy), c = hash(ix,iy+1), d = hash(ix+1,iy+1);
+      return a + (b-a)*ux + (c-a)*uy + (a-b-c+d)*ux*uy;
+    }
+    function fbm(x, y) {
+      return noise(x,     y    ) * 0.5000
+           + noise(x*2.1, y*2.1) * 0.2500
+           + noise(x*4.3, y*4.3) * 0.1250
+           + noise(x*8.7, y*8.7) * 0.0625;
+    }
+    function liquid(x, y, t) {
+      const a1 = t*0.4, a2 = t*0.3+1.9;
+      const q1x = fbm(x+Math.cos(a1)*0.9,       y+Math.sin(a1)*0.9);
+      const q1y = fbm(x+Math.cos(a2)*0.9+5.2,   y+Math.sin(a2)*0.9+1.3);
+      const wx = x+2.8*q1x, wy = y+2.8*q1y;
+      const q2x = fbm(wx+Math.sin(t*0.25)*0.6,       wy-Math.cos(t*0.20)*0.6);
+      const q2y = fbm(wx-Math.cos(t*0.22)*0.6+3.7,   wy+Math.sin(t*0.28)*0.6+7.1);
+      return fbm(x+2.4*q2x, y+2.4*q2y);
+    }
+
+    function resize() {
+      canvas.width  = Math.max(1, Math.ceil(canvas.offsetWidth  / SCALE));
+      canvas.height = Math.max(1, Math.ceil(canvas.offsetHeight / SCALE));
+    }
+    function draw(ts) {
+      const t = ts * 0.00028;
+      const w = canvas.width, h = canvas.height;
+      const id = ctx.createImageData(w, h);
+      const d = id.data;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const v = liquid(x/w*2.2, y/h*1.8, t);
+          const sharp = Math.pow(Math.max(0, Math.min(1, v)), 0.9);
+          const [r,g,b] = getColor(sharp);
+          const i = (y*w+x)*4;
+          d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=255;
+        }
+      }
+      ctx.putImageData(id, 0, 0);
+      if (!canvas._stopped) requestAnimationFrame(draw);
+    }
+
+    resize();
+    if (!motionOk()) {
+      canvas._stopped = true;
+      draw(5000);
+      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+    } else {
+      new ResizeObserver(resize).observe(canvas);
+      requestAnimationFrame(draw);
+    }
+  })();
+  </script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+
+    addCursorHover('.about-card, .reflection-card');
+
+    /* ==================== HERO ENTRANCE ==================== */
+    if (motionOk()) {
+      gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+        .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+        .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
+        .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+        .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+    }
+
+    /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.set('.about-card',  { opacity: 0, y: 32 });
+      gsap.set('.reflection-card', { opacity: 0, y: 32 });
+      gsap.set('.divider',         { width: 0 });
+
+      /* Dividers */
+      gsap.utils.toArray('.divider').forEach(div => {
+        gsap.to(div, {
+          width: 200, duration: 1, ease: 'power2.inOut',
+          scrollTrigger: { trigger: div, start: 'top 88%' }
+        });
+      });
+
+      /* Stagger reflection cards */
+      ScrollTrigger.create({
+        trigger: '.content-row', start: 'top 80%', once: true,
+        onEnter: () => gsap.to('.content-row .about-card, .content-row .reflection-card', {
+          opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+        })
+      });
+
+      /* Overview cards in Why Me band */
+      ScrollTrigger.create({
+        trigger: '.overview-grid', start: 'top 82%', once: true,
+        onEnter: () => gsap.to('.about-card', {
+          opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out'
+        })
+      });
+
+      /* Human Part text card */
+      ScrollTrigger.create({
+        trigger: '.content-full .about-card', start: 'top 82%', once: true,
+        onEnter: () => gsap.to('.content-full .about-card', {
+          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out'
+        })
+      });
+
+      /* Gallery cards staggered */
+      ScrollTrigger.create({
+        trigger: '.about-gallery', start: 'top 82%', once: true,
+        onEnter: () => gsap.to('.about-gallery .reflection-card', {
+          opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out'
+        })
+      });
+
+      /* Footer */
+      gsap.from('footer', {
+        opacity: 0, y: 28, duration: 0.7,
+        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
+      });
+    });
+
+    /* ==================== HERO PARALLAX ==================== */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.to('.hero-wrapper', {
+        yPercent: -4, ease: 'none',
+        scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
+      });
+    });
+  </script>
 
 </body>
 </html>
