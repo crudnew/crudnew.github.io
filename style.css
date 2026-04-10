@@ -642,11 +642,11 @@ main {
   gap: 40px; width: 100%; max-width: 1212px;
 }
 .cards {
-  display: flex; gap: 28px; justify-content: center; width: 100%;
+  display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; width: 100%; max-width: 1220px;
 }
 .card {
   display: flex; flex-direction: column;
-  flex: 1 1 0; min-width: 0; max-width: 388px;
+  flex: 1 1 calc(33.333% - 20px); min-width: 0; max-width: 388px;
   position: relative;
   border-radius: var(--radius-md);
   /* Frosted glass slab: blurs the page gradient through the card */
@@ -727,6 +727,18 @@ main {
 
 /* WeAct card — contain so full image (phones + logo) is visible */
 .card--weact .card-image img { object-fit: contain; object-position: center; }
+
+/* Portfolio card — placeholder gradient until a hero image is added */
+.card--portfolio .card-image {
+  background: linear-gradient(135deg, #0D1B2A 0%, #1A3A5C 40%, #2A6098 70%, #1A3A5C 100%);
+}
+.card--portfolio .card-image-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-size: 48px; font-weight: 700;
+  color: rgba(255,255,255,0.15); letter-spacing: -2px;
+  user-select: none;
+}
 
 .card:hover .card-image img {
   transform: scale(1.05);
