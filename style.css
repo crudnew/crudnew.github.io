@@ -239,10 +239,7 @@ nav.nav-pill,
   backdrop-filter: blur(28px) saturate(1.35);
   -webkit-backdrop-filter: blur(28px) saturate(1.35);
   border: 1px solid rgba(255,255,255,0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.72),
-    0 8px 28px rgba(62,40,22,0.16),
-    0 2px 6px  rgba(62,40,22,0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
   position: relative;
 }
 
@@ -267,6 +264,23 @@ body.tint-filled .settings-btn::before {
   opacity: 1;
 }
 
+/* Shadow layer behind the backdrop-filter stacking context — prevents the
+   drop shadow from compositing through the glass and causing flash/bleed. */
+nav.nav-pill::after,
+.extras-pill::after,
+.nav-menu-btn::after,
+.settings-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 8px 28px rgba(62,40,22,0.16),
+    0 2px 6px  rgba(62,40,22,0.08);
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* Keep pill content above the tint layer */
 nav.nav-pill > *,
 .extras-pill > * {
@@ -280,8 +294,13 @@ nav.nav-pill > *,
 [data-theme="dark"] .settings-btn {
   background-color: rgba(30,22,16,0.68);
   border-color: rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+}
+[data-theme="dark"] nav.nav-pill::after,
+[data-theme="dark"] .extras-pill::after,
+[data-theme="dark"] .nav-menu-btn::after,
+[data-theme="dark"] .settings-btn::after {
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
     0 8px 28px rgba(0,0,0,0.35),
     0 2px 6px  rgba(0,0,0,0.20);
 }
@@ -612,10 +631,7 @@ nav.nav-pill {
   backdrop-filter: blur(28px) saturate(1.35);
   -webkit-backdrop-filter: blur(28px) saturate(1.35);
   border: 1px solid rgba(255,255,255,0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.72),
-    0 8px 28px rgba(62,40,22,0.16),
-    0 2px 6px  rgba(62,40,22,0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
   cursor: pointer; color: var(--text-primary);
   position: relative;
   opacity: 0; transform: scale(0.5) translateY(-12px);
@@ -626,8 +642,21 @@ nav.nav-pill {
 [data-theme="dark"] .settings-bubble {
   background: rgba(30,22,16,0.68);
   border-color: rgba(255,255,255,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+}
+.settings-bubble::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 8px 28px rgba(62,40,22,0.16),
+    0 2px 6px  rgba(62,40,22,0.08);
+  z-index: -1;
+  pointer-events: none;
+}
+[data-theme="dark"] .settings-bubble::after {
+  box-shadow:
     0 8px 28px rgba(0,0,0,0.35),
     0 2px 6px  rgba(0,0,0,0.20);
 }
@@ -873,17 +902,18 @@ main {
   padding: 40px 48px;
   border-radius: 18px;
   width: 100%; box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.20);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.20);
   position: relative; z-index: 1;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 16px rgba(90,58,18,0.10);
-  /* Pre-composites the backdrop-filter before visibility — prevents 1-2 frame blur delay */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 12px rgba(90,58,18,0.07);
   will-change: backdrop-filter, transform, opacity;
 }
 [data-theme="dark"] .hero-text-backdrop {
-  background: rgba(36, 26, 22, 0.60);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 16px rgba(0,0,0,0.20);
+  background: rgba(36, 26, 22, 0.48);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 12px rgba(0,0,0,0.15);
 }
 @supports not (backdrop-filter: blur(1px)) {
   .hero-text-backdrop { background: rgba(255, 255, 255, 0.80); }
@@ -1000,65 +1030,42 @@ main {
   flex: 1 1 calc(33.333% - 20px); min-width: 0; max-width: 388px;
   position: relative;
   border-radius: var(--radius-md);
-  /* Frosted glass slab: blurs the page gradient through the card */
-  background:
-    radial-gradient(ellipse at 28% 0%, rgba(255,255,255,0.14) 0%, transparent 58%),
-    rgba(205, 190, 168, 0.26);
-  backdrop-filter: blur(26px) saturate(1.15) brightness(1.02);
-  -webkit-backdrop-filter: blur(26px) saturate(1.15) brightness(1.02);
-  /* Multi-layer inset highlights simulate beveled glass edges */
+  background: rgba(225, 212, 196, 0.38);
+  backdrop-filter: blur(8px) saturate(1.08);
+  -webkit-backdrop-filter: blur(8px) saturate(1.08);
   box-shadow:
-    inset 0  2px 0 rgba(255, 255, 255, 0.88),   /* top edge bright */
-    inset 0 -2px 0 rgba(0,   0,   0,   0.10),   /* bottom edge shadow */
-    inset  2px 0 0 rgba(255, 255, 255, 0.55),   /* left edge highlight */
-    inset -2px 0 0 rgba(0,   0,   0,   0.07),   /* right edge shadow */
-    var(--shadow-sm);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+    inset 0 1px 0 rgba(255, 255, 255, 0.60),
+    0 2px 16px rgba(62, 40, 22, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   overflow: hidden;
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
 }
 [data-theme="dark"] .card {
-  background:
-    radial-gradient(ellipse at 28% 0%, rgba(255,255,255,0.07) 0%, transparent 60%),
-    rgba(30, 20, 14, 0.48);
-  border-color: rgba(255, 255, 255, 0.10);
+  background: rgba(30, 20, 14, 0.52);
+  border-color: rgba(255, 255, 255, 0.12);
 }
-/* Diagonal top-left sheen — simulates angled light catching the glass face */
 .card::before {
   content: '';
   position: absolute; inset: 0;
   border-radius: var(--radius-md);
   pointer-events: none; z-index: 2;
-  background: linear-gradient(
-    132deg,
-    rgba(255, 255, 255, 0.24) 0%,
-    rgba(255, 255, 255, 0.05) 28%,
-    transparent 50%
-  );
+  background: transparent;
 }
-/* Rim overlay — sits above all card content, sharpens the glass-edge feel */
+/* Single top rim — the only glass signature retained */
 .card::after {
   content: '';
   position: absolute; inset: 0;
   border-radius: var(--radius-md);
   pointer-events: none; z-index: 10;
-  box-shadow:
-    inset 0  1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -1px 0 rgba(0,   0,   0,   0.12),
-    inset  1px 0 0 rgba(255, 255, 255, 0.40),
-    inset -1px 0 0 rgba(0,   0,   0,   0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
 }
 .card:hover {
-  transform: translateY(-16px);
+  transform: translateY(-8px);
   box-shadow:
-    inset 0  2px 0 rgba(255, 255, 255, 0.88),
-    inset 0 -2px 0 rgba(0,   0,   0,   0.10),
-    inset  2px 0 0 rgba(255, 255, 255, 0.55),
-    inset -2px 0 0 rgba(0,   0,   0,   0.07),
-    0 32px 64px rgba(62, 40, 22, 0.32),
-    0 16px 32px rgba(62, 40, 22, 0.20),
-    0  6px 12px rgba(62, 40, 22, 0.12);
-  border-color: rgba(255, 255, 255, 0.65);
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 8px 28px rgba(62, 40, 22, 0.12),
+    0 2px 8px  rgba(62, 40, 22, 0.07);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .card-image {
@@ -1273,7 +1280,7 @@ main {
   flex: 1 1 auto;
   max-width: 100%;
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-columns: 72px minmax(0, 1fr) minmax(0, 1.08fr);
   align-items: stretch;
   min-height: 320px;
 }
@@ -1362,27 +1369,22 @@ main {
     0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
-/* Row-card num: full-height left strip, not a floating pill */
-.card--row .card-num {
-  position: relative; top: auto; left: auto;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: none;
-  box-shadow: none;
+/* Row-card liquid strip */
+.card--row .card-strip {
+  position: relative;
   border-right: 1px solid rgba(255, 255, 255, 0.38);
-  color: rgba(26, 22, 20, 0.62);
-  font-size: 19px;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  letter-spacing: 0.5px;
 }
-[data-theme="dark"] .card--row .card-num {
-  background: rgba(255, 255, 255, 0.04);
-  border-right-color: rgba(255, 255, 255, 0.08);
-  color: rgba(245, 240, 234, 0.55);
+[data-theme="dark"] .card--row .card-strip {
+  border-right-color: rgba(255, 255, 255, 0.12);
+}
+.card--row .card-strip-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+}
+@media (max-width: 799px) {
+  .card--row .card-strip { display: none; }
 }
 
 /* ============================================================
@@ -1401,7 +1403,7 @@ main {
   padding: 38px 34px;
   background: var(--surface-solid);
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   border: 1px solid var(--border-hi);
   box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-sm);
   border-radius: var(--radius-md);
@@ -1998,7 +2000,6 @@ main {
   .card--row .card-text h3 { font-size: 30px; letter-spacing: -0.6px; }
   .card--row .card-image { min-height: 220px; aspect-ratio: 5/3; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
   [data-theme="dark"] .card--row .card-image { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
-  .card .card-num { font-size: 16px; top: 12px; left: 14px; }
   .bento-grid { grid-template-columns: 1fr; }
   .bento-card:nth-child(3) { grid-column: span 1; }
   .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
