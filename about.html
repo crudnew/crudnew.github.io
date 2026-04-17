@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=18">
+  <link rel="stylesheet" href="./style.css?v=36">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -157,7 +157,7 @@
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
 </head>
-<body>
+<body data-page-tint="about">
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -184,7 +184,7 @@
     <hr class="divider" aria-hidden="true">
 
     <!-- Intro: Portrait + Bio -->
-    <section class="case-section" aria-labelledby="bio-heading">
+    <section id="bio" class="case-section" aria-labelledby="bio-heading" data-nav-label="Bio">
       <div class="content-row">
 
         <!-- Portrait in a glass frame -->
@@ -240,7 +240,7 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- The Human Part: text card + glass-framed gallery -->
-    <section class="case-section" aria-labelledby="human-heading">
+    <section id="personal" class="case-section" aria-labelledby="human-heading" data-nav-label="Personal">
 
       <div class="content-full">
         <div class="about-card">
@@ -275,7 +275,7 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- Fun Fact in a glass card -->
-    <section class="case-section">
+    <section id="fun-fact" class="case-section" data-nav-label="Fun Fact">
       <div class="content-full" style="padding-bottom:96px;">
         <div class="about-card">
           <h2 id="fun-fact-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:16px;">A Fun Fact</h2>
@@ -289,7 +289,7 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
 
   <!-- Liquid wave canvas animation (identical to index.html) -->
   <script>

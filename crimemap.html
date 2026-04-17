@@ -7,11 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./crimemap.css?v=2" />
+  <link rel="stylesheet" href="./style.css?v=36" />
+  <link rel="stylesheet" href="./crimemap.css?v=3" />
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
     /* Hero card breathing room */
-    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
+    .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
     @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
     @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
 
@@ -75,7 +76,7 @@
     @media (max-width: 799px) { .tech-stack-grid { flex-direction: column; } }
   </style>
 </head>
-<body>
+<body data-page-tint="crimemap">
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <header-component></header-component>
@@ -202,7 +203,7 @@
     <hr class="case-divider" />
 
     <!-- ⑦ PERSONAL MOTIVATIONS -->
-    <div class="case-section">
+    <div id="motivation" class="case-section" data-nav-label="Motivation">
       <div class="section-eyebrow">
         <span class="section-num">02</span>
         Personal Motivations
@@ -234,7 +235,7 @@
     <hr class="case-divider" />
 
     <!-- ⑧ WHAT WE ACCOMPLISHED -->
-    <div class="case-section">
+    <div id="solution" class="case-section" data-nav-label="Solution">
       <div class="section-eyebrow">
         <span class="section-num">03</span>
         Accomplishments
@@ -268,7 +269,7 @@
     <hr class="case-divider" />
 
     <!-- ⑨ COMPONENTS / TECH STACK -->
-    <div class="case-section">
+    <div id="components" class="case-section" data-nav-label="Components">
       <div class="section-eyebrow">
         <span class="section-num">04</span>
         Tech Stack
@@ -327,7 +328,7 @@
     <hr class="case-divider" />
 
     <!-- ⑪ LIMITATIONS & THE FUTURE -->
-    <div class="case-section">
+    <div id="future" class="case-section" data-nav-label="Future">
       <div class="section-eyebrow">
         <span class="section-num">06</span>
         Limitations &amp; The Future
@@ -377,7 +378,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
 
   <!-- CrimeMap: Dark sonar / siren animation -->
   <script>

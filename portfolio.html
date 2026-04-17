@@ -10,14 +10,13 @@
   Visual language: SVG wireframe globe, halftone moon (CSS radial-gradient mask),
   perspective grid tunnel (SVG vanishing point), HUD corner brackets, scanline dividers
 
-  Dark mode is hardcoded (data-theme="dark" on <html>). Theme toggle is disabled.
-  High contrast and reduced motion still respect localStorage.
+  Theme, high contrast, and reduced motion all respect localStorage (same as other pages).
 
   All page-specific styles live in portfolio.css (pf-* class prefix).
   Global styles (nav, footer, cards, tokens) come from style.css.
 -->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-contrast="normal" data-motion="normal">
+<html lang="en" data-theme="light" data-contrast="normal" data-motion="normal">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,13 +26,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./portfolio.css?v=2">
+  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./portfolio.css?v=3">
   <!-- Lock contrast/motion from prefs, but always dark for this page -->
-  <script>(function(){var c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme','dark');document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
+  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
     /* ── Hero card tweaks ── */
-    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 0 !important; width: calc(100% - 88px) !important; }
+    .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 0 !important; width: calc(100% - 88px) !important; }
     @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
     @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
     .hero-wrapper .case-hero {
@@ -48,7 +47,7 @@
     .case-hero .subtitle { color: #555 !important; }
   </style>
 </head>
-<body>
+<body data-page-tint="portfolio">
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header-component></header-component>
@@ -92,7 +91,7 @@
     </div>
 
     <!-- ===== SECTION 01 — THE CONCEPT ===== -->
-    <section class="pf-section" aria-labelledby="s01">
+    <section id="craft" class="pf-section" aria-labelledby="s01" data-nav-label="Craft">
       <div class="pf-eyebrow">
         <span class="pf-num">01</span>
         <span class="pf-section-label">The Concept</span>
@@ -183,7 +182,7 @@
     </div>
 
     <!-- ===== SECTION 02 — THE PROCESS ===== -->
-    <section class="pf-section" aria-labelledby="s02">
+    <section id="handoff" class="pf-section" aria-labelledby="s02" data-nav-label="Handoff">
       <div class="pf-eyebrow">
         <span class="pf-num">02</span>
         <span class="pf-section-label">The Process</span>
@@ -243,7 +242,7 @@
     </div>
 
     <!-- ===== SECTION 03 — DELIVERABLES (HUD FRAME PLACEHOLDER) ===== -->
-    <section class="pf-hud-section" aria-labelledby="s03">
+    <section id="output" class="pf-hud-section" aria-labelledby="s03" data-nav-label="Output">
       <div class="pf-eyebrow">
         <span class="pf-num">03</span>
         <span class="pf-section-label">The Output</span>
@@ -285,7 +284,7 @@
     </div>
 
     <!-- ===== SECTION 04 — REFLECTION ===== -->
-    <section class="pf-section" aria-labelledby="s04">
+    <section id="reflection" class="pf-section" aria-labelledby="s04" data-nav-label="Reflection">
       <div class="pf-eyebrow">
         <span class="pf-num">✦</span>
         <span class="pf-section-label">Reflection</span>
@@ -316,7 +315,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
 
   <!-- Liquid canvas — magenta/dark blobs -->
   <script>

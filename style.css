@@ -29,6 +29,9 @@
   --radius-lg:  28px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --focus-color: #5C4E45;
+  /* Header chips are fixed at top:20px, ~55px tall → bottom at ~75px.
+     Add 24px breathing room = 99px. Round up to 100px. */
+  --header-clearance: 124px;
 }
 
 /* ---- Dark mode ---- */
@@ -194,91 +197,439 @@ button:focus-visible {
 /* ============================================================
    HEADER — Glassmorphism
 ============================================================ */
+/* Floating header:
+   Nav pill anchors to the left, extras pill + cog anchor to the right.
+   justify-content: space-between keeps them at opposite edges; the nav
+   pill shrinks fluidly via clamp() on its internal spacing so the two
+   pills never collide on mid-size laptop widths.
+   Container is transparent and pointer-events:none so gaps don't
+   block clicks; each floating chip re-enables pointer events. */
 body > header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 44px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-solid);
-  background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  box-shadow: inset 0 1px 0 var(--border-hi);
-  position: sticky; top: 0; z-index: 100;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  position: fixed; top: 20px; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 0 32px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
 }
-[data-theme="dark"] body > header { background: rgba(23,17,14,0.88); }
+body > header > nav.nav-pill { margin-right: auto; }
+body > header > * { pointer-events: auto; }
+.header-spacer { display: none; }
+
+/* ---- Shared glass treatment — nav pills, hamburger, settings cog ----
+   Higher opacity + tighter bevel keeps text WCAG-readable over any
+   underlying image (including dark card hero backgrounds).
+
+   Page tint system: each page declares data-page-tint on <body>, setting
+   --tint-color to a muted version of that page's background. A ::before
+   pseudo-element carries the tint and fades in after the typewriter
+   completes, gently shifting the glass toward the page's signature color. */
+nav.nav-pill,
+.extras-pill,
+.nav-menu-btn,
+.settings-btn {
+  background-color: rgba(243, 232, 215, 0.50);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    0 8px 28px rgba(62,40,22,0.16),
+    0 2px 6px  rgba(62,40,22,0.08);
+  position: relative;
+}
+
+/* Tint layer — sits above the glass, fades in via body.tint-filled */
+nav.nav-pill::before,
+.extras-pill::before,
+.nav-menu-btn::before,
+.settings-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--tint-color, transparent);
+  opacity: 0;
+  transition: opacity 700ms ease;
+  pointer-events: none;
+}
+body.tint-filled nav.nav-pill::before,
+body.tint-filled .extras-pill::before,
+body.tint-filled .nav-menu-btn::before,
+body.tint-filled .settings-btn::before {
+  opacity: 1;
+}
+
+/* Keep pill content above the tint layer */
+nav.nav-pill > *,
+.extras-pill > * {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="dark"] nav.nav-pill,
+[data-theme="dark"] .extras-pill,
+[data-theme="dark"] .nav-menu-btn,
+[data-theme="dark"] .settings-btn {
+  background-color: rgba(30,22,16,0.68);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 8px 28px rgba(0,0,0,0.35),
+    0 2px 6px  rgba(0,0,0,0.20);
+}
+/* Reduced motion: snap to final state — no fade */
+[data-motion="reduced"] nav.nav-pill::before,
+[data-motion="reduced"] .extras-pill::before,
+[data-motion="reduced"] .nav-menu-btn::before,
+[data-motion="reduced"] .settings-btn::before {
+  transition: none;
+}
+/* High contrast: remove the tint overlay entirely so pills stay crisp */
+[data-contrast="high"] nav.nav-pill::before,
+[data-contrast="high"] .extras-pill::before,
+[data-contrast="high"] .nav-menu-btn::before,
+[data-contrast="high"] .settings-btn::before {
+  background: transparent;
+}
 @supports not (backdrop-filter: blur(1px)) {
-  body > header { background: var(--surface-solid); }
-  [data-theme="dark"] body > header { background: var(--surface-solid); }
+  nav.nav-pill, .extras-pill, .nav-menu-btn, .settings-btn {
+    background-color: var(--surface-solid);
+  }
+  nav.nav-pill::before,
+  .extras-pill::before,
+  .nav-menu-btn::before,
+  .settings-btn::before {
+    background: transparent;
+  }
 }
 
-.header-name {
-  font-family: var(--font-heading);
-  font-weight: 600; font-size: 24px; letter-spacing: -0.3px;
-  color: var(--text-primary); text-decoration: none;
-  transition: color 0.2s ease;
-  animation: slideLeft 0.6s ease both;
-}
+/* Per-page tint palette — each color is a muted reading of that page's
+   primary background, kept translucent enough to read as glass not paint. */
+body[data-page-tint="home"]     { --tint-color: rgba(200, 175, 145, 0.22); }
+body[data-page-tint="about"]    { --tint-color: rgba(195, 175, 148, 0.22); }
+body[data-page-tint="linger"]   { --tint-color: rgba(80, 195, 210, 0.24); }
+body[data-page-tint="weact"]    { --tint-color: rgba(70, 125, 195, 0.28); }
+body[data-page-tint="crimemap"] { --tint-color: rgba(8, 4, 4, 0.50); }
+body[data-page-tint="portfolio"]{ --tint-color: rgba(92, 100, 118, 0.28); }
+/* Dark theme: deepen tints so they register over the darker glass base */
+[data-theme="dark"] body[data-page-tint="home"]     { --tint-color: rgba(195, 170, 138, 0.18); }
+[data-theme="dark"] body[data-page-tint="about"]    { --tint-color: rgba(190, 170, 140, 0.18); }
+[data-theme="dark"] body[data-page-tint="linger"]   { --tint-color: rgba(60, 180, 195, 0.22); }
+[data-theme="dark"] body[data-page-tint="weact"]    { --tint-color: rgba(80, 140, 210, 0.24); }
+[data-theme="dark"] body[data-page-tint="crimemap"] { --tint-color: rgba(5, 2, 2, 0.55); }
+[data-theme="dark"] body[data-page-tint="portfolio"]{ --tint-color: rgba(120, 130, 150, 0.22); }
 
-.header-right { display: flex; align-items: center; gap: 22px; }
-nav.header-links { display: flex; gap: 22px; align-items: center; }
-
-nav.header-links a {
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none; color: var(--text-secondary);
-  font-size: 15px; font-weight: 500;
-  transition: color 0.2s ease;
+nav.nav-pill,
+.extras-pill {
+  display: flex; align-items: center; gap: 2px;
+  padding: 7px; border-radius: 999px;
   animation: fadeIn 0.6s ease both;
+  animation-delay: 0.1s;
 }
-nav.header-links a:nth-child(1) { animation-delay: 0.1s; }
-nav.header-links a:nth-child(2) { animation-delay: 0.2s; }
-nav.header-links a:nth-child(3) { animation-delay: 0.3s; }
-nav.header-links a:hover { color: var(--text-primary); }
-nav.header-links a svg {
-  width: 19px; height: 19px;
-  transition: transform 0.2s ease;
-}
-nav.header-links a:hover svg { transform: translateY(-1px); }
 
-/* Settings bubble */
-.settings-wrap { position: relative; display: flex; align-items: center; }
+/* Left-anchored nav pill — sits flush-left via margin-right:auto on the
+   header flex row. Internal spacing uses clamp() so the pill compresses
+   smoothly on narrower laptops instead of crashing into the extras pill. */
+nav.nav-pill {
+  padding: 6px clamp(6px, 0.8vw, 10px) 6px 6px;
+}
+
+/* ---- Nav pill contents ----
+   Wordmark (serif, heading-sized) | divider | section links with highlighter */
+.nav-pill-name {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(18px, 1.4vw, 21px);
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 8px clamp(12px, 1.4vw, 18px); border-radius: 999px;
+  transition: color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+  position: relative; z-index: 2;
+}
+.nav-pill-name:hover { background: var(--accent-lighter); }
+.nav-pill-name[aria-current="true"] { color: var(--text-primary); }
+
+.nav-pill-divider--name {
+  width: 1px; height: 20px;
+  background: var(--border-solid);
+  opacity: 0.45;
+  margin: 0 clamp(3px, 0.5vw, 6px);
+}
+
+.nav-pill-sections {
+  position: relative;
+  display: flex; align-items: center; gap: 0;
+  padding: 0 clamp(4px, 0.6vw, 8px) 0 2px;
+}
+
+.nav-pill-section {
+  position: relative; z-index: 2;
+  display: inline-flex; align-items: center;
+  padding: 9px clamp(10px, 1.2vw, 16px); border-radius: 999px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 14px); font-weight: 550; letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  opacity: 0.78;
+}
+.nav-pill-section:hover { opacity: 1; }
+.nav-pill-section[aria-current="true"] { opacity: 1; font-weight: 600; }
+
+/* Sliding highlighter behind the active section link */
+.nav-highlighter {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent-light);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+  opacity: 0;
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
+              width 0.4s cubic-bezier(0.22,1,0.36,1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-highlighter { transition: opacity 0.15s ease; }
+}
+
+/* ---- Extras pill contents ----
+   About keeps its label (internal page link needs a word).
+   LinkedIn and Contact are icon-only — logos are universally legible,
+   and aria-label on the anchor keeps screen-reader labelling intact. */
+.extras-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px; border-radius: 999px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 550; letter-spacing: 0.01em;
+  transition: background 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+.extras-item svg { flex-shrink: 0; transition: transform 0.25s var(--ease); }
+.extras-item:hover { background: rgba(255,255,255,0.35); opacity: 1; }
+.extras-item:hover svg:first-of-type { transform: translateY(-1px); }
+.extras-item[aria-current="page"] {
+  background: var(--accent-light);
+  opacity: 1;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+}
+[data-theme="dark"] .extras-item:hover { background: rgba(255,255,255,0.08); }
+
+.extras-external {
+  padding: 9px 11px;
+  width: 38px; height: 38px; box-sizing: border-box;
+  justify-content: center;
+}
+.extras-external .extras-label {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+.extras-external svg:first-of-type { width: 18px; height: 18px; }
+.extras-arrow { display: none; }
+
+.extras-divider {
+  width: 1px; height: 18px;
+  background: var(--border-solid);
+  opacity: 0.45;
+  margin: 0 4px;
+}
+
+/* Back-compat aliases for lingering generic divider refs */
+.nav-pill-divider {
+  width: 1px; height: 18px;
+  background: var(--border-solid);
+  opacity: 0.45;
+  margin: 0 4px;
+}
+
+/* ---- Mobile hamburger (shown only on narrow viewports) ---- */
+/* Glass treatment comes from the shared nav.nav-pill / .extras-pill group above */
+.nav-menu-btn {
+  display: none;
+  grid-column: 3; justify-self: end;
+  width: 46px; height: 46px; border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  align-items: center; justify-content: center;
+}
+
+/* ---- Mobile slide-down sheet ---- */
+.nav-sheet { position: fixed; inset: 0; z-index: 200; }
+.nav-sheet[hidden] { display: none; }
+.nav-sheet-scrim {
+  position: absolute; inset: 0;
+  background: rgba(26,22,20,0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity 0.22s ease;
+}
+.nav-sheet.is-open .nav-sheet-scrim { opacity: 1; }
+.nav-sheet-panel {
+  position: absolute; top: 0; left: 0; right: 0;
+  background: rgba(243,232,215,0.68);
+  backdrop-filter: blur(48px) saturate(1.6);
+  -webkit-backdrop-filter: blur(48px) saturate(1.6);
+  border-bottom: 1px solid rgba(255,255,255,0.65);
+  border-radius: 0 0 24px 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.80),
+    0 24px 60px rgba(62,40,22,0.20),
+    0 6px 16px rgba(62,40,22,0.10);
+  padding: 76px 24px 28px;
+  transform: translateY(-100%);
+  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+}
+[data-theme="dark"] .nav-sheet-panel {
+  background: rgba(22,16,12,0.72);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 24px 60px rgba(0,0,0,0.45),
+    0 6px 16px rgba(0,0,0,0.28);
+}
+.nav-sheet.is-open .nav-sheet-panel { transform: translateY(0); }
+
+/* Home link row at top of sheet */
+.nav-sheet-home {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px 18px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 18px; font-weight: 600; letter-spacing: -0.2px;
+  border-bottom: 1px solid rgba(62,40,22,0.14);
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+[data-theme="dark"] .nav-sheet-home { border-color: rgba(255,255,255,0.10); }
+.nav-sheet-home:hover { opacity: 1; }
+.nav-sheet-home svg { flex-shrink: 0; opacity: 0.7; }
+
+.nav-sheet-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(243,232,215,0.62);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    0 4px 12px rgba(62,40,22,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-primary); cursor: pointer;
+}
+[data-theme="dark"] .nav-sheet-close {
+  background: rgba(30,22,16,0.68);
+  border-color: rgba(255,255,255,0.12);
+}
+.nav-sheet-group {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 0;
+}
+.nav-sheet-group + .nav-sheet-group {
+  border-top: 1px solid rgba(62,40,22,0.12);
+  margin-top: 8px; padding-top: 12px;
+}
+[data-theme="dark"] .nav-sheet-group + .nav-sheet-group {
+  border-color: rgba(255,255,255,0.10);
+}
+.nav-sheet-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 500;
+}
+.nav-sheet-link:hover { background: rgba(255,255,255,0.38); }
+[data-theme="dark"] .nav-sheet-link:hover { background: rgba(255,255,255,0.07); }
+.nav-sheet-link[aria-current="true"],
+.nav-sheet-link[aria-current="page"] {
+  background: rgba(255,255,255,0.50);
+  font-weight: 600;
+}
+[data-theme="dark"] .nav-sheet-link[aria-current="true"],
+[data-theme="dark"] .nav-sheet-link[aria-current="page"] {
+  background: rgba(255,255,255,0.10);
+}
+.nav-sheet-link svg { flex-shrink: 0; }
+
+/* Settings cog — floating circle, separate from the extras pill */
+.settings-wrap {
+  position: relative; display: flex; align-items: center;
+  animation: fadeIn 0.6s ease both;
+  animation-delay: 0.1s;
+}
 
 .settings-btn {
   display: flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--border-solid);
-  background: var(--surface); cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.4s var(--ease);
-  color: var(--text-secondary);
+  width: 46px; height: 46px; border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: box-shadow 0.25s ease, transform 0.4s var(--ease), color 0.2s ease;
   position: relative; z-index: 2;
 }
 .settings-btn:hover,
 .settings-wrap.is-open .settings-btn,
 .settings-wrap:focus-within .settings-btn {
-  background: var(--accent-light); border-color: var(--accent);
   transform: rotate(90deg);
 }
-.settings-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+.settings-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
 .settings-bubbles {
   position: absolute; top: 100%; right: 0;
   display: flex; flex-direction: column;
-  align-items: flex-end; gap: 8px; padding-top: 8px;
+  align-items: flex-end; gap: 8px; padding-top: 10px;
   z-index: 1; pointer-events: auto;
 }
 
+/* Settings bubbles inherit the same glass treatment as the header pills */
 .settings-bubble {
   display: flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--border-solid);
-  background: var(--surface-solid);
-  background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  cursor: pointer; color: var(--text-secondary);
-  box-shadow: var(--shadow-md); position: relative;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(243, 232, 215, 0.62);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    0 8px 28px rgba(62,40,22,0.16),
+    0 2px 6px  rgba(62,40,22,0.08);
+  cursor: pointer; color: var(--text-primary);
+  position: relative;
   opacity: 0; transform: scale(0.5) translateY(-12px);
   transition: opacity 0.25s var(--ease), transform 0.3s var(--ease),
               background 0.2s ease, border-color 0.2s ease;
   pointer-events: none;
+}
+[data-theme="dark"] .settings-bubble {
+  background: rgba(30,22,16,0.68);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 8px 28px rgba(0,0,0,0.35),
+    0 2px 6px  rgba(0,0,0,0.20);
 }
 .settings-bubble svg { width: 17px; height: 17px; flex-shrink: 0; }
 .settings-bubble:nth-child(1) { transition-delay: 0.04s; }
@@ -392,7 +743,7 @@ footer {
 ============================================================ */
 main {
   display: flex; flex-direction: column; align-items: center;
-  gap: 64px; padding: 88px 44px;
+  gap: 64px; padding: var(--header-clearance) 44px 88px;
 }
 
 /* ============================================================
@@ -742,7 +1093,6 @@ main {
 
 .card:hover .card-image img {
   transform: scale(1.05);
-  filter: brightness(0.78);
 }
 .card-overlay {
   position: absolute; inset: 0;
@@ -782,7 +1132,7 @@ main {
 .card-overlay-impact strong { color: #fff; font-weight: 600; }
 .card-text {
   display: flex; flex-direction: column;
-  gap: 14px; padding: 28px 24px 24px; flex-grow: 1;
+  gap: 12px; padding: 22px 22px 24px; flex-grow: 1;
   /* Transparent — glass effect comes from the card body's backdrop-filter */
   background: transparent;
   border-top: 1px solid rgba(255, 255, 255, 0.58);
@@ -797,8 +1147,9 @@ main {
 /* Display title — large, bold, engraved into the glass surface */
 .card-text h3 {
   font-family: var(--font-heading);
-  font-size: 38px; font-weight: 700;
-  line-height: 1.08; letter-spacing: -0.8px;
+  font-size: 30px; font-weight: 700;
+  line-height: 1.12; letter-spacing: -0.6px;
+  margin-top: 2px;
   /* Engraved: readable opacity + deep groove shadows */
   color: rgba(26, 22, 20, 0.80);
   text-shadow:
@@ -846,75 +1197,54 @@ main {
 }
 .btn:hover { background: var(--accent-btn-bg); border-color: var(--accent-btn-bg); color: #fff; }
 
-/* ---- Card buttons: warm sand, smooth gradient, soft lift ---- */
+/* ---- Card buttons: frosted glass overlay panel ---- */
 .card .btn {
-  padding: 15px 20px;
-  font-size: 15px;
-  border-radius: 14px;
-  /* Embossed — raised out of the glass surface */
-  background: rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(10px) saturate(1.3);
-  -webkit-backdrop-filter: blur(10px) saturate(1.3);
-  border: none;
-  color: rgba(36, 22, 6, 0.72);
+  padding: 13px 20px;
+  font-size: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  color: rgba(26, 16, 6, 0.72);
+  text-shadow: none;
+  font-weight: 550;
   box-shadow:
-    /* top rim: bright — light hits the raised top face */
-    inset 0  2px 0 rgba(255, 255, 255, 0.90),
-    /* left rim: secondary light catch */
-    inset  2px 0 0 rgba(255, 255, 255, 0.55),
-    /* bottom rim: shadow — underside of raised bump */
-    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
-    /* right rim: secondary shadow */
-    inset -2px 0 0 rgba(0, 0, 0, 0.10),
-    /* very subtle outer contact shadow — grounded, not floating */
-    0 1px 3px rgba(60, 40, 16, 0.14);
-  text-shadow:
-    0  1px 0 rgba(255, 255, 255, 0.60),
-    0 -1px 0 rgba(0, 0, 0, 0.10);
-  font-weight: 600;
-  transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 2px 8px rgba(60, 40, 16, 0.10);
+  transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
 }
 .card .btn:hover {
-  /* Etched — pressed into the glass */
-  background: rgba(0, 0, 0, 0.07);
-  border-color: rgba(255, 255, 255, 0.28);
-  color: rgba(28, 16, 4, 0.62);
+  background: rgba(0, 0, 0, 0.055);
+  border-color: rgba(255, 255, 255, 0.30);
+  color: rgba(26, 16, 6, 0.65);
   transform: translateY(1px);
   box-shadow:
-    /* inner top shadow — groove depth */
-    inset 0  3px 7px rgba(0, 0, 0, 0.18),
-    inset 0  1px 3px rgba(0, 0, 0, 0.12),
-    /* bottom highlight — light catches bottom of groove */
-    inset 0 -1px 0 rgba(255, 255, 255, 0.60),
-    /* side groove shadows */
-    inset  1px 0 2px rgba(0, 0, 0, 0.08),
-    inset -1px 0 2px rgba(0, 0, 0, 0.08);
-  text-shadow:
-    0  2px 0 rgba(255, 255, 255, 0.65),
-    0 -1px 0 rgba(0, 0, 0, 0.14);
+    inset 0 3px 8px rgba(0, 0, 0, 0.13),
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.55);
 }
 .card .btn svg { filter: brightness(0) opacity(0.45); }
-.card .btn:hover svg { filter: brightness(0) opacity(0.60); transform: translateX(3px); }
+.card .btn:hover svg { filter: brightness(0) opacity(0.55); transform: translateX(3px); }
 [data-theme="dark"] .card .btn {
-  background: rgba(255, 255, 255, 0.10);
-  color: rgba(245, 240, 234, 0.85);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(245, 240, 234, 0.80);
   box-shadow:
-    inset 0  2px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -2px 0 rgba(0,   0,   0,   0.40),
-    inset  2px 0 0 rgba(255, 255, 255, 0.10),
-    inset -2px 0 0 rgba(0,   0,   0,   0.22),
-    0 1px 4px rgba(0, 0, 0, 0.30);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.25);
   text-shadow: none;
 }
 [data-theme="dark"] .card .btn:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.20);
   color: rgba(245, 240, 234, 0.95);
   box-shadow:
-    inset 0  3px 7px rgba(0, 0, 0, 0.40),
-    inset 0  1px 3px rgba(0, 0, 0, 0.25),
-    inset 0 -1px 0   rgba(255, 255, 255, 0.18);
+    inset 0 3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 3px rgba(0, 0, 0, 0.20),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.14);
 }
-[data-theme="dark"] .card .btn svg { filter: brightness(10) opacity(0.60); }
+[data-theme="dark"] .card .btn svg { filter: brightness(10) opacity(0.55); }
 [data-theme="dark"] .card .btn:hover svg { filter: brightness(10) opacity(0.75); transform: translateX(3px); }
 [data-theme="dark"] .btn:hover,
 [data-theme="dark"] .case-btn:hover {
@@ -924,6 +1254,136 @@ main {
 }
 .btn svg { width: 13px; height: 13px; transition: transform 0.2s ease, filter 0.2s ease; }
 .btn:hover svg { transform: translateX(3px); filter: brightness(10); }
+
+/* ============================================================
+   HOMEPAGE — PROJECT ROW CARDS
+   Compact horizontal row layout. Body (left) + image (right) in a
+   grid. The card-image keeps a hover-reveal overlay with date,
+   tags, and impact so the row stays clean at rest but dense on
+   demand. Uniform height across all four projects.
+============================================================ */
+.cards--rows {
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 22px;
+  max-width: 1220px;
+}
+.card--row {
+  flex: 1 1 auto;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  min-height: 320px;
+}
+.card--row .card-text {
+  padding: 32px 36px 30px;
+  gap: 14px;
+  border-top: none;
+  box-shadow: none;
+  justify-content: center;
+}
+.card--row .card-image {
+  position: relative;
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.55);
+}
+.card--row .card-image img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+[data-theme="dark"] .card--row .card-image {
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+.card--row .card-text h3 {
+  font-size: 40px;
+  letter-spacing: -1px;
+  line-height: 1.05;
+}
+.card--row .card-text p {
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 48ch;
+  flex-grow: 0;
+}
+.card--row .btn-magnetic {
+  margin-top: 8px;
+  padding-top: 0;
+  align-self: flex-start;
+}
+.card--row .btn {
+  width: auto;
+  padding: 12px 22px;
+  font-size: 14px;
+}
+.card--row:hover { transform: translateY(-6px); }
+
+/* Eyebrow above title — small uppercase kicker with an accent dot */
+.card-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.6px;
+  color: var(--accent-text);
+}
+.kicker-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent-text);
+  flex-shrink: 0;
+}
+
+.card .card-num {
+  position: absolute; top: 14px; left: 14px;
+  z-index: 11; pointer-events: none;
+  font-family: var(--font-heading);
+  font-size: 17px; font-weight: 700; font-style: italic;
+  line-height: 1; letter-spacing: 0.2px;
+  padding: 5px 10px 6px;
+  border-radius: 999px;
+  color: rgba(26, 22, 20, 0.78);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow:
+    inset 0  1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(0,   0,   0,   0.06),
+    0 1px 3px rgba(26, 22, 20, 0.12);
+}
+[data-theme="dark"] .card .card-num {
+  color: rgba(245, 240, 234, 0.92);
+  background: rgba(26, 18, 14, 0.55);
+  box-shadow:
+    inset 0  1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.30),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Row-card num: full-height left strip, not a floating pill */
+.card--row .card-num {
+  position: relative; top: auto; left: auto;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: none;
+  box-shadow: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.38);
+  color: rgba(26, 22, 20, 0.62);
+  font-size: 19px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  letter-spacing: 0.5px;
+}
+[data-theme="dark"] .card--row .card-num {
+  background: rgba(255, 255, 255, 0.04);
+  border-right-color: rgba(255, 255, 255, 0.08);
+  color: rgba(245, 240, 234, 0.55);
+}
 
 /* ============================================================
    HOMEPAGE — BENTO GRID
@@ -1033,7 +1493,7 @@ main {
 /* Hero */
 .case-hero {
   width: 100%; max-width: 1212px;
-  padding: 140px 64px 60px;
+  padding: calc(var(--header-clearance) + 40px) 64px 60px;
   display: flex; flex-direction: column;
   align-items: center; text-align: center; gap: 20px;
 }
@@ -1085,7 +1545,7 @@ main {
 
 /* Page-level breathing room above/below the hero card */
 .case-main .hero-wrapper {
-  margin-top: 44px;
+  margin-top: var(--header-clearance);
   margin-bottom: 40px;
   width: calc(100% - 88px); /* 44px side gap on each side, matching main { padding: 88px 44px } */
 }
@@ -1443,22 +1903,6 @@ main {
 /* ============================================================
    REDUCED TRANSPARENCY
 ============================================================ */
-@media (prefers-reduced-transparency: reduce) {
-  /* Cards intentionally excluded — glass appearance always preserved */
-  body > header, .bento-card, .process-pipeline-card,
-  .overview-card, .stat-card, .reflection-card {
-    background: var(--surface-solid) !important;
-    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
-  }
-  [data-theme="dark"] body > header,
-  [data-theme="dark"] .bento-card,
-  [data-theme="dark"] .process-pipeline-card,
-  [data-theme="dark"] .overview-card,
-  [data-theme="dark"] .stat-card,
-  [data-theme="dark"] .reflection-card {
-    background: var(--surface-solid) !important;
-  }
-}
 
 /* ============================================================
    RESPONSIVE — TABLET  800–1279px
@@ -1466,7 +1910,7 @@ main {
 @media (max-width: 1279px) {
   body > header { padding: 16px 28px; }
   /* Homepage */
-  main { padding: 60px 28px; gap: 52px; }
+  main { padding: var(--header-clearance) 28px 52px; gap: 52px; }
   .hero { padding: 52px 44px; }
   .hero-text-backdrop { padding: 32px 36px; }
   .hero h1 { font-size: 48px; letter-spacing: -0.8px; }
@@ -1528,14 +1972,15 @@ main {
    RESPONSIVE — MOBILE  1–799px
 ============================================================ */
 @media (max-width: 799px) {
-  body > header { padding: 16px 18px; }
-  .header-name { font-size: 20px; }
-  nav.header-links a { font-size: 0; gap: 0; }
-  nav.header-links a svg { width: 22px; height: 22px; }
-  nav.header-links { gap: 14px; }
-  .header-right { gap: 14px; }
+  body > header { padding: 14px 16px; grid-template-columns: auto 1fr auto; }
+  /* Collapse the center pill to wordmark only, hide extras pill, show hamburger */
+  nav.nav-pill { grid-column: 1; justify-self: start; padding: 6px 8px; }
+  .nav-pill-divider--name,
+  .nav-pill-sections { display: none; }
+  .extras-pill { display: none; }
+  .nav-menu-btn { display: flex; grid-column: 3; }
   /* Homepage */
-  main { padding: 40px 18px; gap: 36px; }
+  main { padding: var(--header-clearance) 18px 40px; gap: 36px; }
   .hero-wrapper::before, .hero-wrapper::after { display: none; }
   .hero { padding: 40px 22px; gap: 20px; }
   .hero-text-backdrop { padding: 28px 20px; gap: 20px; border-radius: 14px; }
@@ -1547,6 +1992,13 @@ main {
   .card-text { padding: 22px 20px 20px; }
   .card-text h3 { font-size: 34px; letter-spacing: -0.6px; }
   .card-text p { font-size: 14px; }
+  /* Row cards stack vertically on mobile */
+  .card--row { grid-template-columns: 1fr; min-height: auto; }
+  .card--row .card-text { padding: 24px 22px 22px; }
+  .card--row .card-text h3 { font-size: 30px; letter-spacing: -0.6px; }
+  .card--row .card-image { min-height: 220px; aspect-ratio: 5/3; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
+  [data-theme="dark"] .card--row .card-image { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
+  .card .card-num { font-size: 16px; top: 12px; left: 14px; }
   .bento-grid { grid-template-columns: 1fr; }
   .bento-card:nth-child(3) { grid-column: span 1; }
   .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }

@@ -9,11 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./linger.css?v=3">
+  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./linger.css?v=4">
   <style>
     /* Hero card breathing room, side padding, button alignment */
     .case-main .hero-wrapper {
-      margin-top: 64px !important; margin-bottom: 48px !important;
+      margin-top: var(--header-clearance) !important; margin-bottom: 48px !important;
       width: calc(100% - 88px) !important;
     }
     @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
@@ -116,22 +117,48 @@
       .sprint-timeline { grid-template-columns: 1fr; padding: 16px 18px 24px; }
     }
 
-    /* Brand / logo image — full-width below phone pair */
-    .linger-brand-wrap {
+    /* Showcase row — logo left, phones right, both scale with viewport */
+    .linger-showcase-row {
       width: 100%; max-width: 1212px;
       padding: 40px 64px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: stretch;
     }
-    .linger-brand-wrap img {
+    .linger-showcase-row .linger-brand-cell,
+    .linger-showcase-row .phone-pair {
+      margin: 0;
+      display: flex; align-items: center; justify-content: center;
+      min-width: 0; /* allow grid cell to shrink below intrinsic content */
+    }
+    /* Logo image — fills cell width, height follows */
+    .linger-showcase-row .linger-brand-cell img {
       width: 100%; height: auto; display: block;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
     }
-    @media (max-width: 900px) { .linger-brand-wrap { padding: 32px 28px 0; } }
-    @media (max-width: 600px) { .linger-brand-wrap { padding: 24px 18px 0; } }
+    /* Phone pair — override fixed 500px height from style.css.
+       Each phone takes ~48% of cell width; height auto-scales via aspect ratio. */
+    .linger-showcase-row .phone-pair { position: relative; }
+    .linger-showcase-row .phone-pair img {
+      height: auto;
+      width: 48%;
+      max-width: 260px;
+      object-fit: contain;
+    }
+    @media (max-width: 900px) {
+      .linger-showcase-row { grid-template-columns: 1fr; gap: 32px; padding: 32px 28px 0; }
+      .linger-showcase-row .phone-pair img { width: 40%; max-width: 240px; }
+    }
+    @media (max-width: 600px) {
+      .linger-showcase-row { padding: 24px 18px 0; gap: 24px; }
+      .linger-showcase-row .phone-pair img { width: 44%; max-width: 200px; }
+    }
   </style>
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
 </head>
-<body>
+<body data-page-tint="linger">
 
   <!-- ===== ORB BACKDROP ===== -->
   <!-- Iridescent glass orbs from the Linger design system, scattered as fixed atmosphere -->
@@ -210,27 +237,25 @@
       </div>
     </div>
 
-    <!-- Hero Showcase -->
-    <section class="case-showcase" aria-label="Linger app showcase">
+    <!-- Hero Showcase — logo left, phones right -->
+    <section class="linger-showcase-row" aria-label="Linger app showcase">
+      <div class="linger-brand-cell">
+        <img src="./assets/linger-logo.png" alt="Linger brand">
+      </div>
       <div class="phone-pair">
         <img src="./assets/linger-screen-1.png" alt="Linger app — scent detection screen">
         <img src="./assets/linger-screen-2.png" alt="Linger app — sensory library screen">
       </div>
     </section>
 
-    <!-- Brand image — full-width below phone pair -->
-    <div class="linger-brand-wrap">
-      <img src="./assets/linger-logo.png" alt="Linger brand">
-    </div>
-
     <!-- ===== OVERVIEW BAND ===== -->
-    <section class="case-band" aria-label="Project overview">
+    <section id="my-role" class="case-band" aria-label="Project overview" data-nav-label="My Role">
       <div class="case-band-inner">
         <div class="linger-overview-section">
         <div class="overview-grid">
           <div class="overview-card">
             <h3>The Challenge</h3>
-            <p>Design a tool that tracks, measures, visualizes, or quantifies an aspect of human sensory experience, while providing the ability to detect, enhance, or manipulate those same sensory inputs.</p>
+            <p>FigBuild 2026 asked us to quantify a human sense. We picked the one without a vocabulary, and built for the people most failed by its absence.</p>
           </div>
           <div class="overview-card">
             <h3>My Role</h3>
@@ -324,52 +349,43 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 01 / OVERVIEW ===== -->
-    <section class="case-section" aria-label="Project Overview">
+    <section id="overview" class="case-section" aria-label="Project Overview" data-nav-label="Overview">
       <div class="section-eyebrow"><span class="section-num">01</span>Overview</div>
       <div class="content-full">
-        <h2>The Challenge &amp; Sense...</h2>
-        <p>FigBuild 2026 challenged us to design a tool that quantifies human sensory experience. We chose <em>olfaction</em>, the most primal and emotionally-charged sense.</p>
-        <ul>
-          <li><strong>The Sense:</strong> Olfaction: smell and its connection to memory and emotional regulation.</li>
-          <li><strong>The Output:</strong> A wearable-integrated mobile ecosystem for scent-mapping.</li>
-          <li><strong>Tools:</strong> Figma, FigJam, Figma Slides, Google Gemini AI.</li>
-        </ul>
+        <h2>83 hours to quantify a sense</h2>
+        <p>FigBuild 2026 asked designers to quantify a human sensory experience. Four of us, none of whom had worked together before, none of whom had done a designathon. We picked smell. It's the sense without a vocabulary, the one most tied to memory, and the one a sprint could actually prototype.</p>
+        <p>I pushed, consistently, for ideas that could benefit someone in a serious way. For scent, that meant Alzheimer's and dementia: reaching memories through a sense wired straight to them. That's why this project exists.</p>
       </div>
     </section>
 
-    <!-- ===== 02 / THE PROBLEM ===== -->
-    <section class="case-section" aria-label="The Problem">
-      <div class="section-eyebrow"><span class="section-num">02</span>The Problem</div>
+    <!-- ===== 02 / CONCEPT ===== -->
+    <section id="concept" class="case-section" aria-label="How we landed on smell">
+      <div class="section-eyebrow"><span class="section-num">02</span>Concept</div>
       <div class="content-full">
-        <h2>An Invisible Language...</h2>
-        <p><em>"Smell is the most overlooked human sense, yet the most powerful link to our subconscious memory."</em></p>
-        <ol>
-          <li><strong>The Gap:</strong> Society prioritizes visual and auditory data, leaving olfactory experiences unquantified and fleeting.</li>
-          <li><strong>The Insight:</strong> Users lack a vocabulary for scent. Without a way to "save" a smell, we lose the emotional and environmental context associated with it.</li>
-          <li><strong>The Goal:</strong> Transform chemical signals into a tangible, digital archive to support emotional grounding and memory retrieval.</li>
-        </ol>
+        <h2>Two ideas we killed first</h2>
+        <p>Before scent, we had two ambitious concepts on the table.</p>
+        <ul>
+          <li><strong>Biophilic AR.</strong> A speculative space-station UI that would swap sterile surroundings for responsive natural scenery, calibrated to your biophilic response. Scope consumed too many resources. AR was a skill gap, and the problem space was too open.</li>
+          <li><strong>A sensory-deprivation cloak.</strong> An app-controlled wearable that compresses your sense of time, built around pain and boredom: MRIs for chronic-pain patients, and long boring flights. The team didn't align. We moved on.</li>
+        </ul>
+        <p>We returned to scent. It was feasible in 83 hours, and we had a shared visual excitement about what scent could <em>look</em> like. The use case shifted early: our first instinct was a scanner for identifying someone's perfume. It didn't feel weighty enough. Once we reframed around helping someone with Alzheimer's re-access a memory, the project earned its scope.</p>
       </div>
     </section>
 
     <hr class="case-divider" aria-hidden="true">
 
-    <!-- ===== 03 / THE ECOSYSTEM ===== -->
-    <section class="case-section" aria-label="The Ecosystem">
-      <div class="section-eyebrow"><span class="section-num">03</span>The Ecosystem</div>
+    <!-- ===== 03 / THE APP ===== -->
+    <section id="app" class="case-section" aria-label="The App">
+      <div class="section-eyebrow"><span class="section-num">03</span>The App</div>
       <div class="content-full">
-        <h2>Detect. Archive. Map.</h2>
-        <p>Three interconnected layers form the Linger ecosystem, each addressing a distinct phase of the sensory experience.</p>
+        <h2>A scent app, and the wearable it would need to exist</h2>
+        <p>The app does four things: detect, archive, map, and emit. A speculative wearable enters the picture because scent has to come from somewhere. A brain chip felt lazy. A nose-worn attachment was the most honest delivery mechanism for a speculative concept, but the app is where our time was spent.</p>
       </div>
 
       <div class="content-row">
         <div class="text-col">
-          <h2>A. Detect: The Wearable</h2>
-          <p>A speculative wearable that senses ambient chemical compounds in real-time. Users "capture" a scent as a <strong>Memory Signal</strong>.</p>
-          <ul>
-            <li>Generative <strong>Orbs</strong> represent each captured scent.</li>
-            <li>Color encodes chemical family (Floral, Earthy, Synthetic).</li>
-            <li>Texture and vibrancy reflect emotional state at time of capture.</li>
-          </ul>
+          <h2>A. Detect</h2>
+          <p>The wearable senses ambient chemical compounds in real-time. Users capture a scent as a memory signal, represented by an orb whose color reflects its chemical family, and whose texture and vibrancy reflect the state of the moment it was captured.</p>
         </div>
         <div class="image-col">
           <img src="./assets/linger-detect.png" alt="Linger wearable interface showing scent detection and orb visualization">
@@ -378,12 +394,8 @@
 
       <div class="content-row reverse">
         <div class="text-col">
-          <h2>B. Library: The Sensory Archive</h2>
-          <p>A personal database of olfactory history. Each entry logs <strong>Date, Geo-Location, Mood,</strong> and <strong>Scent Intensity</strong>.</p>
-          <ul>
-            <li>Enables scent-based reflection; revisit moments through a non-linear, sensory lens.</li>
-            <li>Surfaces emotional and environmental context that was previously invisible.</li>
-          </ul>
+          <h2>B. Archive</h2>
+          <p>A personal library of olfactory history. Each entry logs date, location, mood, and scent intensity, letting users revisit moments through a non-linear, sensory lens.</p>
         </div>
         <div class="image-col">
           <img src="./assets/linger-library.png" alt="Linger sensory library showing scent history entries with mood and location data">
@@ -392,12 +404,8 @@
 
       <div class="content-row">
         <div class="text-col">
-          <h2>C. Map: Olfactory Navigation</h2>
-          <p>A spatial visualization of the user's "Scent-Scape." View saved signals, discover similar scents in the wild, or follow <strong>Scent Trails</strong>.</p>
-          <ul>
-            <li>Transforms ordinary environments into interactive, grounding experiences.</li>
-            <li>Reduces sensory overstimulation by making the environment navigable.</li>
-          </ul>
+          <h2>C. Map</h2>
+          <p>A spatial visualization of the user's scent-scape. View saved signals, discover similar scents in the environment, or follow scent trails through a place.</p>
         </div>
         <div class="image-col">
           <img src="./assets/linger-map.png" alt="Linger olfactory map showing spatial scent visualization and trails">
@@ -407,23 +415,23 @@
 
     <hr class="case-divider" aria-hidden="true">
 
-    <!-- ===== 04 / DESIGN EXECUTION ===== -->
-    <section class="case-section" aria-label="Design Execution and Craft">
-      <div class="section-eyebrow"><span class="section-num">04</span>Design Execution &amp; Craft</div>
+    <!-- ===== 04 / PROTOTYPE ===== -->
+    <section class="case-section" aria-label="Prototype">
+      <div class="section-eyebrow"><span class="section-num">04</span>Prototype</div>
 
       <div class="content-full">
-        <h2>Visualizing the Invisible...</h2>
-        <p>Digital screens have no symbolic language for smell. We developed a visual system built on <strong>chromatic orbs</strong> as the core metaphor.</p>
+        <h2>Orbs as a diegetic interface</h2>
+        <p>Before orbs, we tried perfume-bottle glass, gradients, and a few other directions. The orbs just felt right to all four of us. They stayed customizable in color, they felt abstract enough to hold meaning without prescribing it, and they doubled as a living home screen where favorite scents grow with each scan.</p>
         <ul>
-          <li><strong>Vibrancy</strong> = Scent Intensity.</li>
-          <li><strong>Hue</strong> = Chemical Family (Floral, Earthy, Synthetic).</li>
-          <li><strong>Diffusion</strong> = Scent Longevity &amp; Range.</li>
+          <li><strong>Vibrancy</strong> = scent intensity</li>
+          <li><strong>Hue</strong> = chemical family</li>
+          <li><strong>Diffusion</strong> = scent longevity and range</li>
         </ul>
       </div>
 
       <!-- Demo Video -->
       <div class="content-full">
-        <h2>Demo...</h2>
+        <h2>Demo</h2>
         <video
           controls
           style="width:100%;border-radius:var(--radius-md);background:var(--bg-secondary);"
@@ -433,27 +441,9 @@
         </video>
       </div>
 
-      <!-- Slide Deck / Case Study PDF -->
-      <div class="content-full">
-        <h2>Slide Deck...</h2>
-        <object
-          data="./assets/linger.pdf"
-          type="application/pdf"
-          title="Linger case study slide deck"
-          style="border:1px solid var(--border-solid);border-radius:var(--radius-md);width:100%;height:680px;display:block;">
-          <p style="padding:24px 0;">
-            PDF preview not available in this browser.
-            <a href="./assets/linger.pdf" target="_blank" rel="noopener noreferrer" class="case-btn" style="display:inline-flex;margin-top:12px;">
-              Open Slide Deck
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-            </a>
-          </p>
-        </object>
-      </div>
-
       <!-- Figma Prototype Embed -->
-      <div class="content-full">
-        <h2>Interactive Prototype...</h2>
+      <div id="prototype" class="content-full" data-nav-label="Prototype">
+        <h2>Interactive Prototype</h2>
         <p>Select a flow to explore below.</p>
 
         <div class="proto-tabs" role="tablist" aria-label="Prototype flows">
@@ -548,14 +538,16 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 05 / RESPONSIBILITY ===== -->
-    <section class="case-section" aria-label="Responsibility and Safeguards">
-      <div class="section-eyebrow"><span class="section-num">05</span>Responsibility &amp; Safeguards</div>
+    <section class="case-section" aria-label="Responsibility">
+      <div class="section-eyebrow"><span class="section-num">05</span>Responsibility</div>
       <div class="content-full">
-        <h2>Designing with Care...</h2>
-        <p>Olfactory data is deeply personal. We built safeguards into the core of the product.</p>
+        <h2>Designing around responsibility</h2>
+        <p>Olfactory data is deeply personal. The brief pushed us to think about this, and we leaned in. Four safeguards built into the product:</p>
         <ul>
-          <li><strong>Ghost Zones:</strong> User-defined areas where scent detection is automatically disabled to protect the privacy of others.</li>
-          <li><strong>Relevance-Based Filtering:</strong> To prevent "Sensory Fatigue," the app only surfaces signals that align with the user's current wellness goals, keeping information overload in check.</li>
+          <li><strong>Ghost zones:</strong> user-defined areas where scent detection is automatically turned off, so others around you aren't quietly being scanned.</li>
+          <li><strong>Cognitive-overload prevention:</strong> the app caps scent intensity and how many signals surface at once, so users aren't overwhelmed.</li>
+          <li><strong>Palette-cleanser:</strong> a quick way to clear lingering scents between emissions, so one memory doesn't bleed into the next.</li>
+          <li><strong>Ambient-scent filter:</strong> a way to block unwanted scents from the environment, so users control what they take in.</li>
         </ul>
       </div>
     </section>
@@ -563,68 +555,38 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 06 / REFLECTION ===== -->
-    <section class="case-section" aria-label="Reflection and Future Growth">
-      <div class="section-eyebrow"><span class="section-num">06</span>Reflection &amp; Future Growth</div>
+    <section id="reflection" class="case-section" aria-label="Reflection" data-nav-label="Reflection">
+      <div class="section-eyebrow"><span class="section-num">06</span>Reflection</div>
       <div class="content-full">
-        <h2>What We Learned &amp; What's Next...</h2>
-        <p>Designing for a "hidden" sense within a 83-hour window pushed us to balance scientific accuracy with emotional resonance in every decision.</p>
+        <h2>What 83 hours with a strange sense taught me</h2>
 
         <div class="reflection-grid">
           <div class="reflection-card reflection-card--wide">
-            <h3>Key Lessons...</h3>
+            <h3>Kill ideas faster</h3>
+            <p>Day 1 brainstorming ran long, and we nearly lost the build trying to settle on a concept. Next time: hard time caps per phase, everyone's top ideas on the table up front, and someone actively flagging when we're drifting past the deadline.</p>
+          </div>
+
+          <div class="reflection-card">
+            <h3>One question I'd keep workshopping</h3>
+            <p><em>"Do users need to see the chemistry behind a scent like 'rain on asphalt,' or is naming the orb enough?"</em></p>
+            <p>We didn't have time to resolve this. The app shows both, and neither felt fully right. Honest answer: I don't know yet.</p>
+          </div>
+
+          <div class="reflection-card">
+            <h3>What I'd push for next time</h3>
             <ul>
-              <li><strong>Give Users Control of Interpretation</strong>
-                <ul class="skill-detail">
-                  <li>Designing for hidden senses means providing users with authorship over meaning, not just raw data.</li>
-                </ul>
-              </li>
-              <li><strong>Speculative Design Needs Grounding</strong>
-                <ul class="skill-detail">
-                  <li>Every speculative element (the wearable, the orbs, the ghost zones) needed a real human need anchoring it.</li>
-                </ul>
-              </li>
-              <li><strong>Visual Language is the Product</strong>
-                <ul class="skill-detail">
-                  <li>When the sense itself can't be displayed, the visual metaphor becomes the entire user experience.</li>
-                </ul>
-              </li>
-              <li><strong>AI-Assisted Ideation</strong>
-                <ul class="skill-detail">
-                  <li>Using Google Gemini for brainstorming accelerated workshopping significantly within the 83-hour constraint.</li>
-                </ul>
-              </li>
+              <li><strong>Animation fidelity:</strong> the orb-float behavior we prototyped and cut.</li>
+              <li><strong>Tool evaluation:</strong> we tried Figma Make. At our scale, building the prototype manually was faster and more controllable.</li>
+              <li><strong>Usability testing:</strong> not possible in 83 hours, but this product needs it before any serious next step.</li>
             </ul>
           </div>
 
           <div class="reflection-card">
-            <h3>The Sprint...</h3>
-            <ul>
-              <li><strong>Biggest Challenge:</strong> Day 1 brainstorming ran well over time. We struggled to decisively land on a concept the whole team wanted to pursue.
-                <ul class="skill-detail">
-                  <li>For next time: set a hard time cap for each phase, collect everyone's top ideas up front, and actively call out when the team is drifting past the deadline.</li>
-                </ul>
-              </li>
-              <li>Balancing scientific accuracy with emotional resonance within an 83-hour window.</li>
-              <li>Keeping every speculative design decision grounded in real human emotional needs, not just novelty.</li>
-            </ul>
-          </div>
-
-          <div class="reflection-card">
-            <h3>What's Next...</h3>
-            <ul>
-              <li>Multisensory haptic integration for scent playback.</li>
-              <li>Social "Scent-Sharing" features for shared memory experiences.</li>
-              <li>Long-term studies on Linger's impact on Alzheimer's and memory-related wellness.</li>
-            </ul>
-          </div>
-
-          <div class="reflection-card">
-            <h3>Tools Used...</h3>
+            <h3>Tools used</h3>
             <ul>
               <li>Figma: UI design, prototyping, and components.</li>
-              <li>FigJam: Collaborative ideation and workshopping.</li>
-              <li>Figma Slides: Designathon presentation.</li>
-              <li>Google Gemini AI: Brainstorming and concept acceleration.</li>
+              <li>FigJam: collaborative ideation.</li>
+              <li>Google Gemini: brainstorming and concept acceleration.</li>
             </ul>
           </div>
         </div>
@@ -635,7 +597,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
 
   <!-- Linger: Frutiger Aero — shimmery light water bg, glassy orbs bouncing -->
   <script>
@@ -814,9 +776,9 @@
         scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
       });
 
-      gsap.from('.case-showcase', {
+      gsap.from('.linger-showcase-row', {
         y: 50, opacity: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.case-showcase', start: 'top 85%' }
+        scrollTrigger: { trigger: '.linger-showcase-row', start: 'top 85%' }
       });
 
       gsap.from('.overview-card', {

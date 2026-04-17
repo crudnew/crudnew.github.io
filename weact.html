@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./weact.css?v=3">
+  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./weact.css?v=4">
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
     /* Hero card breathing room */
-    .case-main .hero-wrapper { margin-top: 64px !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
+    .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
     @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
     @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
     .hero-wrapper .case-btn { margin-top: 0; }
@@ -56,7 +57,7 @@
     .image-col img        { box-shadow: var(--shadow-md); border-radius: var(--radius-md); max-height: 420px; width: auto; max-width: 100%; }
   </style>
 </head>
-<body>
+<body data-page-tint="weact">
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header-component></header-component>
@@ -235,7 +236,7 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 01 / RESEARCH ===== -->
-    <section class="case-section" aria-label="Research, Synthesis and Ideation">
+    <section id="research" class="case-section" aria-label="Research, Synthesis and Ideation" data-nav-label="Research">
       <div class="section-eyebrow"><span class="section-num">01</span>Research &amp; Discovery</div>
       <div class="content-row">
         <div class="text-col">
@@ -255,7 +256,7 @@
     </section>
 
     <!-- ===== 02 / INSIGHTS ===== -->
-    <section class="case-section" aria-label="Key Insights">
+    <section id="insights" class="case-section" aria-label="Key Insights" data-nav-label="Insights">
       <div class="section-eyebrow"><span class="section-num">02</span>Key Insights</div>
       <div class="content-row reverse">
         <div class="text-col">
@@ -315,7 +316,7 @@
     </section>
 
     <!-- ===== 04 / TESTING ===== -->
-    <section class="case-section" aria-label="Testing">
+    <section id="testing" class="case-section" aria-label="Testing" data-nav-label="Testing">
       <div class="section-eyebrow"><span class="section-num">04</span>Usability Testing</div>
       <div class="content-row reverse">
         <div class="text-col">
@@ -331,7 +332,7 @@
     <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 05 / OUTCOMES ===== -->
-    <section class="case-section" aria-label="Key Outcomes">
+    <section id="outcomes" class="case-section" aria-label="Key Outcomes" data-nav-label="Outcomes">
       <div class="section-eyebrow"><span class="section-num">05</span>Outcomes &amp; Impact</div>
       <div class="content-full" style="text-align: center;">
         <h2>Key Outcomes &amp; Deliverables...</h2>
@@ -425,7 +426,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
 
   <!-- WeAct: Calming → Strengthening → Active gradient animation -->
   <script>

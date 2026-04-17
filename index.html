@@ -9,12 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=18">
+  <link rel="stylesheet" href="./style.css?v=36">
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
-<body>
+<body data-page-tint="home">
 
   <!-- Skip to main content — keyboard / screen reader -->
   <a class="skip-link" href="#projects-heading">Skip to main content</a>
@@ -44,17 +44,27 @@
 
     <hr class="divider" aria-hidden="true">
 
-    <!-- Selected Work -->
-    <section class="projects-section" aria-labelledby="projects-heading">
+    <!-- Projects -->
+    <section id="projects" class="projects-section" aria-labelledby="projects-heading" data-nav-label="Projects">
       <h2 class="section-heading" id="projects-heading">Projects</h2>
-      <div class="cards">
+      <div class="cards cards--rows">
 
-        <!-- Linger -->
-        <article class="card card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
+        <!-- Linger (featured case) -->
+        <article class="card card--row card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
+          <span class="card-num" aria-hidden="true">01</span>
+          <div class="card-text">
+            <h3>Linger</h3>
+            <p>A speculative wearable and mobile ecosystem for capturing, archiving, and navigating olfactory experiences.</p>
+            <div class="btn-magnetic">
+              <a href="./linger.html" class="btn" aria-label="View Linger case study">
+                View Project
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
           <div class="card-image" aria-hidden="true">
             <img src="./assets/linger-logo.png"
-                 alt="Linger brand — wearable scent-mapping mobile ecosystem"
-                 style="object-position: center center;">
+                 alt="Linger brand — wearable scent-mapping mobile ecosystem">
             <div class="card-overlay" aria-hidden="true">
               <span class="card-overlay-date">MAR. 2026</span>
               <div class="card-overlay-tags">
@@ -65,20 +75,21 @@
               <p class="card-overlay-impact"><strong>Impact:</strong> Designed a multi-feature scent-mapping app prototype (library, navigation, and environment scanner) in 83 hours at FigBuild 2026 by Figma, with a speculative wearable integration concept.</p>
             </div>
           </div>
+        </article>
+
+        <!-- AI-Assisted Portfolio -->
+        <article class="card card--row card--portfolio" aria-label="AI-Assisted Portfolio: This Site" style="display:none">
+          <span class="card-num" aria-hidden="true">02</span>
           <div class="card-text">
-            <h3>Linger</h3>
-            <p>A speculative wearable and mobile app for capturing, archiving, and navigating olfactory experiences.</p>
+            <h3>AI-Assisted Portfolio</h3>
+            <p>This site. Built using Figma, Claude Code, and MCP as a demonstration of a modern AI-assisted design and dev workflow.</p>
             <div class="btn-magnetic">
-              <a href="./linger.html" class="btn" aria-label="More about Linger: Scent-Mapping Ecosystem">
-                More
+              <a href="./portfolio.html" class="btn" aria-label="View AI-Assisted Portfolio case study">
+                View Project
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
-        </article>
-
-        <!-- AI-Assisted Portfolio -->
-        <article class="card card--portfolio" style="display:none;" aria-label="AI-Assisted Portfolio: This Site">
           <div class="card-image" aria-hidden="true">
             <div class="card-image-placeholder">CR</div>
             <div class="card-overlay" aria-hidden="true">
@@ -91,20 +102,21 @@
               <p class="card-overlay-impact"><strong>Ongoing:</strong> Figma designs connected to a local codebase via MCP, with Claude as a pair programmer for UI, animations, accessibility, refinements and redesigns. Deployed to GitHub Pages.</p>
             </div>
           </div>
+        </article>
+
+        <!-- WeAct -->
+        <article class="card card--row card--weact" aria-label="WeAct: Reimagining Local Volunteering">
+          <span class="card-num" aria-hidden="true">03</span>
           <div class="card-text">
-            <h3>AI-Assisted Portfolio</h3>
-            <p>This site. Built using Figma, Claude Code, and MCP as a demonstration of a modern AI-assisted design and dev workflow.</p>
+            <h3>WeAct: Reimagining Local Volunteering</h3>
+            <p>An app that makes local volunteering easier to find and commit to.</p>
             <div class="btn-magnetic">
-              <a href="./portfolio.html" class="btn" aria-label="More about AI-Assisted Portfolio">
-                More
+              <a href="/weact.html" class="btn" aria-label="View WeAct case study">
+                View Project
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
-        </article>
-
-        <!-- WeAct -->
-        <article class="card card--weact" aria-label="WeAct: Reimagining Local Volunteering">
           <div class="card-image" aria-hidden="true">
             <img src="./assets/Homepage-WeAct.png"
                  alt="WeAct app — Dog Rescue Volunteer listing screen showing scheduling, location, and description details">
@@ -118,20 +130,21 @@
               <p class="card-overlay-impact"><strong>Impact:</strong> Reduced friction in the volunteer discovery process from first search to confirmed commitment.</p>
             </div>
           </div>
+        </article>
+
+        <!-- Crime Map -->
+        <article class="card card--row card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
+          <span class="card-num" aria-hidden="true">04</span>
           <div class="card-text">
-            <h3>WeAct: Reimagining Local Volunteering</h3>
-            <p>An app that makes local volunteering easier to find and commit to.</p>
+            <h3>Crime Map: Undergraduate Capstone</h3>
+            <p>A website that helps users feel safer in their city through real-time crime data and incident reporting.</p>
             <div class="btn-magnetic">
-              <a href="/weact.html" class="btn" aria-label="More about WeAct: Reimagining Local Volunteering">
-                More
+              <a href="./crimemap.html" class="btn" aria-label="View Crime Map case study">
+                View Project
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
-        </article>
-
-        <!-- Crime Map -->
-        <article class="card card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
           <div class="card-image" aria-hidden="true">
             <img src="./assets/Homepage-CrimeMap.png"
                  alt="Crime Map website showing a map with incident markers and statistical overlays">
@@ -145,16 +158,6 @@
               <p class="card-overlay-impact"><strong>Impact:</strong> Gave users real-time visibility into local crime data to support more informed, safer decisions.</p>
             </div>
           </div>
-          <div class="card-text">
-            <h3>Crime Map: Undergraduate Capstone</h3>
-            <p>A website that helps users feel safer in their city through real-time crime data and incident reporting.</p>
-            <div class="btn-magnetic">
-              <a href="./crimemap.html" class="btn" aria-label="More about Crime Map: Undergraduate Capstone">
-                More
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-            </div>
-          </div>
         </article>
 
       </div>
@@ -163,7 +166,7 @@
     <hr class="divider" aria-hidden="true">
 
     <!-- Background / Bento Grid -->
-    <section class="bento-section" aria-labelledby="background-heading">
+    <section id="background" class="bento-section" aria-labelledby="background-heading" data-nav-label="Background">
       <h2 class="section-heading" id="background-heading">Background</h2>
       <div class="bento-grid">
 
@@ -211,7 +214,19 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js"></script>
+  <script src="./layout.js?v=12"></script>
+
+  <!-- Renumber visible project cards sequentially -->
+  <script>
+  (function () {
+    const visible = [...document.querySelectorAll('.cards--rows .card--row')]
+      .filter(c => c.style.display !== 'none' && !c.hidden);
+    visible.forEach((card, i) => {
+      const num = card.querySelector('.card-num');
+      if (num) num.textContent = String(i + 1).padStart(2, '0');
+    });
+  })();
+  </script>
 
   <!-- Liquid wave canvas animation -->
   <script>
@@ -352,10 +367,10 @@
         });
       });
 
-      /* Staggered project cards */
+      /* Row cards — staggered reveal */
       ScrollTrigger.create({
-        trigger: '.cards', start: 'top 80%', once: true,
-        onEnter: () => gsap.to('.card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.18, ease: 'power3.out' })
+        trigger: '.cards--rows', start: 'top 85%', once: true,
+        onEnter: () => gsap.to('.cards--rows .card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
       });
 
       /* Bento grid cards */
