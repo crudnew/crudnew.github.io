@@ -1035,7 +1035,8 @@ main {
   -webkit-backdrop-filter: blur(8px) saturate(1.08);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.60),
-    0 2px 16px rgba(62, 40, 22, 0.10);
+    0 4px 24px rgba(62, 40, 22, 0.16),
+    0 1px 6px  rgba(62, 40, 22, 0.10);
   border: 1px solid rgba(255, 255, 255, 0.38);
   overflow: hidden;
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
@@ -1063,8 +1064,8 @@ main {
   transform: translateY(-8px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 8px 28px rgba(62, 40, 22, 0.12),
-    0 2px 8px  rgba(62, 40, 22, 0.07);
+    0 12px 36px rgba(62, 40, 22, 0.18),
+    0 3px 10px  rgba(62, 40, 22, 0.10);
   border-color: rgba(255, 255, 255, 0.35);
 }
 
@@ -1280,7 +1281,7 @@ main {
   flex: 1 1 auto;
   max-width: 100%;
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-columns: 32px minmax(0, 1fr) minmax(0, 1.08fr);
   align-items: stretch;
   min-height: 320px;
 }
@@ -1369,19 +1370,27 @@ main {
     0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
-/* Row-card liquid strip */
+/* Row-card gradient strip */
 .card--row .card-strip {
-  position: relative;
-  border-right: 1px solid rgba(255, 255, 255, 0.38);
+  background: linear-gradient(
+    to bottom,
+    rgba(68, 44, 24, 0.72) 0%,
+    rgba(104, 72, 44, 0.58) 30%,
+    rgba(148, 112, 76, 0.46) 60%,
+    rgba(200, 170, 136, 0.38) 85%,
+    rgba(228, 208, 182, 0.30) 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.28);
 }
 [data-theme="dark"] .card--row .card-strip {
-  border-right-color: rgba(255, 255, 255, 0.12);
-}
-.card--row .card-strip-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  display: block;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 10, 4, 0.80) 0%,
+    rgba(40, 24, 12, 0.65) 35%,
+    rgba(68, 44, 24, 0.50) 65%,
+    rgba(100, 70, 42, 0.36) 100%
+  );
+  border-right-color: rgba(255, 255, 255, 0.10);
 }
 @media (max-width: 799px) {
   .card--row .card-strip { display: none; }
