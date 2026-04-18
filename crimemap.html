@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=36" />
+  <link rel="stylesheet" href="./style.css?v=48" />
   <link rel="stylesheet" href="./crimemap.css?v=3" />
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>
@@ -90,6 +90,7 @@
           <canvas class="liquid-canvas"></canvas>
         </div>
         <div class="hero-text-backdrop">
+          <div class="hero-sheen-follow" aria-hidden="true"></div>
           <p class="case-eyebrow">Case Study — Capstone Project</p>
           <h1 id="case-heading">Crime Map</h1>
           <p class="case-tagline">Making you feel safer in your city.</p>
@@ -378,7 +379,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=12"></script>
+  <script src="./layout.js?v=14"></script>
 
   <!-- CrimeMap: Dark sonar / siren animation -->
   <script>
@@ -484,6 +485,24 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
     const mm = gsap.matchMedia();
+
+    /* ── Hero sheen + 3D tilt ── */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      const backdrop = document.querySelector('.hero-text-backdrop');
+      const sheen    = document.querySelector('.hero-sheen-follow');
+      if (!backdrop || !sheen) return;
+      const TILT_MAX = 2;
+      gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
+      const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+      const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+      const setSheenPos = (nx, ny) => { sheen.style.setProperty('--sx', (nx*100)+'%'); sheen.style.setProperty('--sy', (ny*100)+'%'); };
+      function onMove(e)  { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); }
+      function onEnter(e) { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); gsap.to(sheen,{opacity:1,duration:0.5,ease:'power2.out'}); }
+      function onLeave()  { gsap.to(sheen,{opacity:0,duration:0.7,ease:'power3.out'}); rxTo(0); ryTo(0); }
+      backdrop.addEventListener('mousemove', onMove);
+      backdrop.addEventListener('mouseenter', onEnter);
+      backdrop.addEventListener('mouseleave', onLeave);
+    });
 
     /* ── Hero entrance ── */
     if (motionOk()) {

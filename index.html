@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./style.css?v=48">
   <!-- Theme restore: runs before first paint to avoid flash -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -31,6 +31,7 @@
       </div>
       <section class="hero" aria-labelledby="hero-heading">
         <div class="hero-text-backdrop">
+          <div class="hero-sheen-follow" aria-hidden="true"></div>
           <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
           <h1 id="hero-heading">Designing at the intersection of <span><span class="highlight">users</span>, <span class="highlight">systems</span>, and <span class="highlight">business</span>.</span><span class="underline-draw" aria-hidden="true"></span></h1>
           <p class="hero-subtitle">
@@ -170,10 +171,8 @@
       <h2 class="section-heading" id="background-heading">Background</h2>
       <div class="bento-grid">
 
-        <article class="bento-card" aria-labelledby="bento-1-heading">
+        <article class="bento-card" aria-labelledby="bento-1-heading" data-num="01">
           <header class="bento-header" aria-hidden="true">
-            <span class="bento-number">01</span>
-            <span class="bento-sep">/</span>
             <span class="bento-label">Design &amp; Research</span>
           </header>
           <h3 id="bento-1-heading">Master of Information (UXD) @ UofT</h3>
@@ -183,10 +182,8 @@
           <p>I focus on user-centered design and research, user interface design, and information architecture. I specialize in turning complex requirements into structured, accessible interfaces that prioritize user needs and task flow.</p>
         </article>
 
-        <article class="bento-card" aria-labelledby="bento-2-heading">
+        <article class="bento-card" aria-labelledby="bento-2-heading" data-num="02">
           <header class="bento-header" aria-hidden="true">
-            <span class="bento-number">02</span>
-            <span class="bento-sep">/</span>
             <span class="bento-label">Technical</span>
           </header>
           <h3 id="bento-2-heading">B.Sc. Computer Science &amp; Business Studies</h3>
@@ -196,14 +193,15 @@
           <p>My background is in software architecture and organizational logic. I design with an understanding of technical constraints and system requirements, ensuring that high-fidelity concepts are actually feasible for production.</p>
         </article>
 
-        <article class="bento-card" aria-labelledby="bento-3-heading">
+        <article class="bento-card" aria-labelledby="bento-3-heading" data-num="03">
           <header class="bento-header" aria-hidden="true">
-            <span class="bento-number">03</span>
-            <span class="bento-sep">/</span>
             <span class="bento-label">Product Handoff</span>
           </header>
-          <h3 id="bento-3-heading">Bridging the Gap</h3>
-          <p>I work at the intersection of design and development. My aim is to reduce the friction between design and implementation. By leveraging my CS background, I can build prototypes with developers in mind. I ensure the design intent is preserved without creating unnecessary technical friction.</p>
+          <h3 id="bento-3-heading">Design That<br>Ships</h3>
+          <div class="bento-logo-wrap">
+            <span class="bento-logo-text">Design &harr; Engineering</span>
+          </div>
+          <p>I work at the intersection of design and development. My CS background lets me build prototypes with developers in mind, preserving design intent without unnecessary technical friction.</p>
         </article>
 
       </div>
@@ -214,7 +212,7 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js?v=12"></script>
+  <script src="./layout.js?v=14"></script>
 
   <!-- Liquid wave canvas animation -->
   <script>
@@ -222,7 +220,6 @@
     const canvas = document.querySelector('.liquid-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-
     const SCALE = 4;
 
     const PALETTE = [
@@ -368,6 +365,49 @@
       });
     });
 
+
+    /* ==================== HERO SHEEN + 3D TILT (cursor-reactive) ==================== */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      const backdrop = document.querySelector('.hero-text-backdrop');
+      const sheen    = document.querySelector('.hero-sheen-follow');
+      if (!backdrop || !sheen) return;
+
+      const TILT_MAX = 2; // degrees
+      gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
+      const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+      const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+
+      const setSheenPos = (nx, ny) => {
+        sheen.style.setProperty('--sx', (nx * 100) + '%');
+        sheen.style.setProperty('--sy', (ny * 100) + '%');
+      };
+      function applyTilt(nx, ny) {
+        ryTo((nx - 0.5) * 2 * TILT_MAX);
+        rxTo((ny - 0.5) * -2 * TILT_MAX);
+      }
+      function onMove(e) {
+        const r = backdrop.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width;
+        const ny = (e.clientY - r.top)  / r.height;
+        setSheenPos(nx, ny);
+        applyTilt(nx, ny);
+      }
+      function onEnter(e) {
+        const r = backdrop.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width;
+        const ny = (e.clientY - r.top)  / r.height;
+        setSheenPos(nx, ny);
+        applyTilt(nx, ny);
+        gsap.to(sheen, { opacity: 1, duration: 0.5, ease: 'power2.out' });
+      }
+      function onLeave() {
+        gsap.to(sheen, { opacity: 0, duration: 0.7, ease: 'power3.out' });
+        rxTo(0); ryTo(0);
+      }
+      backdrop.addEventListener('mousemove', onMove);
+      backdrop.addEventListener('mouseenter', onEnter);
+      backdrop.addEventListener('mouseleave', onLeave);
+    });
 
     /* ==================== HERO PARALLAX ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {

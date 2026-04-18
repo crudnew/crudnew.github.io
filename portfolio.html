@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./style.css?v=48">
   <link rel="stylesheet" href="./portfolio.css?v=3">
   <!-- Lock contrast/motion from prefs, but always dark for this page -->
   <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
@@ -61,6 +61,7 @@
       </div>
       <section class="case-hero" aria-labelledby="case-heading">
         <div class="hero-text-backdrop">
+          <div class="hero-sheen-follow" aria-hidden="true"></div>
           <p class="case-eyebrow">// CASE STUDY</p>
           <h1 id="case-heading">AI-Assisted Portfolio</h1>
           <p class="case-tagline">DESIGNED IN FIGMA · BUILT WITH CLAUDE</p>
@@ -315,7 +316,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=12"></script>
+  <script src="./layout.js?v=14"></script>
 
   <!-- Liquid canvas — magenta/dark blobs -->
   <script>
@@ -366,6 +367,23 @@
       gsap.from('.pf-meta', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: '.pf-meta', start: 'top 92%' } });
       gsap.from('footer', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: 'footer', start: 'top 96%' } });
     })();
+  </script>
+  <script>
+    /* ==================== HERO SHEEN + 3D TILT ==================== */
+    if (typeof gsap !== 'undefined' && motionOk() && window.matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches) {
+      const backdrop = document.querySelector('.hero-text-backdrop');
+      const sheen    = document.querySelector('.hero-sheen-follow');
+      if (backdrop && sheen) {
+        const TILT_MAX = 2;
+        gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
+        const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+        const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+        const setSheenPos = (nx, ny) => { sheen.style.setProperty('--sx', (nx*100)+'%'); sheen.style.setProperty('--sy', (ny*100)+'%'); };
+        backdrop.addEventListener('mousemove',  e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); });
+        backdrop.addEventListener('mouseenter', e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); gsap.to(sheen,{opacity:1,duration:0.5,ease:'power2.out'}); });
+        backdrop.addEventListener('mouseleave', () => { gsap.to(sheen,{opacity:0,duration:0.7,ease:'power3.out'}); rxTo(0); ryTo(0); });
+      }
+    }
   </script>
 
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=36">
+  <link rel="stylesheet" href="./style.css?v=48">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -24,7 +24,7 @@
     -webkit-backdrop-filter: blur(8px) saturate(1.08);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.60),
-      0 2px 16px rgba(62, 40, 22, 0.10);
+      0 4px 24px rgba(62, 40, 22, 0.16);
     border: 1px solid rgba(255, 255, 255, 0.38);
     transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
   }
@@ -33,7 +33,7 @@
     border-color: rgba(255, 255, 255, 0.12);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 2px 16px rgba(0, 0, 0, 0.20);
+      0 4px 24px rgba(0, 0, 0, 0.32);
   }
 
   .about-card::before {
@@ -58,8 +58,8 @@
     transform: translateY(-3px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 6px 20px rgba(62, 40, 22, 0.10),
-      0 2px 6px  rgba(62, 40, 22, 0.06);
+      0 8px 28px rgba(62, 40, 22, 0.18),
+      0 3px 8px  rgba(62, 40, 22, 0.10);
     border-color: rgba(255, 255, 255, 0.32);
   }
 
@@ -154,6 +154,7 @@
       </div>
       <section class="hero" aria-labelledby="about-heading">
         <div class="hero-text-backdrop">
+          <div class="hero-sheen-follow" aria-hidden="true"></div>
           <p class="hero-eyebrow" aria-hidden="true">Designer &amp; Researcher</p>
           <h1 id="about-heading">About Me</h1>
           <span class="underline-draw" aria-hidden="true"></span>
@@ -271,7 +272,7 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js?v=12"></script>
+  <script src="./layout.js?v=14"></script>
 
   <!-- Liquid wave canvas animation (identical to index.html) -->
   <script>
@@ -376,6 +377,24 @@
     const mm = gsap.matchMedia();
 
     addCursorHover('.about-card, .reflection-card');
+
+    /* ==================== HERO SHEEN + 3D TILT ==================== */
+    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
+      const backdrop = document.querySelector('.hero-text-backdrop');
+      const sheen    = document.querySelector('.hero-sheen-follow');
+      if (!backdrop || !sheen) return;
+      const TILT_MAX = 2;
+      gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
+      const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+      const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+      const setSheenPos = (nx, ny) => { sheen.style.setProperty('--sx', (nx*100)+'%'); sheen.style.setProperty('--sy', (ny*100)+'%'); };
+      function onMove(e)  { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); }
+      function onEnter(e) { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); gsap.to(sheen,{opacity:1,duration:0.5,ease:'power2.out'}); }
+      function onLeave()  { gsap.to(sheen,{opacity:0,duration:0.7,ease:'power3.out'}); rxTo(0); ryTo(0); }
+      backdrop.addEventListener('mousemove', onMove);
+      backdrop.addEventListener('mouseenter', onEnter);
+      backdrop.addEventListener('mouseleave', onLeave);
+    });
 
     /* ==================== HERO ENTRANCE ==================== */
     if (motionOk()) {
