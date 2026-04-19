@@ -1482,18 +1482,35 @@ main {
   display: flex; flex-direction: column; align-items: center;
   gap: 36px; width: 100%; max-width: 1212px;
 }
+.bento-grid-wrap {
+  position: relative;
+  width: 100%;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.bento-grid-wrap::-webkit-scrollbar { display: none; }
 .bento-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px; width: 100%;
+  display: flex; flex-wrap: nowrap;
+  gap: 20px; width: max-content;
 }
 .bento-card {
   display: flex; flex-direction: column; gap: 16px;
   padding: 38px 34px;
+  flex: 0 0 520px;
+  scroll-snap-align: start;
   position: relative; overflow: hidden;
-  background: rgba(248, 239, 224, 0.68);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(180, 150, 110, 0.28);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), var(--shadow-sm);
+  background: rgba(252, 246, 238, 0.38);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(180, 150, 110, 0.22);
+  border-right-color: rgba(180, 150, 110, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.90),
+    inset 1px 0 0 rgba(255,255,255,0.35),
+    var(--shadow-sm);
   border-radius: var(--radius-md);
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease),
               border-color 0.3s ease, background 0.3s ease;
@@ -1502,9 +1519,14 @@ main {
   .bento-card { background: var(--surface-solid); border-color: var(--border-solid); }
 }
 [data-theme="dark"] .bento-card {
-  background: rgba(42, 30, 22, 0.78);
-  border-color: rgba(255, 200, 150, 0.10);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), var(--shadow-sm);
+  background: rgba(32, 20, 12, 0.44);
+  border-color: rgba(255, 200, 150, 0.18);
+  border-bottom-color: rgba(255, 200, 150, 0.08);
+  border-right-color: rgba(255, 200, 150, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 1px 0 0 rgba(255,255,255,0.05),
+    var(--shadow-sm);
 }
 .bento-card[data-num]::before {
   content: attr(data-num);
@@ -1516,10 +1538,35 @@ main {
   transition: opacity 0.3s ease;
 }
 .bento-card[data-num]:hover::before { opacity: 0.13; }
+/* Apostrophe as its own element — sits below text in the padding zone */
+.bento-card[data-prefix]::after {
+  content: attr(data-prefix);
+  position: absolute; bottom: -16px; right: 158px;
+  font-family: var(--font-heading); font-size: 130px; font-weight: 700;
+  line-height: 1; letter-spacing: 0; font-feature-settings: "kern" 1;
+  color: var(--text-primary); opacity: 0.08;
+  pointer-events: none; user-select: none;
+  transition: opacity 0.3s ease;
+}
+.bento-card[data-prefix]:hover::after { opacity: 0.13; }
+/* Deck-mode: JS adds .bento-deck-active, cards become absolute stack */
+.bento-grid-wrap.bento-deck-active { overflow: visible; }
+.bento-deck-active .bento-grid {
+  position: relative; width: 520px; margin: 0 auto; height: 100%;
+}
+.bento-deck-active .bento-card {
+  position: absolute; top: 0; left: 0; width: 520px;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: box-shadow 0.35s var(--ease), border-color 0.3s ease;
+}
 .bento-card:hover {
   transform: translateY(-6px);
   box-shadow: inset 0 1px 0 var(--border-hi), var(--shadow-md);
   border-color: var(--accent);
+}
+.bento-deck-active .bento-card:hover {
+  transform: none; /* JS owns transform in deck mode */
 }
 .bento-header { display: flex; align-items: baseline; gap: 8px; }
 .bento-number {
@@ -1548,6 +1595,31 @@ main {
 }
 .bento-logo-text { font-size: 13px; font-weight: 600; color: var(--text-primary); }
 .bento-card p { font-size: 14.5px; line-height: 1.75; color: var(--text-secondary); }
+
+/* ---- Bento hierarchy ---------------------------------------
+   01 = Active (current focus)   → pulse + accent label
+   02 = Foundation               → default (quietly supporting)
+   03 = Synthesis (the output)   → accent-tinted surface + accent chip
+------------------------------------------------------------ */
+.bento-card[data-num="01"] .bento-label { color: var(--accent); }
+.bento-pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  align-self: center; flex: 0 0 auto;
+  --pulse-rgb: 123, 106, 95;
+  box-shadow: 0 0 0 0 rgba(var(--pulse-rgb), 0.55);
+  animation: bento-pulse 2.4s var(--ease) infinite;
+}
+[data-theme="dark"] .bento-pulse { --pulse-rgb: 196, 181, 170; }
+@keyframes bento-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(var(--pulse-rgb), 0.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(var(--pulse-rgb), 0); }
+  100% { box-shadow: 0 0 0 0   rgba(var(--pulse-rgb), 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bento-pulse { animation: none; }
+}
+[data-motion="reduced"] .bento-pulse { animation: none; }
 
 /* ============================================================
    CASE STUDY TEMPLATE
@@ -2106,9 +2178,7 @@ main {
   .card--row .card-text h3 { font-size: 30px; letter-spacing: -0.6px; }
   .card--row .card-image { min-height: 220px; aspect-ratio: 5/3; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
   [data-theme="dark"] .card--row .card-image { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
-  .bento-grid { grid-template-columns: 1fr; }
-  .bento-card:nth-child(3) { grid-column: span 1; }
-  .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
+  .bento-card { flex: 0 0 82vw; padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
   .bento-card h3 { font-size: 18px; }
   footer { padding: 16px 20px; }
   .footer-links { gap: 20px; }

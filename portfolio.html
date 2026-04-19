@@ -28,8 +28,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=48">
   <link rel="stylesheet" href="./portfolio.css?v=3">
-  <!-- Lock contrast/motion from prefs, but always dark for this page -->
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
+  <!-- Lock contrast/motion from prefs, but always dark for this page; pageshow handles bfcache restores -->
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
     /* ── Hero card tweaks ── */
     .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 0 !important; width: calc(100% - 88px) !important; }

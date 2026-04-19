@@ -136,8 +136,8 @@
     text-shadow: none;
   }
   </style>
-  <!-- Theme restore: runs before first paint to avoid flash -->
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
+  <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
 </head>
 <body data-page-tint="about">
 

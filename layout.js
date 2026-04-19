@@ -594,6 +594,7 @@ document.addEventListener('click', function (e) {
   if (link.protocol === 'tel:') return;           // phone
   if (link.hostname !== location.hostname) return; // off-site
   if (link.href === location.href) return;         // same page
+  if (link.pathname === location.pathname && link.search === location.search) return; // same-page hash anchor
 
   if (document.documentElement.getAttribute('data-motion') === 'reduced') return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=48">
-  <!-- Theme restore: runs before first paint to avoid flash -->
-  <script>(function(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);})();</script>
+  <link rel="stylesheet" href="./style.css?v=60">
+  <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
 <body data-page-tint="home">
@@ -169,10 +169,12 @@
     <!-- Background / Bento Grid -->
     <section id="background" class="bento-section" aria-labelledby="background-heading" data-nav-label="Background">
       <h2 class="section-heading" id="background-heading">Background</h2>
+      <div class="bento-grid-wrap">
       <div class="bento-grid">
 
-        <article class="bento-card" aria-labelledby="bento-1-heading" data-num="01">
+        <article class="bento-card" aria-labelledby="bento-1-heading" data-num="26" data-prefix="’">
           <header class="bento-header" aria-hidden="true">
+            <span class="bento-pulse" aria-hidden="true"></span>
             <span class="bento-label">Design &amp; Research</span>
           </header>
           <h3 id="bento-1-heading">Master of Information (UXD) @ UofT</h3>
@@ -182,7 +184,7 @@
           <p>I focus on user-centered design and research, user interface design, and information architecture. I specialize in turning complex requirements into structured, accessible interfaces that prioritize user needs and task flow.</p>
         </article>
 
-        <article class="bento-card" aria-labelledby="bento-2-heading" data-num="02">
+        <article class="bento-card" aria-labelledby="bento-2-heading" data-num="23" data-prefix="’">
           <header class="bento-header" aria-hidden="true">
             <span class="bento-label">Technical</span>
           </header>
@@ -193,18 +195,19 @@
           <p>My background is in software architecture and organizational logic. I design with an understanding of technical constraints and system requirements, ensuring that high-fidelity concepts are actually feasible for production.</p>
         </article>
 
-        <article class="bento-card" aria-labelledby="bento-3-heading" data-num="03">
+        <article class="bento-card" aria-labelledby="bento-3-heading" data-num="&">
           <header class="bento-header" aria-hidden="true">
-            <span class="bento-label">Product Handoff</span>
+            <span class="bento-label">Delivery</span>
           </header>
-          <h3 id="bento-3-heading">Design That<br>Ships</h3>
+          <h3 id="bento-3-heading">Product<br>Handoff</h3>
           <div class="bento-logo-wrap">
-            <span class="bento-logo-text">Design &harr; Engineering</span>
+            <span class="bento-logo-text">Design &harr; Implementation</span>
           </div>
           <p>I work at the intersection of design and development. My CS background lets me build prototypes with developers in mind, preserving design intent without unnecessary technical friction.</p>
         </article>
 
-      </div>
+      </div><!-- /.bento-grid -->
+      </div><!-- /.bento-grid-wrap -->
     </section>
 
   </main>
@@ -213,6 +216,103 @@
 
   <!-- Shared layout (header, footer, settings, cursor) -->
   <script src="./layout.js?v=14"></script>
+
+  <!-- Bento card deck (desktop only) -->
+  <script>(function(){
+    var wrap = document.querySelector('.bento-grid-wrap');
+    var cards = [].slice.call(document.querySelectorAll('.bento-card'));
+    if (!wrap || cards.length < 2) return;
+    if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+
+    // Carousel: focused card centered, neighbors peek on either side.
+    // Offsets are relative to the card's base (centered) position.
+    var PEEK_X = 350;   // px offset for rel=±1 (near peek)
+    var FAR_X  = 620;   // px offset for rel=±2 (far peek — still visible)
+
+    function lp(a, b, t) { return a + (b - a) * t; }
+    function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
+    function slotAt(rel) {
+      var a = Math.abs(rel);
+      var sign = rel < 0 ? -1 : 1;
+      if (a >= 2) return [sign * FAR_X, 0.78, 0.40];
+      if (a >= 1) {
+        var t = a - 1; // 0..1
+        return [sign * lp(PEEK_X, FAR_X, t), lp(0.88, 0.78, t), lp(0.65, 0.40, t)];
+      }
+      return [sign * lp(0, PEEK_X, a), lp(1, 0.88, a), lp(1, 0.65, a)];
+    }
+
+    function render(progress) {
+      cards.forEach(function(card, i) {
+        var rel = i - progress;
+        var s = slotAt(rel);
+        var zi = Math.round(100 - Math.abs(rel) * 10);
+        card.style.transform = 'translateX(' + s[0] + 'px) scale(' + s[1] + ')';
+        card.style.opacity = s[2];
+        card.style.zIndex = zi;
+      });
+    }
+
+    // Activate deck first so cards reflect deck width (420px), then measure
+    // natural content height at that width — this is the correct tallest card.
+    wrap.classList.add('bento-deck-active');
+    var maxH = Math.max.apply(null, cards.map(function(c) { return c.offsetHeight; }));
+    wrap.style.height = (maxH + 10) + 'px';
+    cards.forEach(function(c) { c.style.height = maxH + 'px'; });
+
+    var target = 0, current = 0, raf = null;
+    function tick() {
+      var diff = target - current;
+      current += diff * 0.05;
+      render(current);
+      raf = Math.abs(diff) > 0.001 ? requestAnimationFrame(tick) : null;
+    }
+
+    // Wider dwell zones for the end cards so they focus easily; narrower
+    // band for the middle card. Zones are ratios of wrap width and must sum to 1.
+    // [c0-sticky, trans, c1-sticky, trans, c2-sticky]
+    var ZONES = [0.25, 0.10, 0.30, 0.10, 0.25];
+    var CUM = [0];
+    for (var k = 0; k < ZONES.length; k++) CUM.push(CUM[k] + ZONES[k]);
+
+    function mapX(x) {
+      for (var j = 0; j < ZONES.length; j++) {
+        if (x <= CUM[j + 1]) {
+          if (j % 2 === 0) return j / 2;                    // sticky zone
+          var f = (x - CUM[j]) / ZONES[j];                   // transition
+          return (j - 1) / 2 + f;
+        }
+      }
+      return cards.length - 1;
+    }
+
+    // Initial-landing guard: until the user deliberately drifts past the
+    // middle toward cards 2/3, keep card 1 focused even if their mouse is
+    // near the center (which is where card 1 is shown when focused).
+    var armed = false;
+    wrap.addEventListener('mousemove', function(e) {
+      if (typeof motionOk === 'function' && !motionOk()) { target = Math.round(target); render(target); return; }
+      var r = wrap.getBoundingClientRect();
+      var x = clamp((e.clientX - r.left) / r.width, 0, 1);
+      if (!armed) {
+        if (x < 0.6) { target = 0; if (!raf) raf = requestAnimationFrame(tick); return; }
+        armed = true;
+      }
+      target = mapX(x);
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+
+    wrap.addEventListener('mouseleave', function() {
+      target = 0;
+      armed = false; // re-engage initial guard on next entry
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+
+    // Initial focus: card 1
+    target = current = 0;
+    render(current);
+  })();</script>
 
   <!-- Liquid wave canvas animation -->
   <script>
