@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=48">
+  <link rel="stylesheet" href="./style.css?v=72">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -425,7 +425,7 @@
       ScrollTrigger.create({
         trigger: '.content-row', start: 'top 80%', once: true,
         onEnter: () => gsap.to('.content-row .about-card, .content-row .reflection-card', {
-          opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+          opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', clearProps: 'transform'
         })
       });
 
@@ -433,7 +433,7 @@
       ScrollTrigger.create({
         trigger: '.overview-grid', start: 'top 82%', once: true,
         onEnter: () => gsap.to('.about-card', {
-          opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out'
+          opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out', clearProps: 'transform'
         })
       });
 
@@ -441,7 +441,7 @@
       ScrollTrigger.create({
         trigger: '.content-full .about-card', start: 'top 82%', once: true,
         onEnter: () => gsap.to('.content-full .about-card', {
-          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out'
+          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform'
         })
       });
 
