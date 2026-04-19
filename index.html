@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=60">
+  <link rel="stylesheet" href="./style.css?v=72">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -197,13 +197,13 @@
 
         <article class="bento-card" aria-labelledby="bento-3-heading" data-num="&">
           <header class="bento-header" aria-hidden="true">
-            <span class="bento-label">Delivery</span>
+            <span class="bento-label">Build</span>
           </header>
-          <h3 id="bento-3-heading">Product<br>Handoff</h3>
+          <h3 id="bento-3-heading">Dev-Fluent</h3>
           <div class="bento-logo-wrap">
             <span class="bento-logo-text">Design &harr; Implementation</span>
           </div>
-          <p>I work at the intersection of design and development. My CS background lets me build prototypes with developers in mind, preserving design intent without unnecessary technical friction.</p>
+          <p>I work at the intersection of design and development. My CS background lets me build prototypes with developers in mind, preserving design intent without technical friction.</p>
         </article>
 
       </div><!-- /.bento-grid -->
@@ -223,6 +223,8 @@
     var cards = [].slice.call(document.querySelectorAll('.bento-card'));
     if (!wrap || cards.length < 2) return;
     if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+    // Reduced-motion: skip deck entirely, show plain flex row.
+    if (typeof motionOk === 'function' && !motionOk()) return;
 
     // Carousel: focused card centered, neighbors peek on either side.
     // Offsets are relative to the card's base (centered) position.
@@ -287,14 +289,20 @@
       return cards.length - 1;
     }
 
-    // Initial-landing guard: until the user deliberately drifts past the
-    // middle toward cards 2/3, keep card 1 focused even if their mouse is
-    // near the center (which is where card 1 is shown when focused).
+    // Initial-landing guard: keep card 1 focused until user drifts past 60%.
     var armed = false;
+    // Debounce mouseleave to prevent jitter when cursor grazes the wrap edge
+    // or hovers over a card that's translated outside the wrap box.
+    var leaveTimer = null;
     wrap.addEventListener('mousemove', function(e) {
-      if (typeof motionOk === 'function' && !motionOk()) { target = Math.round(target); render(target); return; }
+      if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
       var r = wrap.getBoundingClientRect();
-      var x = clamp((e.clientX - r.left) / r.width, 0, 1);
+      // Use a fixed ±px range from the wrap centre so far-right cursor positions
+      // outside the visible card area don't keep driving target changes.
+      var HALF = 460; // half of interactive width in px
+      var cx = r.left + r.width / 2;
+      if (Math.abs(e.clientX - cx) > HALF) return; // outside deck — ignore
+      var x = clamp((e.clientX - cx + HALF) / (HALF * 2), 0, 1);
       if (!armed) {
         if (x < 0.6) { target = 0; if (!raf) raf = requestAnimationFrame(tick); return; }
         armed = true;
@@ -304,9 +312,12 @@
     });
 
     wrap.addEventListener('mouseleave', function() {
-      target = 0;
-      armed = false; // re-engage initial guard on next entry
-      if (!raf) raf = requestAnimationFrame(tick);
+      leaveTimer = setTimeout(function() {
+        leaveTimer = null;
+        target = 0;
+        armed = false;
+        if (!raf) raf = requestAnimationFrame(tick);
+      }, 120);
     });
 
     // Initial focus: card 1
