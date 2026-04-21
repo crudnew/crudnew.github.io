@@ -534,7 +534,7 @@
         if (!ci) return;
         const img = new Image();
         img.onload = function() {
-          const tileH = Math.round(img.naturalHeight * (ci.clientWidth * 0.90 / img.naturalWidth));
+          const tileH = Math.round(img.naturalHeight * (ci.clientWidth * 0.76 / img.naturalWidth)); // 0.76 = 38% bg-size × 2 (::after is double-width)
           ci.style.setProperty('--tile-h', tileH + 'px');
           ci.style.setProperty('--loop-dur', Math.round(tileH / 80) + 's');
         };
