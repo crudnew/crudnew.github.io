@@ -669,18 +669,41 @@ nav.nav-pill {
   opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
 }
 .settings-bubble[aria-checked="true"] {
-  background: var(--accent-light); border-color: var(--accent); color: var(--accent-text);
+  background: var(--accent-light); border-color: rgba(34, 197, 94, 0.6); color: var(--accent-text);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    0 0 0 2px #22c55e,
+    0 0 12px rgba(34, 197, 94, 0.45);
+}
+/* Green ring in high contrast modes — strengthen ring, no glow needed */
+[data-contrast="high"] .settings-bubble[aria-checked="true"],
+[data-theme="dark"][data-contrast="high"] .settings-bubble[aria-checked="true"] {
+  box-shadow:
+    0 0 0 3px #22c55e;
+  border-color: #22c55e;
+}
+/* OS-level forced colors (Windows high contrast) — use outline so it isn't stripped */
+@media (forced-colors: active) {
+  .settings-bubble[aria-checked="true"] {
+    outline: 3px solid Highlight;
+    forced-color-adjust: none;
+  }
 }
 .settings-bubble::before {
   content: attr(data-tooltip);
   position: absolute; right: calc(100% + 10px);
-  top: 50%; transform: translateY(-50%);
+  top: 50%; transform: translateY(-50%) translateX(0);
   background: var(--text-primary); color: var(--bg);
   font-family: var(--font-body); font-size: 11px; font-weight: 600;
   white-space: nowrap; padding: 4px 9px; border-radius: 6px;
-  opacity: 0; pointer-events: none; transition: opacity 0.15s ease;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.18s ease;
 }
 .settings-bubble:hover::before { opacity: 1; }
+/* Push tooltip label further left while state pill is visible */
+.settings-bubble:has(.settings-state--visible)::before {
+  transform: translateY(-50%) translateX(-54px);
+}
 .settings-bubble .icon-moon { display: none; }
 .settings-bubble .icon-sun  { display: block; }
 [data-theme="dark"] .settings-bubble .icon-moon { display: block; }
@@ -689,12 +712,12 @@ nav.nav-pill {
 /* ---- Settings On/Off state pill ---- */
 .settings-bubble { overflow: visible; }
 .settings-state {
-  position: absolute; left: calc(100% + 8px);
+  position: absolute; right: calc(100% + 8px);
   background: var(--surface-solid); border: 1px solid var(--border);
   border-radius: 20px; padding: 2px 8px;
   font-family: var(--font-body); font-size: 11px; font-weight: 600;
   color: var(--text-secondary); white-space: nowrap; pointer-events: none;
-  opacity: 0; visibility: hidden; transform: translateX(-4px);
+  opacity: 0; visibility: hidden; transform: translateX(6px);
   transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
 }
 .settings-state--visible {
@@ -702,7 +725,7 @@ nav.nav-pill {
   transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0s;
 }
 .settings-state--exit {
-  opacity: 0; transform: translateX(-4px);
+  opacity: 0; transform: translateX(6px);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
 }
 
@@ -956,8 +979,8 @@ main {
   border-radius: 18px;
   width: 100%; box-sizing: border-box;
   background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.4) brightness(1.06);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(1.06);
   border: 1px solid rgba(255, 255, 255, 0.20);
   position: relative; z-index: 1;
   overflow: hidden;
@@ -1148,6 +1171,21 @@ main {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+/* Cards in vertical column — shadow capped so blur − offset ≤ 11px (half the 22px gap)
+   prevents the outer shadow from bleeding into adjacent card regions */
+.cards--rows .card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.60),
+    0 6px 16px rgba(62, 40, 22, 0.22),
+    0 2px 5px  rgba(62, 40, 22, 0.12);
+}
+.cards--rows .card:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 8px 18px rgba(62, 40, 22, 0.26),
+    0 3px 6px  rgba(62, 40, 22, 0.14);
+}
+
 .card-image {
   position: relative; z-index: 3;
   width: 100%; aspect-ratio: 4 / 3;
@@ -1163,8 +1201,123 @@ main {
 /* Card text sits above the ::before sheen layer */
 .card-text { position: relative; z-index: 3; }
 
-/* WeAct card — contain so full image (phones + logo) is visible */
-.card--weact .card-image img { object-fit: contain; object-position: center; }
+/* WeAct feature card — gradient bg, phones loop, noise */
+.card--feature.card--weact .card-image {
+  background: linear-gradient(135deg, #E8F2FF 0%, #0D52A0 100%);
+  --tile-h: 1560px;
+  overflow: hidden;
+}
+.card--feature.card--weact .card-image img {
+  opacity: 0; pointer-events: none;
+}
+/* Phones: repeat-y loop layer — oversized 2× so rotation never exposes corners */
+.card--feature.card--weact .card-image::after {
+  content: '';
+  position: absolute; inset: -50%; z-index: 1;
+  background-image: url('./assets/weact-phones.png');
+  background-repeat: repeat-y;
+  background-size: 45% auto;
+  background-position: center 0;
+  transform: rotate(-18deg);
+  animation: weact-phones var(--loop-dur, 20s) linear infinite;
+  animation-play-state: paused;
+}
+.card--feature.card--weact:hover .card-image::after {
+  animation-play-state: running;
+}
+/* Noise: mono grain layer over phones */
+.card--feature.card--weact .card-image::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  background-image: url('./assets/weact-noise.png?v=2');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.33;
+  mix-blend-mode: overlay;
+}
+/* Overlay must sit above pseudo layers */
+.card--feature .card-overlay { z-index: 3; }
+@keyframes weact-phones {
+  from { background-position: center 0px }
+  to   { background-position: center calc(-1 * var(--tile-h)) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card--feature.card--weact .card-image::after,
+  .card--feature.card--linger .card-image::after,
+  .card--feature.card--crimemap .card-image::after { animation: none; }
+}
+
+/* Linger phone loop */
+.card--feature.card--linger .card-image {
+  background: linear-gradient(135deg, #C2F6FE 0%, #FEC7F8 100%);
+  --tile-h: 1560px;
+  overflow: hidden;
+}
+.card--feature.card--linger .card-image img {
+  opacity: 0; pointer-events: none;
+}
+.card--feature.card--linger .card-image::after {
+  content: '';
+  position: absolute; inset: -50%; z-index: 1;
+  background-image: url('./assets/linger-phones.png');
+  background-repeat: repeat-y;
+  background-size: 45% auto;
+  background-position: center 0;
+  transform: rotate(-18deg);
+  animation: weact-phones var(--loop-dur, 20s) linear infinite;
+  animation-play-state: paused;
+}
+.card--feature.card--linger:hover .card-image::after {
+  animation-play-state: running;
+}
+.card--feature.card--linger .card-image::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  background-image: url('./assets/linger-noise.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.33;
+  mix-blend-mode: overlay;
+}
+
+/* Crime Map phone loop */
+.card--feature.card--crimemap .card-image {
+  background: linear-gradient(135deg, #90595A 0%, #000000 100%);
+  --tile-h: 1560px;
+  overflow: hidden;
+}
+.card--feature.card--crimemap .card-image img {
+  opacity: 0; pointer-events: none;
+}
+.card--feature.card--crimemap .card-image::after {
+  content: '';
+  position: absolute; inset: -50%; z-index: 1;
+  background-image: url('./assets/crimemap-phones.png');
+  background-repeat: repeat-y;
+  background-size: 45% auto;
+  background-position: center 0;
+  transform: rotate(-18deg);
+  animation: weact-phones var(--loop-dur, 20s) linear infinite;
+  animation-play-state: paused;
+}
+.card--feature.card--crimemap:hover .card-image::after {
+  animation-play-state: running;
+}
+.card--feature.card--crimemap .card-image::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  background-image: url('./assets/crimemap-noise.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.33;
+  mix-blend-mode: overlay;
+}
 
 /* Portfolio card — placeholder gradient until a hero image is added */
 .card--portfolio .card-image {
@@ -1476,6 +1629,123 @@ main {
 }
 
 /* ============================================================
+   HOMEPAGE — FEATURE CARD  (full-bleed image + glass panel)
+============================================================ */
+.card--feature {
+  max-width: 100%;
+  min-height: 480px;
+  display: block;
+  position: relative;
+  isolation: isolate;
+  transition: min-height 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), margin-top 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.card--feature:hover { transform: none; }
+
+@media (hover: hover) {
+  .card--feature { min-height: 400px; }
+  .card--feature:hover { min-height: 560px; }
+  /* All cards expand upward only — push card above, own bottom stays fixed */
+  .card--feature.card--linger:hover { margin-top: -160px; }
+  .cards--rows:has(.card--weact:hover) .card--linger { margin-top: -160px; }
+  .cards--rows:has(.card--crimemap:hover) .card--weact { margin-top: -160px; }
+}
+.card--feature .card-image {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  aspect-ratio: auto;
+  background: #2a4e80;
+  filter: brightness(1);
+}
+.card--feature .card-image img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transition: transform 0.6s var(--ease), filter 0.6s ease;
+}
+.card--feature:hover .card-image img {
+  transform: scale(1.04);
+  filter: brightness(0.94);
+}
+.card--feature .card-overlay {
+  justify-content: flex-start;
+  padding: 28px 32px;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 8, 6, 0.58) 0%,
+    rgba(10, 8, 6, 0.20) 42%,
+    transparent 62%
+  );
+}
+.card-glass-panel {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 5;
+  will-change: transform;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  display: flex; flex-direction: row;
+  align-items: center; gap: 28px;
+  padding: 26px 32px;
+  backdrop-filter: blur(18px) saturate(1.4) brightness(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(1.15);
+  background: rgba(255, 255, 255, 0.38);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(8, 30, 85, 0.18);
+}
+.card-glass-panel-text { flex: 1; min-width: 0; }
+.card-glass-panel-text h3 {
+  font-family: var(--font-heading);
+  font-size: 36px; font-weight: 700;
+  line-height: 1.08; letter-spacing: -0.8px;
+  color: var(--text-primary);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
+  margin-bottom: 5px;
+}
+.card-glass-panel-text p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--text-secondary);
+}
+.card--feature .btn-magnetic { flex-shrink: 0; margin-top: 0; padding-top: 0; }
+.card--feature .btn {
+  white-space: nowrap;
+  color: rgba(26, 22, 20, 0.80);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 2px 14px rgba(60, 40, 16, 0.22),
+    0 1px 4px  rgba(60, 40, 16, 0.14);
+}
+.card--feature .btn:hover { color: rgba(26, 22, 20, 0.80); }
+.card--feature .btn svg { opacity: 1; }
+.card--feature .btn:hover svg { opacity: 1; transform: translateX(3px); }
+/* Dark mode — more opaque so light text has contrast on bright card backgrounds */
+[data-theme="dark"] .card-glass-panel {
+  background: rgba(0, 0, 0, 0.52);
+  border-top-color: rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .card-glass-panel-text h3 { text-shadow: 0 1px 4px rgba(0, 0, 0, 0.60); }
+[data-theme="dark"] .card-glass-panel-text p  { text-shadow: none; }
+
+/* High contrast light — solid glass, black text guaranteed readable */
+[data-contrast="high"] .card-glass-panel {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top-color: rgba(0, 0, 0, 0.25);
+}
+[data-contrast="high"] .card-glass-panel-text h3 { text-shadow: none; }
+[data-contrast="high"] .card-glass-panel-text p  { text-shadow: none; }
+
+/* High contrast dark — solid dark glass, white text guaranteed readable */
+[data-theme="dark"][data-contrast="high"] .card-glass-panel {
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top-color: rgba(255, 255, 255, 0.35);
+}
+[data-theme="dark"][data-contrast="high"] .card-glass-panel-text h3 { text-shadow: none; }
+[data-theme="dark"][data-contrast="high"] .card-glass-panel-text p  { text-shadow: none; }
+
+/* ============================================================
    HOMEPAGE — BENTO GRID
 ============================================================ */
 .bento-section {
@@ -1741,8 +2011,8 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 6px 48px rgba(0, 0, 0, 0.22),
-    0 2px 12px rgba(0, 0, 0, 0.12),
+    0 6px 48px rgba(62, 40, 22, 0.22),
+    0 2px 12px rgba(62, 40, 22, 0.12),
     0 1px 0   rgba(255, 255, 255, 0.80);
   transition: background 0.3s ease, border-color 0.3s ease;
   padding: 56px;
@@ -2148,6 +2418,17 @@ main {
     justify-self: center;
     width: 100%;
   }
+  .cards--rows {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cards--rows .card { max-width: 100%; }
+  .cards--rows .card:last-child {
+    grid-column: unset;
+    max-width: 100%;
+    justify-self: unset;
+  }
 }
 
 /* ============================================================
@@ -2174,6 +2455,10 @@ main {
   .card-text { padding: 22px 20px 20px; }
   .card-text h3 { font-size: 34px; letter-spacing: -0.6px; }
   .card-text p { font-size: 14px; }
+  /* Feature card glass panel: stack on mobile */
+  .card-glass-panel { flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 22px 20px; }
+  .card--feature .btn-magnetic { align-self: stretch; }
+  .card--feature .btn { width: 100%; }
   /* Row cards stack vertically on mobile */
   .card--row { grid-template-columns: 1fr; min-height: auto; }
   .card--row .card-text { padding: 24px 22px 22px; }
@@ -2443,6 +2728,7 @@ main {
   *:hover, *:focus { transform: none !important; }
   :root { --shadow-md: var(--shadow-sm); --shadow-lg: var(--shadow-sm); }
   .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), 0 4px 24px rgba(62,40,22,0.16), 0 1px 6px rgba(62,40,22,0.10) !important; }
+  .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 18px rgba(62,40,22,0.26), 0 3px 6px rgba(62,40,22,0.14) !important; }
   .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 
   .bento-grid-wrap {
@@ -2466,6 +2752,7 @@ html[data-motion="reduced"] {
   --shadow-lg: var(--shadow-sm);
 }
 html[data-motion="reduced"] .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), 0 4px 24px rgba(62,40,22,0.16), 0 1px 6px rgba(62,40,22,0.10) !important; }
+html[data-motion="reduced"] .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 18px rgba(62,40,22,0.26), 0 3px 6px rgba(62,40,22,0.14) !important; }
 html[data-motion="reduced"] .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 html[data-motion="reduced"] .bento-grid-wrap {
   padding-inline: calc(50% - 260px);
