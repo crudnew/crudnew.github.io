@@ -1222,7 +1222,7 @@ main {
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
   animation-play-state: paused;
 }
-.card--feature.card--weact:hover .card-image::after {
+.card--feature.card--weact.is-hovered .card-image::after {
   animation-play-state: running;
 }
 /* Noise: mono grain layer over phones */
@@ -1269,7 +1269,7 @@ main {
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
   animation-play-state: paused;
 }
-.card--feature.card--linger:hover .card-image::after {
+.card--feature.card--linger.is-hovered .card-image::after {
   animation-play-state: running;
 }
 .card--feature.card--linger .card-image::before {
@@ -1304,7 +1304,7 @@ main {
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
   animation-play-state: paused;
 }
-.card--feature.card--crimemap:hover .card-image::after {
+.card--feature.card--crimemap.is-hovered .card-image::after {
   animation-play-state: running;
 }
 .card--feature.card--crimemap .card-image::before {
@@ -1637,17 +1637,19 @@ main {
   display: block;
   position: relative;
   isolation: isolate;
-  transition: min-height 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), margin-top 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);
+  transition: min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.card--feature:hover { transform: none; }
+.card--feature.is-hovered { transform: none; }
 
 @media (hover: hover) {
   .card--feature { min-height: 400px; }
-  .card--feature:hover { min-height: 560px; }
+  .card--feature.is-hovered { min-height: 560px; }
   /* All cards expand upward only — push card above, own bottom stays fixed */
-  .card--feature.card--linger:hover { margin-top: -160px; }
-  .cards--rows:has(.card--weact:hover) .card--linger { margin-top: -160px; }
-  .cards--rows:has(.card--crimemap:hover) .card--weact { margin-top: -160px; }
+  .card--feature.card--linger.is-hovered { margin-top: -160px; }
+  .cards--rows:has(.card--weact.is-hovered) .card--linger { margin-top: -160px; }
+  .cards--rows:has(.card--crimemap.is-hovered) .card--weact { margin-top: -160px; }
+  /* Suppress hover expansion while user is scrolling */
+  .is-scrolling .card--feature { pointer-events: none; }
 }
 .card--feature .card-image {
   position: absolute; inset: 0;
@@ -1662,7 +1664,7 @@ main {
   object-fit: cover; object-position: center;
   transition: transform 0.6s var(--ease), filter 0.6s ease;
 }
-.card--feature:hover .card-image img {
+.card--feature.is-hovered .card-image img {
   transform: scale(1.04);
   filter: brightness(0.94);
 }

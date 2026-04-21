@@ -542,6 +542,81 @@
       });
     })();
 
+    /* ==================== SCROLL-HOVER GUARD ==================== */
+    (function() {
+      var scrollTimer;
+      window.addEventListener('scroll', function() {
+        document.body.classList.add('is-scrolling');
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() {
+          document.body.classList.remove('is-scrolling');
+        }, 150);
+      }, { passive: true });
+    })();
+
+    /* ==================== HOVER INTENT + ANIMATION QUEUE (feature cards) ==================== */
+    /* 85ms intent gate stops accidental triggers from fast mouse movement.
+       Animation queue ensures only one card animates at a time — entering a new
+       card while one is mid-transition waits for it to finish, then expands if
+       the cursor is still there. Cancels cleanly if cursor leaves before then.  */
+    (function() {
+      if (!window.matchMedia('(hover: hover)').matches) return;
+
+      var INTENT_MS = 85;
+      var SAFETY_MS = 600; // fallback if transitionend never fires
+      var transitioning = false;
+      var pendingCard    = null;
+      var safetyTimer;
+
+      function onSettled() {
+        clearTimeout(safetyTimer);
+        transitioning = false;
+        if (pendingCard) {
+          var next = pendingCard;
+          pendingCard = null;
+          commitHover(next);
+        }
+      }
+
+      function commitHover(card) {
+        card.classList.add('is-hovered');
+        transitioning = true;
+        clearTimeout(safetyTimer);
+        safetyTimer = setTimeout(onSettled, SAFETY_MS);
+      }
+
+      document.querySelectorAll('.card--feature').forEach(function(card) {
+        var intentTimer;
+
+        card.addEventListener('mouseenter', function() {
+          clearTimeout(intentTimer);
+          if (transitioning) {
+            pendingCard = card; // queue — expand once current animation settles
+            return;
+          }
+          intentTimer = setTimeout(function() {
+            commitHover(card);
+          }, INTENT_MS);
+        });
+
+        card.addEventListener('mouseleave', function() {
+          clearTimeout(intentTimer);
+          if (pendingCard === card) pendingCard = null; // left before our turn — cancel
+          if (card.classList.contains('is-hovered')) {
+            card.classList.remove('is-hovered');
+            transitioning = true;
+            clearTimeout(safetyTimer);
+            safetyTimer = setTimeout(onSettled, SAFETY_MS);
+          }
+        });
+
+        // min-height is the canonical signal that the layout animation finished
+        card.addEventListener('transitionend', function(e) {
+          if (e.propertyName === 'min-height') onSettled();
+        });
+      });
+    })();
+
     /* ==================== HERO PARALLAX ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
       // Animate the whole wrapper so canvas bg, section, and sheen all move together
