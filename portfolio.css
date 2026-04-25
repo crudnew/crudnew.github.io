@@ -1,55 +1,55 @@
 /* ============================================================
-   AI-ASSISTED PORTFOLIO — BAUHAUS SIGNAL
-   Black + Magenta. Retro-futurism.
+   AI-ASSISTED PORTFOLIO
+   Dark B&W base, dusty rose accent (#C4506E).
    This CSS is only loaded on portfolio.html — safe to
    override :root vars for the whole page.
 ============================================================ */
 
 :root {
-  --bg:             #0A0A0A;
-  --bg-secondary:   #111111;
-  --surface:        rgba(16, 16, 16, 0.95);
-  --surface-solid:  #141414;
-  --border:         rgba(255, 45, 120, 0.18);
+  --bg:             #0D0D0D;
+  --bg-secondary:   #141414;
+  --surface:        rgba(18, 18, 18, 0.95);
+  --surface-solid:  #181818;
+  --border:         rgba(255, 255, 255, 0.07);
   --border-solid:   #1E1E1E;
-  --border-hi:      rgba(255, 45, 120, 0.40);
-  --text-primary:   #F5F5F5;
-  --text-secondary: #888888;
-  --text-muted:     #444444;
-  --accent-text:    #FF2D78;
-  --accent:         #FF2D78;
-  --accent-btn-bg:  #FF2D78;
-  --accent-light:   rgba(255, 45, 120, 0.10);
-  --accent-lighter: rgba(255, 45, 120, 0.05);
+  --border-hi:      rgba(196, 80, 110, 0.30);
+  --text-primary:   #F2F2F2;
+  --text-secondary: #666666;
+  --text-muted:     #333333;
+  --accent-text:    #C4506E;
+  --accent:         #C4506E;
+  --accent-btn-bg:  #C4506E;
+  --accent-light:   rgba(196, 80, 110, 0.08);
+  --accent-lighter: rgba(196, 80, 110, 0.04);
   --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.55);
   --shadow-md:  0 8px 28px rgba(0, 0, 0, 0.65);
   --shadow-lg:  0 24px 56px rgba(0, 0, 0, 0.80);
-  --font-heading: 'Orbitron', system-ui, sans-serif;
-  --font-body:    'Orbitron', system-ui, sans-serif;
+  --font-heading: 'Syne', system-ui, sans-serif;
+  --font-body:    'Space Grotesk', system-ui, sans-serif;
   --font-mono:    'Space Mono', 'Courier New', monospace;
   --radius-sm:  4px;
   --radius-md:  8px;
   --radius-lg:  14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --focus-color: #FF2D78;
+  --focus-color: #C4506E;
 }
 
 /* Dark mode inherits the same values */
 [data-theme="dark"] {
-  --bg:             #0A0A0A;
-  --bg-secondary:   #111111;
-  --surface:        rgba(16, 16, 16, 0.95);
-  --surface-solid:  #141414;
-  --border:         rgba(255, 45, 120, 0.18);
+  --bg:             #0D0D0D;
+  --bg-secondary:   #141414;
+  --surface:        rgba(18, 18, 18, 0.95);
+  --surface-solid:  #181818;
+  --border:         rgba(255, 255, 255, 0.07);
   --border-solid:   #1E1E1E;
-  --text-primary:   #F5F5F5;
-  --text-secondary: #888888;
-  --text-muted:     #444444;
-  --accent-text:    #FF2D78;
-  --accent:         #FF2D78;
-  --accent-btn-bg:  #FF2D78;
-  --accent-light:   rgba(255, 45, 120, 0.10);
-  --accent-lighter: rgba(255, 45, 120, 0.05);
+  --text-primary:   #F2F2F2;
+  --text-secondary: #666666;
+  --text-muted:     #333333;
+  --accent-text:    #C4506E;
+  --accent:         #C4506E;
+  --accent-btn-bg:  #C4506E;
+  --accent-light:   rgba(196, 80, 110, 0.08);
+  --accent-lighter: rgba(196, 80, 110, 0.04);
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
@@ -57,27 +57,26 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
-  background: #0A0A0A;
-  color: #F5F5F5;
+  background: #0D0D0D;
+  color: #F2F2F2;
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
 }
+/* Dark mode does nothing — page is already dark */
+[data-theme="dark"] body { background: #0D0D0D !important; background-image: none !important; }
 
 /* ── Skip link ─────────────────────────────────────────────── */
 .skip-link {
   position: absolute; top: -100%; left: 16px;
-  background: #FF2D78; color: #fff;
+  background: #C4506E; color: #fff;
   padding: 10px 18px; border-radius: 0 0 6px 6px;
   font-size: 14px; font-weight: 600; text-decoration: none; z-index: 9999;
 }
 .skip-link:focus { top: 0; }
 
-/* ── Orbitron overrides (portfolio.html only) ───────────────── */
-/* --font-heading and --font-body are set to Orbitron in :root above,
-   so all var() references inherit it automatically. These rules
-   catch anything with a hardcoded font-family. */
+/* ── Font overrides (portfolio.html only) ───────────────────── */
 body { font-family: var(--font-body); }
-/* Keep Space Mono where it's explicitly set */
+/* Keep Space Mono for mono labels */
 .pf-num, .pf-section-label, .pf-meta-label, .pf-wave-label,
 .pf-hud-top-tag, .pf-hud-bot-tag, .pf-hud-placeholder-label,
 .pf-card h3, .pf-step-num, .pf-step-text h4,
@@ -105,57 +104,59 @@ body { font-family: var(--font-body); }
 .hero-glass-sheen {
   position: absolute; inset: 0; border-radius: inherit;
   pointer-events: none; z-index: 2;
-  background: linear-gradient(135deg, rgba(255,45,120,0.07) 0%, transparent 55%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 55%);
 }
 .hero-text-backdrop {
   position: relative; z-index: 3; width: 100%;
   display: flex; flex-direction: column; align-items: center; gap: 16px;
   padding: 56px 48px 48px;
   border-radius: calc(var(--radius-lg) - 2px);
-  background: rgba(8, 8, 8, 0.60);
+  background: rgba(8, 8, 8, 0.55);
   backdrop-filter: blur(24px) saturate(1.0);
   -webkit-backdrop-filter: blur(24px) saturate(1.0);
-  border: 1px solid rgba(255, 45, 120, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255,45,120,0.12), 0 4px 40px rgba(0,0,0,0.55);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 40px rgba(0,0,0,0.55);
 }
 
 /* ── Meta bar ───────────────────────────────────────────────── */
 .pf-meta {
   display: grid; grid-template-columns: repeat(4, 1fr);
   width: 100%; max-width: 1212px;
-  border-top: 1px solid rgba(255,45,120,0.18);
-  border-bottom: 1px solid rgba(255,45,120,0.18);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
   margin-bottom: 80px;
 }
 .pf-meta-item {
   padding: 22px 28px; display: flex; flex-direction: column; gap: 6px;
-  border-right: 1px solid rgba(255,45,120,0.10);
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 .pf-meta-item:last-child { border-right: none; }
 .pf-meta-label {
-  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
-  letter-spacing: 2.5px; text-transform: uppercase; color: #FF2D78;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase; color: #C4506E;
 }
-.pf-meta-value { font-size: 14px; font-weight: 500; color: #F5F5F5; letter-spacing: -0.1px; }
+.pf-meta-value { font-size: 14px; font-weight: 500; color: #F2F2F2; letter-spacing: -0.1px; }
 
 /* ── Sections ───────────────────────────────────────────────── */
 .pf-section {
   width: 100%; max-width: 1212px;
   display: flex; flex-direction: column; gap: 36px;
-  padding: 0 2px; margin-bottom: 80px;
+  padding: 0 44px; margin-bottom: 80px;
 }
+@media (max-width: 1023px) { .pf-section { padding: 0 28px; } }
+@media (max-width: 799px)  { .pf-section { padding: 0 18px; } }
 
 /* ── Section eyebrow ────────────────────────────────────────── */
 .pf-eyebrow { display: flex; align-items: center; gap: 14px; }
 .pf-num {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
-  color: #FF2D78; letter-spacing: 1px; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: #C4506E; letter-spacing: 1px; flex-shrink: 0;
 }
 .pf-section-label {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
-  letter-spacing: 2.5px; text-transform: uppercase; color: #444;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase; color: #ABABAB;
 }
-.pf-rule { flex: 1; height: 1px; background: rgba(255,45,120,0.12); }
+.pf-rule { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
 
 /* ── Content rows ───────────────────────────────────────────── */
 .pf-row {
@@ -166,10 +167,10 @@ body { font-family: var(--font-body); }
 
 .pf-text { display: flex; flex-direction: column; gap: 16px; }
 .pf-text h2 {
-  font-family: var(--font-heading); font-size: 44px; font-weight: 700;
-  letter-spacing: -2px; line-height: 1.0; color: #F5F5F5;
+  font-family: var(--font-heading); font-size: 44px; font-weight: 800;
+  letter-spacing: -2px; line-height: 1.0; color: #F2F2F2;
 }
-.pf-text p { font-size: 15px; line-height: 1.75; color: #666; letter-spacing: -0.1px; }
+.pf-text p { font-size: 15px; line-height: 1.75; color: #C0C0C0; letter-spacing: -0.1px; }
 .pf-placeholder-note {
   font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
   text-transform: uppercase; color: #2A2A2A; border: 1px dashed #1E1E1E;
@@ -189,7 +190,7 @@ body { font-family: var(--font-body); }
 .pf-globe-wrap svg { width: 100%; height: 100%; }
 .pf-globe-glow {
   position: absolute; inset: -40px;
-  background: radial-gradient(ellipse at center, rgba(255,45,120,0.10) 0%, transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(196,80,110,0.07) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -197,14 +198,14 @@ body { font-family: var(--font-body); }
 .pf-moon-wrap { position: relative; width: 240px; height: 240px; flex-shrink: 0; }
 .pf-moon {
   width: 100%; height: 100%; border-radius: 50%;
-  background-image: radial-gradient(circle, #FF2D78 1.3px, transparent 1.3px);
+  background-image: radial-gradient(circle, #C4506E 1.3px, transparent 1.3px);
   background-size: 12px 12px;
   mask-image: radial-gradient(ellipse at 62% 38%, black 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 70%, transparent 88%);
   -webkit-mask-image: radial-gradient(ellipse at 62% 38%, black 20%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 70%, transparent 88%);
 }
 .pf-moon-glow {
   position: absolute; inset: -30px;
-  background: radial-gradient(ellipse at center, rgba(255,45,120,0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(196,80,110,0.06) 0%, transparent 70%);
   border-radius: 50%; pointer-events: none;
 }
 
@@ -214,17 +215,17 @@ body { font-family: var(--font-body); }
   width: 100%; max-width: 1212px; padding: 0 2px;
   margin-bottom: 80px;
 }
-.pf-scanline-line { flex: 1; height: 1px; background: rgba(255,45,120,0.18); }
+.pf-scanline-line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
 .pf-scanline-label {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 2.5px;
-  text-transform: uppercase; color: #FF2D78; white-space: nowrap; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px;
+  text-transform: uppercase; color: #C4506E; white-space: nowrap; flex-shrink: 0;
 }
 
 /* ── Perspective grid divider ───────────────────────────────── */
 .pf-tunnel-wrap {
   width: 100%; max-width: 1212px;
-  border-top: 1px solid rgba(255,45,120,0.12);
-  border-bottom: 1px solid rgba(255,45,120,0.12);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
   position: relative; margin-bottom: 80px; overflow: hidden;
 }
 .pf-tunnel-wrap svg { width: 100%; display: block; height: 120px; }
@@ -233,46 +234,46 @@ body { font-family: var(--font-body); }
 .pf-steps { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
 .pf-step {
   display: flex; align-items: flex-start; gap: 20px;
-  padding: 18px 0; border-bottom: 1px solid rgba(255,45,120,0.08);
+  padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .pf-step:last-child { border-bottom: none; }
 .pf-step-num {
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
-  color: #FF2D78; flex-shrink: 0; padding-top: 3px; min-width: 28px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px;
+  color: #C4506E; flex-shrink: 0; padding-top: 3px; min-width: 28px;
 }
 .pf-step-text h4 {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #F5F5F5; margin-bottom: 4px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #F2F2F2; margin-bottom: 4px;
 }
-.pf-step-text p { font-size: 13px; line-height: 1.6; color: #555; }
+.pf-step-text p { font-size: 14px; line-height: 1.65; color: #C0C0C0; }
 
 /* ── HUD Frame (deliverables placeholder) ───────────────────── */
 .pf-hud-section { width: 100%; max-width: 1212px; display: flex; flex-direction: column; gap: 24px; margin-bottom: 80px; }
 .pf-hud-frame {
   position: relative; width: 100%;
   aspect-ratio: 16 / 8; background: #080808;
-  border: 1px solid rgba(255,45,120,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.pf-hud-corner { position: absolute; width: 20px; height: 20px; border-color: #FF2D78; border-style: solid; }
+.pf-hud-corner { position: absolute; width: 20px; height: 20px; border-color: #C4506E; border-style: solid; }
 .pf-hud-corner.tl { top: 12px; left: 12px; border-width: 1.5px 0 0 1.5px; }
 .pf-hud-corner.tr { top: 12px; right: 12px; border-width: 1.5px 1.5px 0 0; }
 .pf-hud-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1.5px 1.5px; }
 .pf-hud-corner.br { bottom: 12px; right: 12px; border-width: 0 1.5px 1.5px 0; }
 .pf-hud-top-tag {
   position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-  font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(255,45,120,0.45); white-space: nowrap;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(196,80,110,0.50); white-space: nowrap;
 }
 .pf-hud-bot-tag {
   position: absolute; bottom: 10px; right: 18px;
-  font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px;
-  color: rgba(255,45,120,0.3);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+  color: rgba(196,80,110,0.35);
 }
 .pf-hud-inner {
   position: absolute; inset: 24px;
   background-image:
-    linear-gradient(rgba(255,45,120,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,45,120,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 36px 36px;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
 }
@@ -281,21 +282,24 @@ body { font-family: var(--font-body); }
 }
 .pf-hud-crosshair::before {
   content: ''; position: absolute; width: 1px; height: 100%;
-  left: 50%; top: 0; background: rgba(255,45,120,0.35);
+  left: 50%; top: 0; background: rgba(196,80,110,0.30);
 }
 .pf-hud-crosshair::after {
   content: ''; position: absolute; height: 1px; width: 100%;
-  top: 50%; left: 0; background: rgba(255,45,120,0.35);
+  top: 50%; left: 0; background: rgba(196,80,110,0.30);
 }
 .pf-hud-circle {
   width: 12px; height: 12px; border-radius: 50%;
-  border: 1px solid rgba(255,45,120,0.5); position: absolute;
+  border: 1px solid rgba(196,80,110,0.45); position: absolute;
   top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 .pf-hud-placeholder-label {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(255,45,120,0.35);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(196,80,110,0.40);
 }
+
+/* ── Workflow diagram ───────────────────────────────────────── */
+.pf-workflow-svg { width: 100%; max-width: 280px; height: auto; }
 
 /* ── Waveform row ───────────────────────────────────────────── */
 .pf-wave-row {
@@ -303,8 +307,8 @@ body { font-family: var(--font-body); }
   width: 100%; padding: 0 2px;
 }
 .pf-wave-label {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
-  text-transform: uppercase; color: #2A2A2A; white-space: nowrap; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: #ABABAB; white-space: nowrap; flex-shrink: 0;
 }
 .pf-wave-svg { flex: 1; height: 24px; overflow: hidden; opacity: 0.5; }
 
@@ -313,19 +317,19 @@ body { font-family: var(--font-body); }
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
 }
 .pf-card {
-  background: #0D0D0D; border: 1px solid rgba(255,45,120,0.14);
+  background: #111111; border: 1px solid rgba(255,255,255,0.07);
   border-radius: var(--radius-sm); padding: 28px 24px;
   display: flex; flex-direction: column; gap: 12px; position: relative;
 }
 .pf-card::before {
   content: ''; position: absolute; top: 0; left: 0;
-  width: 28px; height: 2px; background: #FF2D78;
+  width: 28px; height: 2px; background: #C4506E;
 }
 .pf-card h3 {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: #FF2D78;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: #C4506E;
 }
-.pf-card p { font-size: 14px; line-height: 1.7; color: #555; }
+.pf-card p { font-size: 14px; line-height: 1.7; color: #C0C0C0; }
 .pf-card.pf-card-wide { grid-column: span 3; }
 
 /* ── Lightbox ───────────────────────────────────────────────── */
@@ -357,3 +361,195 @@ body { font-family: var(--font-body); }
   .pf-text h2 { font-size: 34px; }
   .st-inner { padding: 20px 16px; }
 }
+
+/* ── Solo text block (full-width, no side graphic) ───────────── */
+.pf-text--solo { max-width: 700px; }
+
+/* ── Image grid (two-column) ────────────────────────────────── */
+.pf-image-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+@media (max-width: 700px) { .pf-image-grid { grid-template-columns: 1fr; } }
+
+/* ── Figures ─────────────────────────────────────────────────── */
+.pf-fig { margin: 0; }
+.pf-fig img {
+  width: 100%; height: auto; display: block;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.07);
+  cursor: zoom-in;
+}
+.pf-fig figcaption {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: #ABABAB; margin-top: 10px;
+}
+.pf-fig--full { width: 100%; margin-top: 8px; }
+.pf-fig--full img { cursor: zoom-in; }
+
+/* ── Accessibility image switcher ────────────────────────────── */
+.pf-acc-demo {
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: var(--radius-md); overflow: hidden;
+  width: 90%; max-width: 1090px; margin: 0 auto;
+}
+.pf-acc-toggles {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+}
+.pf-acc-btn {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: #ABABAB; background: none;
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 3px; padding: 10px 0;
+  width: 200px; text-align: center;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.pf-acc-btn:hover { color: #D8D8D8; border-color: rgba(255,255,255,0.40); }
+.pf-acc-btn.active {
+  color: #C4506E; border-color: #C4506E;
+  background: rgba(196,80,110,0.08);
+}
+.pf-acc-images {
+  display: flex; align-items: stretch;
+  width: 100%; background: #080808; overflow: hidden;
+}
+.pf-acc-side {
+  width: 72px; flex-shrink: 0;
+  background: #080808;
+}
+.pf-acc-side svg { display: block; width: 100%; height: 100%; }
+.pf-acc-img-track {
+  flex: 1; aspect-ratio: 16 / 11.25;
+  position: relative; overflow: hidden;
+}
+.pf-acc-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  opacity: 0; transition: opacity 0.3s ease;
+  display: block; pointer-events: none;
+}
+.pf-acc-img.active { opacity: 1; pointer-events: auto; }
+
+/* ── Closing card ────────────────────────────────────────────── */
+.pf-card-closing {
+  background: rgba(196,80,110,0.03);
+  border-color: rgba(196,80,110,0.18);
+}
+.pf-card-closing p {
+  font-family: var(--font-body); font-size: 15px;
+  line-height: 1.85; color: #C0C0C0;
+  letter-spacing: -0.1px;
+}
+.pf-card-closing p + p { margin-top: 14px; }
+
+/* ============================================================
+   HIGH CONTRAST MODE (portfolio.html is always dark)
+   The global style.css HC theme turns the bg white — we
+   override back to black and boost contrast on all elements.
+   Dark mode alone changes nothing (already dark by default).
+   Dark + HC = same result as HC alone.
+============================================================ */
+
+/* Re-establish dark palette, overriding the global white HC vars */
+[data-contrast="high"],
+[data-theme="dark"][data-contrast="high"] {
+  --bg:             #000000;
+  --bg-secondary:   #0A0A0A;
+  --surface:        rgba(0,0,0,0.98);
+  --surface-solid:  #000000;
+  --border:         #FFFFFF;
+  --border-solid:   #FFFFFF;
+  --text-primary:   #FFFFFF;
+  --text-secondary: #EEEEEE;
+  --text-muted:     #CCCCCC;
+  --accent-text:    #FF9AB5;
+  --accent:         #FF9AB5;
+  --accent-btn-bg:  #FF9AB5;
+  --accent-light:   rgba(255,154,181,0.15);
+  --focus-color:    #FF9AB5;
+}
+
+[data-contrast="high"] body { background-color: #000000; }
+
+/* ── Hero sheen — remove decorative gradient ── */
+[data-contrast="high"] .hero-glass-sheen { display: none; }
+
+/* ── Meta bar ── */
+[data-contrast="high"] .pf-meta {
+  border-top-color: rgba(255,255,255,0.55);
+  border-bottom-color: rgba(255,255,255,0.55);
+}
+[data-contrast="high"] .pf-meta-item { border-right-color: rgba(255,255,255,0.35); }
+[data-contrast="high"] .pf-meta-label { color: #FF9AB5; }
+[data-contrast="high"] .pf-meta-value { color: #FFFFFF; }
+
+/* ── Section rules ── */
+[data-contrast="high"] .pf-rule { background: rgba(255,255,255,0.50); }
+[data-contrast="high"] .pf-section-label { color: #EEEEEE; }
+[data-contrast="high"] .pf-num { color: #FF9AB5; }
+
+/* ── Scanline dividers ── */
+[data-contrast="high"] .pf-scanline-line { background: rgba(255,255,255,0.45); }
+[data-contrast="high"] .pf-scanline-label { color: #FF9AB5; }
+
+/* ── Tunnel borders ── */
+[data-contrast="high"] .pf-tunnel-wrap {
+  border-top-color: rgba(255,255,255,0.45);
+  border-bottom-color: rgba(255,255,255,0.45);
+}
+
+/* ── Content text ── */
+[data-contrast="high"] .pf-text h2 { color: #FFFFFF; }
+[data-contrast="high"] .pf-text p { color: #EEEEEE; }
+
+/* ── Step list ── */
+[data-contrast="high"] .pf-step { border-bottom-color: rgba(255,255,255,0.28); }
+[data-contrast="high"] .pf-step-num { color: #FF9AB5; }
+[data-contrast="high"] .pf-step-text h4 { color: #FFFFFF; }
+[data-contrast="high"] .pf-step-text p { color: #EEEEEE; }
+
+/* ── Reflection cards ── */
+[data-contrast="high"] .pf-card {
+  background: #000000;
+  border: 2px solid #FFFFFF;
+}
+[data-contrast="high"] .pf-card::before { background: #FF9AB5; }
+[data-contrast="high"] .pf-card h3 { color: #FF9AB5; }
+[data-contrast="high"] .pf-card p { color: #EEEEEE; }
+
+/* ── Closing card ── */
+[data-contrast="high"] .pf-card-closing {
+  background: rgba(255,154,181,0.06);
+  border-color: rgba(255,154,181,0.55);
+}
+[data-contrast="high"] .pf-card-closing p { color: #EEEEEE; }
+
+/* ── Accessibility demo ── */
+[data-contrast="high"] .pf-acc-demo { border: 2px solid #FFFFFF; }
+[data-contrast="high"] .pf-acc-toggles {
+  border-bottom-color: rgba(255,255,255,0.50);
+  background: rgba(255,255,255,0.02);
+}
+[data-contrast="high"] .pf-acc-btn { border-color: rgba(255,255,255,0.55); color: #EEEEEE; }
+[data-contrast="high"] .pf-acc-btn:hover { border-color: #FFFFFF; color: #FFFFFF; }
+[data-contrast="high"] .pf-acc-btn.active {
+  color: #FF9AB5; border-color: #FF9AB5;
+  background: rgba(255,154,181,0.12);
+}
+
+/* ── Figures ── */
+[data-contrast="high"] .pf-fig img { border-color: rgba(255,255,255,0.45); }
+[data-contrast="high"] .pf-fig figcaption { color: #CCCCCC; }
+
+/* ── HUD frame ── */
+[data-contrast="high"] .pf-hud-frame { border-color: rgba(255,255,255,0.40); }
+
+/* ── Waveform ── */
+[data-contrast="high"] .pf-wave-label { color: #EEEEEE; }
+[data-contrast="high"] .pf-wave-svg { opacity: 0.75; }

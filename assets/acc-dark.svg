@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <!-- Dark Mode -->
+  <rect width="1200" height="675" fill="#0f0f0f"/>
+  <!-- Nav bar -->
+  <rect width="1200" height="56" fill="#161616"/>
+  <rect x="32" y="18" width="100" height="20" rx="4" fill="#e0d0c0" opacity="0.4"/>
+  <rect x="900" y="18" width="60" height="20" rx="10" fill="#e0d0c0" opacity="0.15"/>
+  <rect x="970" y="18" width="60" height="20" rx="10" fill="#e0d0c0" opacity="0.15"/>
+  <rect x="1040" y="18" width="60" height="20" rx="10" fill="#e0d0c0" opacity="0.15"/>
+  <!-- Hero card -->
+  <rect x="60" y="80" width="1080" height="340" rx="16" fill="#1c1c1c"/>
+  <rect x="60" y="80" width="1080" height="340" rx="16" fill="none" stroke="#333" stroke-width="1"/>
+  <rect x="200" y="140" width="800" height="220" rx="10" fill="#242424" opacity="0.8"/>
+  <!-- Hero text hints -->
+  <rect x="320" y="180" width="560" height="32" rx="4" fill="#e0d0c0" opacity="0.15"/>
+  <rect x="240" y="230" width="720" height="52" rx="4" fill="#e0d0c0" opacity="0.2"/>
+  <rect x="360" y="300" width="480" height="18" rx="3" fill="#e0d0c0" opacity="0.1"/>
+  <!-- Cards -->
+  <rect x="60" y="460" width="1080" height="160" rx="12" fill="#1a1a1a"/>
+  <rect x="60" y="460" width="1080" height="160" rx="12" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+  <!-- Label -->
+  <text x="600" y="636" font-family="monospace" font-size="13" fill="#888" text-anchor="middle" letter-spacing="3">DARK MODE</text>
+</svg>

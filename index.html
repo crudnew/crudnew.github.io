@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=72">
+  <link rel="stylesheet" href="./style.css?v=83">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -43,11 +43,12 @@
       <div class="hero-glass-sheen" aria-hidden="true"></div>
     </div>
 
+
     <hr class="divider" aria-hidden="true">
 
     <!-- Projects -->
     <section id="projects" class="projects-section" aria-labelledby="projects-heading" data-nav-label="Projects">
-      <h2 class="section-heading" id="projects-heading">Projects</h2>
+      <h2 class="section-heading" id="projects-heading">Featured Projects</h2>
       <div class="cards cards--rows">
 
         <!-- Linger (featured case) -->
@@ -80,28 +81,31 @@
         </article>
 
         <!-- AI-Assisted Portfolio -->
-        <article class="card card--row card--portfolio" aria-label="AI-Assisted Portfolio: This Site" style="display:none">
-          <div class="card-strip" aria-hidden="true"></div>
-          <div class="card-text">
-            <h3>AI-Assisted Portfolio</h3>
-            <p>This site. Built using Figma, Claude Code, and MCP as a demonstration of a modern AI-assisted design and dev workflow.</p>
-            <div class="btn-magnetic">
-              <a href="./portfolio.html" class="btn" aria-label="View AI-Assisted Portfolio case study">
-                View Project
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-            </div>
-          </div>
+        <article class="card card--feature card--portfolio" aria-label="AI-Assisted Portfolio: This Site">
           <div class="card-image" aria-hidden="true">
-            <div class="card-image-placeholder">CR</div>
+            <img src="./assets/portfolio-phones.png"
+                 alt="AI-Assisted Portfolio — browser and phone screens showing the portfolio site">
             <div class="card-overlay" aria-hidden="true">
               <span class="card-overlay-date">ONGOING</span>
               <div class="card-overlay-tags">
                 <span class="card-overlay-tag">AI-Assisted Workflow</span>
-                <span class="card-overlay-tag">UI Design</span>
+                <span class="card-overlay-tag">UX/UI Design</span>
+                <span class="card-overlay-tag">Accessibility</span>
                 <span class="card-overlay-tag">Front-End Dev</span>
               </div>
               <p class="card-overlay-impact"><strong>Ongoing:</strong> Figma designs connected to a local codebase via MCP, with Claude as a pair programmer for UI, animations, accessibility, refinements and redesigns. Deployed to GitHub Pages.</p>
+            </div>
+            <div class="card-glass-panel">
+              <div class="card-glass-panel-text">
+                <h3>AI-Assisted Portfolio</h3>
+                <p>This site. Built using Figma, Claude Code, and MCP as a demonstration of a modern AI-assisted design and dev workflow.</p>
+              </div>
+              <div class="btn-magnetic">
+                <a href="./portfolio.html" class="btn" aria-label="View AI-Assisted Portfolio case study">
+                  View Project
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
             </div>
           </div>
         </article>
@@ -135,36 +139,54 @@
           </div>
         </article>
 
-        <!-- Crime Map -->
-        <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
-          <div class="card-image" aria-hidden="true">
-            <img src="./assets/crimemap-phones.png"
-                 alt="Crime Map website showing a map with incident markers and statistical overlays">
-            <div class="card-overlay" aria-hidden="true">
-              <span class="card-overlay-date">2021</span>
-              <div class="card-overlay-tags">
-                <span class="card-overlay-tag">UI Design</span>
-                <span class="card-overlay-tag">Data Visualization</span>
-                <span class="card-overlay-tag">Front-End Dev</span>
-              </div>
-              <p class="card-overlay-impact"><strong>Impact:</strong> Gave users real-time visibility into local crime data to support more informed, safer decisions.</p>
-            </div>
-            <div class="card-glass-panel">
-              <div class="card-glass-panel-text">
-                <h3>Crime Map: Undergraduate Capstone</h3>
-                <p>A website that helps users feel safer in their city through real-time crime data and incident reporting.</p>
-              </div>
-              <div class="btn-magnetic">
-                <a href="./crimemap.html" class="btn" aria-label="View Crime Map case study">
-                  View Project
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
+      </div><!-- /.cards.cards--rows (featured) -->
 
+      <!-- MORE / LESS toggle -->
+      <div class="more-toggle-wrap">
+        <button class="more-toggle-btn" aria-expanded="false" aria-controls="more-projects" aria-label="Show more projects">
+          <span class="more-toggle-label">MORE PROJECTS</span>
+          <svg class="more-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
       </div>
+
+      <!-- Expandable additional projects -->
+      <div class="more-projects-wrap" id="more-projects" aria-hidden="true">
+        <div class="more-projects-inner">
+          <div class="cards cards--rows">
+
+            <!-- Crime Map -->
+            <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
+              <div class="card-image" aria-hidden="true">
+                <img src="./assets/crimemap-phones.png"
+                     alt="Crime Map website showing a map with incident markers and statistical overlays">
+                <div class="card-overlay" aria-hidden="true">
+                  <span class="card-overlay-date">2021</span>
+                  <div class="card-overlay-tags">
+                    <span class="card-overlay-tag">UI Design</span>
+                    <span class="card-overlay-tag">Data Visualization</span>
+                    <span class="card-overlay-tag">Front-End Dev</span>
+                  </div>
+                  <p class="card-overlay-impact"><strong>Impact:</strong> Gave users real-time visibility into local crime data to support more informed, safer decisions.</p>
+                </div>
+                <div class="card-glass-panel">
+                  <div class="card-glass-panel-text">
+                    <h3>Crime Map: Undergraduate Capstone</h3>
+                    <p>A website that helps users feel safer in their city through real-time crime data and incident reporting.</p>
+                  </div>
+                  <div class="btn-magnetic">
+                    <a href="./crimemap.html" class="btn" aria-label="View Crime Map case study">
+                      View Project
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div><!-- /.cards.cards--rows (more) -->
+        </div><!-- /.more-projects-inner -->
+      </div><!-- /.more-projects-wrap -->
+
     </section>
 
     <hr class="divider" aria-hidden="true">
@@ -218,7 +240,7 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js?v=14"></script>
+  <script src="./layout.js?v=15"></script>
 
   <!-- Bento card deck (desktop only) -->
   <script>(function(){
@@ -422,6 +444,50 @@
   })();
   </script>
 
+  <!-- MORE / LESS toggle -->
+  <script>
+  (function () {
+    var btn  = document.querySelector('.more-toggle-btn');
+    var wrap = document.getElementById('more-projects');
+    var lbl  = btn && btn.querySelector('.more-toggle-label');
+    if (!btn || !wrap) return;
+
+    var closing = false;
+
+    btn.addEventListener('click', function () {
+      if (closing) return; // prevent double-click during close animation
+      var isOpen = wrap.classList.contains('is-open');
+
+      if (isOpen) {
+        // Phase 1: fade + drop cards out
+        closing = true;
+        wrap.classList.add('is-closing');
+        wrap.classList.remove('is-entering');
+        setTimeout(function () {
+          // Phase 2: collapse container, reset
+          wrap.classList.remove('is-open', 'is-closing');
+          btn.setAttribute('aria-expanded', 'false');
+          wrap.setAttribute('aria-hidden', 'true');
+          lbl.textContent = 'MORE PROJECTS';
+          btn.setAttribute('aria-label', 'Show more projects');
+          closing = false;
+        }, 260);
+      } else {
+        // Phase 1: expand container
+        wrap.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        wrap.setAttribute('aria-hidden', 'false');
+        lbl.textContent = 'LESS PROJECTS';
+        btn.setAttribute('aria-label', 'Show fewer projects');
+        // Phase 2: once container has started expanding, rise cards in
+        setTimeout(function () {
+          wrap.classList.add('is-entering');
+        }, typeof motionOk === 'function' && !motionOk() ? 0 : 160);
+      }
+    });
+  })();
+  </script>
+
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -528,7 +594,8 @@
       [
         { selector: '.card--feature.card--weact .card-image', src: './assets/weact-phones.png' },
         { selector: '.card--feature.card--linger .card-image', src: './assets/linger-phones.png' },
-        { selector: '.card--feature.card--crimemap .card-image', src: './assets/crimemap-phones.png' }
+        { selector: '.card--feature.card--crimemap .card-image', src: './assets/crimemap-phones.png' },
+        { selector: '.card--feature.card--portfolio .card-image', src: './assets/portfolio-phones.png' }
       ].forEach(function(item) {
         const ci = document.querySelector(item.selector);
         if (!ci) return;

@@ -25,26 +25,35 @@
   <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=72">
-  <link rel="stylesheet" href="./portfolio.css?v=3">
-  <!-- Lock contrast/motion from prefs, but always dark for this page; pageshow handles bfcache restores -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?v=83">
+  <link rel="stylesheet" href="./portfolio.css?v=11">
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
-    /* ── Hero card tweaks ── */
     .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 0 !important; width: calc(100% - 88px) !important; }
     @media (max-width: 1023px) { .case-main .hero-wrapper { width: calc(100% - 56px) !important; } }
     @media (max-width: 799px)  { .case-main .hero-wrapper { width: calc(100% - 36px) !important; } }
     .hero-wrapper .case-hero {
-      background: rgba(8,8,8,0.40) !important;
-      border: 1px solid rgba(255,45,120,0.22) !important;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(255,45,120,0.10) !important;
+      background: rgba(8,8,8,0.35) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.70), inset 0 1px 0 rgba(255,255,255,0.06) !important;
     }
-    .hero-wrapper .case-hero .hero-text-backdrop { background: rgba(8,8,8,0.60) !important; }
-    .case-eyebrow { color: #FF2D78 !important; font-family: 'Space Mono', monospace !important; font-size: 10px !important; letter-spacing: 3px !important; }
-    .case-hero h1 { color: #F5F5F5 !important; font-family: 'Space Grotesk', sans-serif !important; font-weight: 700 !important; }
-    .case-tagline { color: #888 !important; font-style: normal !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; letter-spacing: 1px !important; }
-    .case-hero .subtitle { color: #555 !important; }
+    .hero-wrapper .case-hero .hero-text-backdrop { background: rgba(255,255,255,0.13) !important; backdrop-filter: blur(40px) saturate(1.5) !important; -webkit-backdrop-filter: blur(40px) saturate(1.5) !important; border-color: rgba(255,255,255,0.22) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 4px 40px rgba(0,0,0,0.40) !important; }
+    .hero-wrapper .hero-text-backdrop .case-eyebrow,
+    .hero-wrapper .hero-text-backdrop h1,
+    .hero-wrapper .hero-text-backdrop .case-tagline,
+    .hero-wrapper .hero-text-backdrop .subtitle { text-shadow: none !important; }
+    .case-eyebrow { color: #C4506E !important; font-family: 'Space Mono', monospace !important; font-size: 10px !important; letter-spacing: 3px !important; }
+    .case-hero h1 { color: #F2F2F2 !important; font-family: 'Syne', sans-serif !important; font-weight: 800 !important; }
+    .case-tagline { color: #999 !important; font-style: normal !important; font-family: 'Space Mono', monospace !important; font-size: 14px !important; letter-spacing: 1px !important; }
+    .case-hero .subtitle { color: #ABABAB !important; }
+    /* ── High contrast hero overrides ── */
+    [data-contrast="high"] .hero-wrapper .case-hero { background: rgba(0,0,0,0.85) !important; border: 2px solid #FFFFFF !important; box-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop { background: rgba(0,0,0,0.94) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,0.80) !important; box-shadow: none !important; }
+    [data-contrast="high"] .case-eyebrow { color: #FF9AB5 !important; }
+    [data-contrast="high"] .case-hero h1 { color: #FFFFFF !important; }
+    [data-contrast="high"] .case-tagline { color: #EEEEEE !important; }
+    [data-contrast="high"] .case-hero .subtitle { color: #EEEEEE !important; }
   </style>
 </head>
 <body data-page-tint="portfolio">
@@ -62,10 +71,10 @@
       <section class="case-hero" aria-labelledby="case-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="case-eyebrow">// CASE STUDY</p>
+          <p class="case-eyebrow">Portfolio</p>
           <h1 id="case-heading">AI-Assisted Portfolio</h1>
           <p class="case-tagline">DESIGNED IN FIGMA · BUILT WITH CLAUDE</p>
-          <p class="subtitle">This site — built using Figma, Claude Code, and MCP as a demonstration of a modern AI-assisted design and dev workflow.</p>
+          <p class="subtitle">This site, built end-to-end using Figma, Claude Code, and MCP.</p>
         </div>
       </section>
       <div class="hero-glass-sheen" aria-hidden="true"></div>
@@ -75,7 +84,7 @@
     <div class="pf-meta" aria-label="Project details">
       <div class="pf-meta-item">
         <span class="pf-meta-label">Timeline</span>
-        <span class="pf-meta-value">Ongoing · 2026</span>
+        <span class="pf-meta-value">January 2026 – Ongoing</span>
       </div>
       <div class="pf-meta-item">
         <span class="pf-meta-label">Team</span>
@@ -91,23 +100,22 @@
       </div>
     </div>
 
-    <!-- ===== SECTION 01 — THE CONCEPT ===== -->
-    <section id="craft" class="pf-section" aria-labelledby="s01" data-nav-label="Craft">
+    <!-- ===== SECTION 01 — WHY I BUILT THIS ===== -->
+    <section id="why" class="pf-section" aria-labelledby="s01" data-nav-label="Why">
       <div class="pf-eyebrow">
         <span class="pf-num">01</span>
-        <span class="pf-section-label">The Concept</span>
+        <span class="pf-section-label">Why I Built This</span>
         <div class="pf-rule"></div>
       </div>
 
       <div class="pf-row">
         <div class="pf-text">
           <h2>Old craft.<br>New tools.</h2>
-          <p>TODO — This section will cover the core concept: what it means to use AI not as an autocomplete, but as a genuine collaborator in a design and development workflow.</p>
-          <p>The Figma file is the source of truth. Claude reads it via MCP, interprets design decisions, and writes code that matches — with a human steering every step.</p>
-          <span class="pf-placeholder-note">// placeholder — content to be added</span>
+          <p>AI has become more and more prominent in the industry, and I wanted to understand it firsthand rather than wait for it to become standard practice.</p>
+          <p>I'm completing a Master's in UX Design at the University of Toronto, and I have a BSc in Computer Science. This combination puts me in a unique position to excel with these new tools as a designer who understands how things are built.</p>
+          <p>A few people I spoke with in the industry confirmed what I already suspected: picking up these workflows now, before they're everywhere, is worth the time.</p>
         </div>
         <div class="pf-graphic">
-          <!-- Wireframe Globe — reference visual for hero section / decorative element -->
           <div class="pf-globe-wrap" aria-hidden="true">
             <div class="pf-globe-glow"></div>
             <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,36 +124,30 @@
                   <circle cx="100" cy="100" r="88"/>
                 </clipPath>
               </defs>
-              <!-- Outer circle -->
-              <circle cx="100" cy="100" r="88" stroke="#FF2D78" stroke-width="0.8"/>
-              <!-- Latitude lines -->
-              <g clip-path="url(#globe-clip)" stroke="#FF2D78" stroke-dasharray="3 3">
+              <circle cx="100" cy="100" r="88" stroke="rgba(255,255,255,0.70)" stroke-width="0.8"/>
+              <g clip-path="url(#globe-clip)" stroke="rgba(255,255,255,0.40)" stroke-dasharray="3 3">
                 <ellipse cx="100" cy="24"  rx="88" ry="38"  stroke-width="0.5"/>
                 <ellipse cx="100" cy="57"  rx="88" ry="72"  stroke-width="0.5"/>
                 <ellipse cx="100" cy="100" rx="88" ry="88"  stroke-width="0.6"/>
                 <ellipse cx="100" cy="143" rx="88" ry="72"  stroke-width="0.5"/>
                 <ellipse cx="100" cy="176" rx="88" ry="38"  stroke-width="0.5"/>
               </g>
-              <!-- Longitude lines -->
-              <g clip-path="url(#globe-clip)" stroke="#FF2D78" stroke-dasharray="3 3">
+              <g clip-path="url(#globe-clip)" stroke="rgba(255,255,255,0.40)" stroke-dasharray="3 3">
                 <ellipse cx="100" cy="100" rx="28"  ry="88" stroke-width="0.5"/>
                 <ellipse cx="100" cy="100" rx="58"  ry="88" stroke-width="0.5"/>
                 <ellipse cx="100" cy="100" rx="82"  ry="88" stroke-width="0.4"/>
               </g>
-              <!-- Crosshair -->
-              <line x1="12" y1="100" x2="188" y2="100" stroke="#FF2D78" stroke-width="0.4" opacity="0.5"/>
-              <line x1="100" y1="12" x2="100" y2="188" stroke="#FF2D78" stroke-width="0.4" opacity="0.5"/>
-              <!-- Center dot -->
-              <circle cx="100" cy="100" r="3" fill="#FF2D78"/>
-              <!-- Corner reference ticks -->
-              <line x1="12" y1="12" x2="22" y2="12" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="12" y1="12" x2="12" y2="22" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="188" y1="12" x2="178" y2="12" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="188" y1="12" x2="188" y2="22" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="12" y1="188" x2="22" y2="188" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="12" y1="188" x2="12" y2="178" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="188" y1="188" x2="178" y2="188" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
-              <line x1="188" y1="188" x2="188" y2="178" stroke="#FF2D78" stroke-width="0.5" opacity="0.4"/>
+              <line x1="12" y1="100" x2="188" y2="100" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <line x1="100" y1="12" x2="100" y2="188" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="100" cy="100" r="3" fill="rgba(255,255,255,0.85)"/>
+              <line x1="12" y1="12" x2="22" y2="12" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="12" y1="12" x2="12" y2="22" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="188" y1="12" x2="178" y2="12" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="188" y1="12" x2="188" y2="22" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="12" y1="188" x2="22" y2="188" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="12" y1="188" x2="12" y2="178" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="188" y1="188" x2="178" y2="188" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
+              <line x1="188" y1="188" x2="188" y2="178" stroke="rgba(255,255,255,0.55)" stroke-width="0.8"/>
             </svg>
           </div>
         </div>
@@ -155,65 +157,94 @@
     <!-- Perspective Grid Divider -->
     <div class="pf-tunnel-wrap" aria-hidden="true">
       <svg viewBox="0 0 1200 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Radial lines from vanishing point -->
-        <line x1="600" y1="60" x2="0"    y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="200"  y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="400"  y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="600"  y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="800"  y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="1000" y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="1200" y2="0"   stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="0"    y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="200"  y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="400"  y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="600"  y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="800"  y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.25"/>
-        <line x1="600" y1="60" x2="1000" y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <line x1="600" y1="60" x2="1200" y2="120" stroke="#FF2D78" stroke-width="0.4" opacity="0.3"/>
-        <!-- Horizontal rings (distance markers) -->
-        <line x1="200" y1="13"  x2="1000" y2="13"  stroke="#FF2D78" stroke-width="0.3" opacity="0.15"/>
-        <line x1="100" y1="32"  x2="1100" y2="32"  stroke="#FF2D78" stroke-width="0.3" opacity="0.20"/>
-        <line x1="0"   y1="52"  x2="1200" y2="52"  stroke="#FF2D78" stroke-width="0.3" opacity="0.20"/>
-        <line x1="0"   y1="68"  x2="1200" y2="68"  stroke="#FF2D78" stroke-width="0.3" opacity="0.20"/>
-        <line x1="100" y1="88"  x2="1100" y2="88"  stroke="#FF2D78" stroke-width="0.3" opacity="0.20"/>
-        <line x1="200" y1="107" x2="1000" y2="107" stroke="#FF2D78" stroke-width="0.3" opacity="0.15"/>
-        <!-- Center vanishing point dot -->
-        <circle cx="600" cy="60" r="2" fill="#FF2D78" opacity="0.6"/>
+        <line x1="600" y1="60" x2="0"    y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="200"  y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="400"  y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="600"  y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="800"  y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="1000" y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="1200" y2="0"   stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="0"    y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="200"  y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="400"  y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="600"  y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="800"  y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.45"/>
+        <line x1="600" y1="60" x2="1000" y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="600" y1="60" x2="1200" y2="120" stroke="rgba(255,255,255,1)" stroke-width="0.4" opacity="0.55"/>
+        <line x1="200" y1="13"  x2="1000" y2="13"  stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.30"/>
+        <line x1="100" y1="32"  x2="1100" y2="32"  stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.38"/>
+        <line x1="0"   y1="52"  x2="1200" y2="52"  stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.38"/>
+        <line x1="0"   y1="68"  x2="1200" y2="68"  stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.38"/>
+        <line x1="100" y1="88"  x2="1100" y2="88"  stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.38"/>
+        <line x1="200" y1="107" x2="1000" y2="107" stroke="rgba(255,255,255,1)" stroke-width="0.3" opacity="0.30"/>
+        <circle cx="600" cy="60" r="2" fill="rgba(255,255,255,0.45)"/>
       </svg>
     </div>
 
-    <!-- ===== SECTION 02 — THE PROCESS ===== -->
-    <section id="handoff" class="pf-section" aria-labelledby="s02" data-nav-label="Handoff">
+    <!-- ===== SECTION 02 — WHERE IT STARTED ===== -->
+    <section id="start" class="pf-section" aria-labelledby="s02" data-nav-label="Start">
       <div class="pf-eyebrow">
         <span class="pf-num">02</span>
-        <span class="pf-section-label">The Process</span>
+        <span class="pf-section-label">Where It Started</span>
+        <div class="pf-rule"></div>
+      </div>
+
+      <div class="pf-text pf-text--solo">
+        <h2>Starting in<br>Figma Sites.</h2>
+        <p>Figma Sites is where I started my portfolio creation process. I could create my designs in Figma, and seamlessly transfer them into Figma Sites. Unfortunately, I kept on encountering limitations in it. Anything more ambitious, like the animated hero card on the homepage, wasn't really achievable there.</p>
+      </div>
+
+      <div class="pf-image-grid">
+        <figure class="pf-fig">
+          <img src="./assets/figma-sites-ex.png" alt="Early Figma Sites design showing desktop, tablet, and mobile frames for the homepage and WeAct project page" loading="lazy">
+          <figcaption>Early Figma Sites — homepage and project page across breakpoints</figcaption>
+        </figure>
+        <figure class="pf-fig">
+          <img src="./assets/figma-sites-ex2.png" alt="Redesigned Figma Sites homepage desktop frame after a round of updates" loading="lazy">
+          <figcaption>After a round of redesigns, still within Figma Sites</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Scanline divider -->
+    <div class="pf-scanline" aria-hidden="true">
+      <div class="pf-scanline-line"></div>
+      <span class="pf-scanline-label">// The Process</span>
+      <div class="pf-scanline-line"></div>
+    </div>
+
+    <!-- ===== SECTION 03 — THE WORKFLOW ===== -->
+    <section id="process" class="pf-section" aria-labelledby="s03" data-nav-label="Process">
+      <div class="pf-eyebrow">
+        <span class="pf-num">03</span>
+        <span class="pf-section-label">The Workflow</span>
         <div class="pf-rule"></div>
       </div>
 
       <div class="pf-row pf-reverse">
         <div class="pf-text">
-          <h2>Design to code. No handoff.</h2>
-          <p>TODO — This section covers the actual workflow: how Figma connects to the codebase, how prompts are written, how Claude interprets design decisions and outputs production code.</p>
+          <h2>Design to code.<br>No handoff.</h2>
+          <p>In late February 2026, Anthropic and Figma announced MCP integration. A direct connection between Figma design files and Claude Code. For someone at the intersection of UX design and computer science, it was impossible to ignore.</p>
           <div class="pf-steps" aria-label="Workflow steps">
             <div class="pf-step">
               <span class="pf-step-num">01</span>
               <div class="pf-step-text">
                 <h4>Design in Figma</h4>
-                <p>Layouts, components, and visual decisions made in Figma first.</p>
+                <p>Layouts, components, and visual decisions made in Figma first, from my Figma Sites work. Used as source of truth for structure and intent.</p>
               </div>
             </div>
             <div class="pf-step">
               <span class="pf-step-num">02</span>
               <div class="pf-step-text">
                 <h4>Connect via MCP</h4>
-                <p>Claude reads Figma layers, styles, and structure directly through the MCP server.</p>
+                <p>Claude reads Figma frames, layers, and styles directly through the MCP server. No exporting, no manual handoff.</p>
               </div>
             </div>
             <div class="pf-step">
               <span class="pf-step-num">03</span>
               <div class="pf-step-text">
-                <h4>Pair-program with Claude</h4>
-                <p>Iterating on components, animations, and accessibility — Claude as a collaborator, not just a generator.</p>
+                <h4>Refine with Claude</h4>
+                <p>Iterating on layout, animations, and accessibility at localhost. Claude as a pair programmer.</p>
               </div>
             </div>
             <div class="pf-step">
@@ -225,89 +256,187 @@
             </div>
           </div>
         </div>
-        <div class="pf-graphic">
-          <!-- Halftone Moon — reference for decorative dot-field elements -->
-          <div class="pf-moon-wrap" aria-hidden="true">
-            <div class="pf-moon-glow"></div>
-            <div class="pf-moon"></div>
-          </div>
+        <div class="pf-graphic" aria-hidden="true">
+          <svg class="pf-workflow-svg" viewBox="0 0 260 318" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Node 1: Figma -->
+            <rect x="10" y="8" width="240" height="48" rx="4" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/>
+            <text x="130" y="28" font-family="Space Mono,monospace" font-size="9" fill="rgba(255,255,255,0.60)" text-anchor="middle" letter-spacing="2">DESIGN</text>
+            <text x="130" y="44" font-family="Space Mono,monospace" font-size="13" font-weight="700" fill="rgba(255,255,255,0.92)" text-anchor="middle" letter-spacing="1">Figma</text>
+            <!-- Arrow -->
+            <line x1="130" y1="56" x2="130" y2="86" stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+            <polyline points="124,82 130,90 136,82" stroke="rgba(255,255,255,0.50)" stroke-width="0.8" fill="none"/>
+            <!-- Node 2: MCP -->
+            <rect x="10" y="92" width="240" height="48" rx="4" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/>
+            <text x="130" y="112" font-family="Space Mono,monospace" font-size="9" fill="rgba(255,255,255,0.60)" text-anchor="middle" letter-spacing="2">BRIDGE</text>
+            <text x="130" y="128" font-family="Space Mono,monospace" font-size="13" font-weight="700" fill="rgba(255,255,255,0.92)" text-anchor="middle" letter-spacing="1">MCP</text>
+            <!-- Arrow -->
+            <line x1="130" y1="140" x2="130" y2="170" stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+            <polyline points="124,166 130,174 136,166" stroke="rgba(255,255,255,0.50)" stroke-width="0.8" fill="none"/>
+            <!-- Node 3: Claude Code -->
+            <rect x="10" y="176" width="240" height="48" rx="4" stroke="rgba(196,80,110,0.65)" stroke-width="0.8"/>
+            <text x="130" y="196" font-family="Space Mono,monospace" font-size="9" fill="rgba(196,80,110,0.85)" text-anchor="middle" letter-spacing="2">BUILD</text>
+            <text x="130" y="212" font-family="Space Mono,monospace" font-size="13" font-weight="700" fill="rgba(255,255,255,0.92)" text-anchor="middle" letter-spacing="1">Claude Code</text>
+            <!-- Arrow -->
+            <line x1="130" y1="224" x2="130" y2="254" stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+            <polyline points="124,250 130,258 136,250" stroke="rgba(255,255,255,0.50)" stroke-width="0.8" fill="none"/>
+            <!-- Node 4: GitHub Pages -->
+            <rect x="10" y="260" width="240" height="48" rx="4" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/>
+            <text x="130" y="280" font-family="Space Mono,monospace" font-size="9" fill="rgba(255,255,255,0.60)" text-anchor="middle" letter-spacing="2">DEPLOY</text>
+            <text x="130" y="296" font-family="Space Mono,monospace" font-size="13" font-weight="700" fill="rgba(255,255,255,0.92)" text-anchor="middle" letter-spacing="1">GitHub Pages</text>
+          </svg>
         </div>
       </div>
+
+      <figure class="pf-fig pf-fig--full">
+        <img src="./assets/figma-sites-headerfooter-ex.png" alt="Figma components showing the original header and footer design from Figma Sites" loading="lazy">
+        <figcaption>Header and footer components from the original Figma Sites design</figcaption>
+      </figure>
     </section>
 
     <!-- Scanline divider -->
     <div class="pf-scanline" aria-hidden="true">
       <div class="pf-scanline-line"></div>
-      <span class="pf-scanline-label">// OUTPUT · REF</span>
+      <span class="pf-scanline-label">// The Build</span>
       <div class="pf-scanline-line"></div>
     </div>
 
-    <!-- ===== SECTION 03 — DELIVERABLES (HUD FRAME PLACEHOLDER) ===== -->
-    <section id="output" class="pf-hud-section" aria-labelledby="s03" data-nav-label="Output">
+    <!-- ===== SECTION 04 — STAYING HANDS-ON ===== -->
+    <section id="build" class="pf-section" aria-labelledby="s04" data-nav-label="Build">
       <div class="pf-eyebrow">
-        <span class="pf-num">03</span>
-        <span class="pf-section-label">The Output</span>
+        <span class="pf-num">04</span>
+        <span class="pf-section-label">Staying Hands-On</span>
         <div class="pf-rule"></div>
       </div>
 
-      <!-- HUD Frame — reference for how screens / deliverables will be displayed -->
-      <div class="pf-hud-frame" role="img" aria-label="Placeholder for project screenshots">
-        <div class="pf-hud-corner tl"></div>
-        <div class="pf-hud-corner tr"></div>
-        <div class="pf-hud-corner bl"></div>
-        <div class="pf-hud-corner br"></div>
-        <span class="pf-hud-top-tag">SCREEN CAPTURE · PLACEHOLDER</span>
-        <span class="pf-hud-bot-tag">2026-001</span>
-        <div class="pf-hud-inner">
-          <div class="pf-hud-crosshair">
-            <div class="pf-hud-circle"></div>
-          </div>
-          <span class="pf-hud-placeholder-label">// screens to be added</span>
-        </div>
-      </div>
-
-      <!-- Waveform decoration -->
-      <div class="pf-wave-row" aria-hidden="true">
-        <span class="pf-wave-label">signal</span>
-        <svg class="pf-wave-svg" viewBox="0 0 800 24" preserveAspectRatio="none" fill="none">
-          <polyline points="0,12 30,12 38,4 46,20 54,8 62,16 70,6 78,18 86,12 120,12 128,3 136,21 144,9 152,15 160,12 200,12 208,5 216,19 224,10 232,14 240,12 280,12 288,2 296,22 304,11 312,13 320,12 360,12 368,6 376,18 384,8 392,16 400,12 440,12 448,4 456,20 464,7 472,17 480,12 520,12 528,3 536,21 544,10 552,14 560,12 600,12 608,5 616,19 624,9 632,15 640,12 680,12 688,6 696,18 704,8 712,16 720,12 760,12 768,4 776,20 784,12 800,12"
-            stroke="#FF2D78" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="pf-wave-label">active</span>
+      <div class="pf-text pf-text--solo">
+        <h2>AI-assisted.<br>Still hands-on.</h2>
+        <p>Token usage is a real constraint. Every prompt costs context, so being vague burns through it fast. I learned to come in with clear direction and correct early rather than late.</p>
+        <p>The bigger challenge was consistency. At first, Claude would implement the accessibility features that I wanted correctly, but then when I redesigned a section or added a new page, those same features sometimes didn't carry over properly. That meant staying active in manual testing and keeping my debugging specific.</p>
+        <p>My CS background helped. Understanding how HTML, CSS, and JavaScript interact, knowing libraries like GSAP, and being comfortable with Git meant I could diagnose issues quickly and keep prompts focused. One pattern I kept catching: Claude writing new logic for something that already existed in a shared file. Knowing when to just fix something directly, rather than prompt for it, turned out to be its own skill.</p>
       </div>
     </section>
 
     <!-- Scanline divider -->
     <div class="pf-scanline" aria-hidden="true">
       <div class="pf-scanline-line"></div>
-      <span class="pf-scanline-label">// REFLECTION</span>
+      <span class="pf-scanline-label">// Accessibility</span>
       <div class="pf-scanline-line"></div>
     </div>
 
-    <!-- ===== SECTION 04 — REFLECTION ===== -->
-    <section id="reflection" class="pf-section" aria-labelledby="s04" data-nav-label="Reflection">
+    <!-- ===== SECTION 05 — ACCESSIBILITY ===== -->
+    <section id="accessibility" class="pf-section" aria-labelledby="s05" data-nav-label="Accessibility">
       <div class="pf-eyebrow">
-        <span class="pf-num">✦</span>
+        <span class="pf-num">05</span>
+        <span class="pf-section-label">Accessibility</span>
+        <div class="pf-rule"></div>
+      </div>
+
+      <div class="pf-text pf-text--solo">
+        <h2>Built for everyone.</h2>
+        <p>Dark mode, high contrast, and reduced motion (with more still to come, like reduced transparency). These were part of the plan, not added at the end. I ran WCAG checks, implemented system-wide preference detection, and made sure the controls are reachable from any page. If you're building something and have the ability to make it more usable, it seems like the obvious call.</p>
+      </div>
+
+      <!-- Accessibility image switcher -->
+      <div class="pf-acc-demo" role="region" aria-label="Accessibility mode preview">
+        <div class="pf-acc-toggles" role="group" aria-label="Toggle accessibility mode preview">
+          <button class="pf-acc-btn" id="btn-dark" aria-pressed="false">Dark Mode</button>
+          <button class="pf-acc-btn" id="btn-hc" aria-pressed="false">High Contrast</button>
+        </div>
+        <div class="pf-acc-images">
+          <!-- Left decorative panel -->
+          <div class="pf-acc-side pf-acc-side--left" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 72 462" preserveAspectRatio="none">
+              <!-- Top-left corner bracket -->
+              <path d="M12,14 L12,34 M12,14 L32,14" stroke="rgba(255,255,255,0.32)" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+              <!-- Bottom-left corner bracket -->
+              <path d="M12,448 L12,428 M12,448 L32,448" stroke="rgba(255,255,255,0.32)" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+              <!-- Vertical guide line -->
+              <line x1="58" y1="44" x2="58" y2="418" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+              <!-- Major ticks pointing left from guide line -->
+              <line x1="40" y1="92"  x2="58" y2="92"  stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="40" y1="185" x2="58" y2="185" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="40" y1="231" x2="58" y2="231" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+              <line x1="40" y1="277" x2="58" y2="277" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="40" y1="370" x2="58" y2="370" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <!-- Minor ticks -->
+              <line x1="50" y1="138" x2="58" y2="138" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="50" y1="208" x2="58" y2="208" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="50" y1="254" x2="58" y2="254" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="50" y1="323" x2="58" y2="323" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <!-- Dot markers on major ticks -->
+              <circle cx="58" cy="92"  r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="58" cy="185" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="58" cy="277" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="58" cy="370" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <!-- Center accent dot -->
+              <circle cx="58" cy="231" r="3" fill="#C4506E" opacity="0.72"/>
+              <line x1="30" y1="231" x2="52" y2="231" stroke="#C4506E" stroke-width="1" opacity="0.45"/>
+            </svg>
+          </div>
+          <!-- Image track -->
+          <div class="pf-acc-img-track">
+            <img class="pf-acc-img active" src="./assets/acc-default.png" alt="Homepage in default light mode" id="acc-img-default">
+            <img class="pf-acc-img" src="./assets/acc-dark.png" alt="Homepage in dark mode" id="acc-img-dark">
+            <img class="pf-acc-img" src="./assets/acc-hc.png" alt="Homepage in high contrast mode" id="acc-img-hc">
+            <img class="pf-acc-img" src="./assets/acc-both.png" alt="Homepage with dark mode and high contrast both active" id="acc-img-both">
+          </div>
+          <!-- Right decorative panel -->
+          <div class="pf-acc-side pf-acc-side--right" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 72 462" preserveAspectRatio="none">
+              <!-- Top-right corner bracket -->
+              <path d="M60,14 L60,34 M60,14 L40,14" stroke="rgba(255,255,255,0.32)" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+              <!-- Bottom-right corner bracket -->
+              <path d="M60,448 L60,428 M60,448 L40,448" stroke="rgba(255,255,255,0.32)" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+              <!-- Vertical guide line -->
+              <line x1="14" y1="44" x2="14" y2="418" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+              <!-- Major ticks pointing right from guide line -->
+              <line x1="14" y1="92"  x2="32" y2="92"  stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="14" y1="185" x2="32" y2="185" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="14" y1="231" x2="32" y2="231" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+              <line x1="14" y1="277" x2="32" y2="277" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="14" y1="370" x2="32" y2="370" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <!-- Minor ticks -->
+              <line x1="14" y1="138" x2="22" y2="138" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="14" y1="208" x2="22" y2="208" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="14" y1="254" x2="22" y2="254" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <line x1="14" y1="323" x2="22" y2="323" stroke="rgba(255,255,255,0.11)" stroke-width="1"/>
+              <!-- Dot markers -->
+              <circle cx="14" cy="92"  r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="14" cy="185" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="14" cy="277" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="14" cy="370" r="1.5" fill="rgba(255,255,255,0.28)"/>
+              <!-- Center accent dot -->
+              <circle cx="14" cy="231" r="3" fill="#C4506E" opacity="0.72"/>
+              <line x1="20" y1="231" x2="42" y2="231" stroke="#C4506E" stroke-width="1" opacity="0.45"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scanline divider -->
+    <div class="pf-scanline" aria-hidden="true">
+      <div class="pf-scanline-line"></div>
+      <span class="pf-scanline-label">// Reflection</span>
+      <div class="pf-scanline-line"></div>
+    </div>
+
+    <!-- ===== SECTION 06 — REFLECTION ===== -->
+    <section id="reflection" class="pf-section" aria-labelledby="s06" data-nav-label="Reflection">
+      <div class="pf-eyebrow">
+        <span class="pf-num">&#x2736;</span>
         <span class="pf-section-label">Reflection</span>
         <div class="pf-rule"></div>
       </div>
 
       <div class="pf-reflection-grid">
-        <div class="pf-card">
-          <h3>What I Learned</h3>
-          <p>TODO — Insights from building this way: what AI is actually good at, where human judgment is irreplaceable, and what this workflow changes.</p>
-        </div>
-        <div class="pf-card">
-          <h3>What I'd Do Differently</h3>
-          <p>TODO — Honest reflection on friction points, wrong turns, and decisions I'd revisit with more context.</p>
-        </div>
-        <div class="pf-card">
-          <h3>Next</h3>
-          <p>TODO — Where this workflow goes from here and what problems it opens up.</p>
+        <div class="pf-card pf-card-wide pf-card-closing">
+          <p>The design decisions on this portfolio are mine. I brought my design and developer knowledge, and Claude helped build it.</p>
+          <p>The difference between AI-assisted and AI-generated is who's making the calls. The design judgment and everything about what this site needed to communicate, came from me.</p>
         </div>
         <div class="pf-card pf-card-wide">
           <h3>Skills Applied</h3>
-          <p>TODO — UI Design · Front-End Development · AI-Assisted Workflow · Figma MCP · Accessibility · Version Control · GitHub Pages · Iterative Design</p>
+          <p>UI Design &nbsp;·&nbsp; UX Research &nbsp;·&nbsp; Front-End Development &nbsp;·&nbsp; AI-Assisted Workflow &nbsp;·&nbsp; Figma MCP &nbsp;·&nbsp; Accessibility (WCAG) &nbsp;·&nbsp; Version Control &nbsp;·&nbsp; GitHub Pages &nbsp;·&nbsp; Iterative Design</p>
         </div>
       </div>
     </section>
@@ -316,92 +445,226 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=14"></script>
+  <script src="./layout.js?v=15"></script>
 
-  <!-- Liquid canvas — magenta/dark blobs -->
+  <!-- Hero symbols canvas animation -->
   <script>
-    (function () {
-      const canvas = document.querySelector('.liquid-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const blobs = [
-        { bx: 0.25, by: 0.40, rx: 0.55, ry: 0.60, r: 180, g: 20,  b: 80,  a: 0.40, sp: 0.00010, ph: 0 },
-        { bx: 0.70, by: 0.55, rx: 0.48, ry: 0.52, r: 120, g: 10,  b: 50,  a: 0.30, sp: 0.00008, ph: 1.8 },
-        { bx: 0.50, by: 0.20, rx: 0.42, ry: 0.48, r: 255, g: 45,  b: 120, a: 0.22, sp: 0.00013, ph: 3.2 },
-      ];
-      function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
-      function draw(t) {
-        const w = canvas.width, h = canvas.height;
-        ctx.clearRect(0, 0, w, h);
-        blobs.forEach(b => {
-          const cx = (b.bx + 0.08 * Math.sin(t * b.sp + b.ph)) * w;
-          const cy = (b.by + 0.06 * Math.cos(t * b.sp + b.ph + 1)) * h;
-          const rx = b.rx * w, ry = b.ry * h;
-          const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
-          grad.addColorStop(0,   `rgba(${b.r},${b.g},${b.b},${b.a})`);
-          grad.addColorStop(0.5, `rgba(${b.r},${b.g},${b.b},${b.a * 0.35})`);
-          grad.addColorStop(1,   `rgba(${b.r},${b.g},${b.b},0)`);
-          ctx.save(); ctx.scale(1, ry / rx);
-          ctx.beginPath(); ctx.arc(cx, cy * (rx / ry), rx, 0, Math.PI * 2);
-          ctx.fillStyle = grad; ctx.fill(); ctx.restore();
-        });
-        if (!canvas._stopped) requestAnimationFrame(draw);
+  (function () {
+    const canvas = document.querySelector('.liquid-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const CODE_SYMS = ['{}', '[]', '.css', '.html', '.js', '<>', '.fig'];
+    const MAX_P = 7;
+    let W, H;
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+
+    function mkParticle() {
+      // ~60% text symbols, ~40% frame icons
+      const isCode    = Math.random() > 0.40;
+      const shapeType = !isCode ? 'frame' : null;
+      const size      = isCode ? (52 + Math.random() * 36) : (56 + Math.random() * 44);
+      return {
+        isCode,
+        x: Math.random() * W,
+        y: Math.random() * H,
+        opacity: 0,
+        maxOpacity: isCode ? 0.65 + Math.random() * 0.20 : 0.38 + Math.random() * 0.20,
+        phase: 'fadein',
+        life: 0,
+        holdTime: 2500 + Math.random() * 3500,
+        fadeRate: 0.00020 + Math.random() * 0.00012,
+        symbol: isCode ? CODE_SYMS[Math.floor(Math.random() * CODE_SYMS.length)] : null,
+        shapeType,
+        size,
+      };
+    }
+
+    let particles = [];
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < MAX_P; i++) {
+        const p = mkParticle();
+        p.opacity = Math.random() * p.maxOpacity;
+        p.phase   = Math.random() > 0.4 ? 'hold' : 'fadein';
+        if (p.phase === 'hold') p.life = Math.random() * p.holdTime;
+        particles.push(p);
       }
-      resize(); requestAnimationFrame(draw);
+    }
+
+    function updateP(p, dt) {
+      if (p.phase === 'fadein') {
+        p.opacity = Math.min(p.maxOpacity, p.opacity + p.fadeRate * dt);
+        if (p.opacity >= p.maxOpacity) { p.phase = 'hold'; p.life = 0; }
+      } else if (p.phase === 'hold') {
+        p.life += dt;
+        if (p.life >= p.holdTime) p.phase = 'fadeout';
+      } else if (p.phase === 'fadeout') {
+        p.opacity = Math.max(0, p.opacity - p.fadeRate * dt);
+        if (p.opacity <= 0) p.phase = 'dead';
+      }
+    }
+
+    function drawP(p) {
+      if (p.opacity <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      if (p.isCode) {
+        ctx.font      = `${p.size}px 'Space Mono', monospace`;
+        ctx.fillStyle = '#C4506E';
+        ctx.fillText(p.symbol, p.x, p.y);
+      } else {
+        ctx.strokeStyle = 'rgba(245,245,245,1)';
+        ctx.lineWidth   = 1.8;
+        const s = p.size;
+        switch (p.shapeType) {
+          case 'frame': {
+            const fw = s * 1.4, fh = s;
+            const cl = s * 0.30; // corner leg length
+            const x0 = p.x - fw / 2, y0 = p.y - fh / 2;
+            const x1 = p.x + fw / 2, y1 = p.y + fh / 2;
+            ctx.beginPath();
+            // Top-left
+            ctx.moveTo(x0, y0 + cl); ctx.lineTo(x0, y0); ctx.lineTo(x0 + cl, y0);
+            // Top-right
+            ctx.moveTo(x1 - cl, y0); ctx.lineTo(x1, y0); ctx.lineTo(x1, y0 + cl);
+            // Bottom-right
+            ctx.moveTo(x1, y1 - cl); ctx.lineTo(x1, y1); ctx.lineTo(x1 - cl, y1);
+            // Bottom-left
+            ctx.moveTo(x0 + cl, y1); ctx.lineTo(x0, y1); ctx.lineTo(x0, y1 - cl);
+            ctx.stroke();
+            break;
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    let lastTs = 0;
+    function draw(ts) {
+      const dt = ts - lastTs;
+      lastTs = ts;
+      ctx.clearRect(0, 0, W, H);
+      particles = particles.filter(p => p.phase !== 'dead');
+      while (particles.length < MAX_P) particles.push(mkParticle());
+      particles.forEach(p => { updateP(p, dt); drawP(p); });
+      if (!canvas._stopped) requestAnimationFrame(draw);
+    }
+
+    resize();
+    initParticles();
+
+    const isReduced = () => document.documentElement.getAttribute('data-motion') === 'reduced';
+    if (isReduced()) {
+      draw(0);
+      canvas._stopped = true;
+    } else {
       new ResizeObserver(resize).observe(canvas);
-    })();
+      requestAnimationFrame(draw);
+    }
+  })();
   </script>
 
   <!-- GSAP scroll animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
-    (function () {
-      if (typeof gsap === 'undefined') return;
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 50 });
-      gsap.timeline().to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.15 });
-      gsap.utils.toArray('.pf-section, .pf-hud-section').forEach(s => {
-        gsap.from(s, { opacity: 0, y: 32, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: s, start: 'top 88%' } });
+  (function () {
+    if (typeof gsap === 'undefined') {
+      // GSAP CDN failed — manually reveal elements that start at opacity: 0 in CSS
+      ['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'].forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
       });
-      gsap.from('.pf-meta', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: '.pf-meta', start: 'top 92%' } });
-      gsap.from('footer', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: 'footer', start: 'top 96%' } });
-    })();
-  </script>
-  <script>
-    /* ==================== HERO SHEEN + 3D TILT ==================== */
-    if (typeof gsap !== 'undefined' && motionOk() && window.matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches) {
-      const backdrop = document.querySelector('.hero-text-backdrop');
-      const sheen    = document.querySelector('.hero-sheen-follow');
-      if (backdrop && sheen) {
-        const TILT_MAX = 2;
-        gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
-        const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
-        const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
-        const setSheenPos = (nx, ny) => { sheen.style.setProperty('--sx', (nx*100)+'%'); sheen.style.setProperty('--sy', (ny*100)+'%'); };
-        backdrop.addEventListener('mousemove',  e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); });
-        backdrop.addEventListener('mouseenter', e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); gsap.to(sheen,{opacity:1,duration:0.5,ease:'power2.out'}); });
-        backdrop.addEventListener('mouseleave', () => { gsap.to(sheen,{opacity:0,duration:0.7,ease:'power3.out'}); rxTo(0); ryTo(0); });
-      }
+      return;
     }
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { opacity: 0, y: 50 });
+    gsap.timeline().to(['.hero-liquid-bg', '.hero-glass-sheen', '.case-hero'], { y: 0, opacity: 1, duration: 1, delay: 0.15 });
+    gsap.utils.toArray('.pf-section').forEach(s => {
+      gsap.from(s, { opacity: 0, y: 32, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: s, start: 'top 88%' } });
+    });
+    gsap.from('.pf-meta',  { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: '.pf-meta',  start: 'top 92%' } });
+    gsap.from('footer',    { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: 'footer',    start: 'top 96%' } });
+  })();
   </script>
 
+  <!-- Hero sheen + 3D tilt -->
+  <script>
+  if (typeof gsap !== 'undefined' && typeof motionOk === 'function' && motionOk() && window.matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches) {
+    const backdrop = document.querySelector('.hero-text-backdrop');
+    const sheen    = document.querySelector('.hero-sheen-follow');
+    if (backdrop && sheen) {
+      const TILT_MAX = 2;
+      gsap.set(backdrop, { transformPerspective: 1200, transformOrigin: '50% 50%' });
+      const rxTo = gsap.quickTo(backdrop, 'rotationX', { duration: 0.7, ease: 'power3.out' });
+      const ryTo = gsap.quickTo(backdrop, 'rotationY', { duration: 0.7, ease: 'power3.out' });
+      const setSheenPos = (nx, ny) => { sheen.style.setProperty('--sx', (nx*100)+'%'); sheen.style.setProperty('--sy', (ny*100)+'%'); };
+      backdrop.addEventListener('mousemove',  e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); });
+      backdrop.addEventListener('mouseenter', e => { const r=backdrop.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height; setSheenPos(nx,ny); ryTo((nx-.5)*2*TILT_MAX); rxTo((ny-.5)*-2*TILT_MAX); gsap.to(sheen,{opacity:1,duration:0.5,ease:'power2.out'}); });
+      backdrop.addEventListener('mouseleave', () => { gsap.to(sheen,{opacity:0,duration:0.7,ease:'power3.out'}); rxTo(0); ryTo(0); });
+    }
+  }
+  </script>
+
+  <!-- Accessibility image switcher -->
+  <script>
+  (function () {
+    const btnDark = document.getElementById('btn-dark');
+    const btnHC   = document.getElementById('btn-hc');
+    const imgs = {
+      def:  document.getElementById('acc-img-default'),
+      dark: document.getElementById('acc-img-dark'),
+      hc:   document.getElementById('acc-img-hc'),
+      both: document.getElementById('acc-img-both'),
+    };
+    let darkOn = false, hcOn = false;
+
+    function update() {
+      Object.values(imgs).forEach(img => img.classList.remove('active'));
+      if      (darkOn && hcOn) imgs.both.classList.add('active');
+      else if (darkOn)         imgs.dark.classList.add('active');
+      else if (hcOn)           imgs.hc.classList.add('active');
+      else                     imgs.def.classList.add('active');
+    }
+
+    btnDark.addEventListener('click', () => {
+      darkOn = !darkOn;
+      btnDark.setAttribute('aria-pressed', String(darkOn));
+      btnDark.classList.toggle('active', darkOn);
+      update();
+    });
+    btnHC.addEventListener('click', () => {
+      hcOn = !hcOn;
+      btnHC.setAttribute('aria-pressed', String(hcOn));
+      btnHC.classList.toggle('active', hcOn);
+      update();
+    });
+  })();
+  </script>
+
+  <!-- Lightbox -->
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
     <button id="lightbox-close" aria-label="Close image viewer">&times;</button>
     <img id="lightbox-img" src="" alt="">
   </div>
   <script>
-    (function () {
-      const lb = document.getElementById('lightbox');
-      const lbImg = document.getElementById('lightbox-img');
-      const lbClose = document.getElementById('lightbox-close');
-      function open(src, alt) { lbImg.src = src; lbImg.alt = alt || ''; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
-      function close() { lb.classList.remove('active'); document.body.style.overflow = ''; lbImg.src = ''; }
-      document.querySelectorAll('.pf-section img').forEach(img => { img.classList.add('zoomable'); img.addEventListener('click', () => open(img.src, img.alt)); });
-      lbClose.addEventListener('click', close);
-      lb.addEventListener('click', e => { if (e.target === lb) close(); });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-    })();
+  (function () {
+    const lb     = document.getElementById('lightbox');
+    const lbImg  = document.getElementById('lightbox-img');
+    const lbClose = document.getElementById('lightbox-close');
+    function open(src, alt)  { lbImg.src = src; lbImg.alt = alt || ''; lb.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function close()         { lb.classList.remove('active'); document.body.style.overflow = ''; lbImg.src = ''; }
+    document.querySelectorAll('.pf-section img').forEach(img => { img.classList.add('zoomable'); img.addEventListener('click', () => open(img.src, img.alt)); });
+    lbClose.addEventListener('click', close);
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
   </script>
 
 </body>

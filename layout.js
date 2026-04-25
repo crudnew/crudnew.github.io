@@ -209,6 +209,12 @@ function initLayout() {
     el.outerHTML = FOOTER_HTML;
   });
 
+  /* Enforce footer typography — overrides any page-level :root font reassignments
+     (e.g. portfolio.css sets --font-body to Orbitron; footer always stays Inter). */
+  const _footerStyle = document.createElement('style');
+  _footerStyle.textContent = 'footer, footer * { font-family: Inter, system-ui, -apple-system, sans-serif !important; }';
+  document.head.appendChild(_footerStyle);
+
   /* ---- Settings & Accessibility ---- */
   const darkToggle     = document.getElementById('dark-toggle-btn');
   const contrastToggle = document.getElementById('contrast-toggle-btn');

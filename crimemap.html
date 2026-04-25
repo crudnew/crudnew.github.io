@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crime Map — Chris Rudnew</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=72" />
+  <link rel="stylesheet" href="./style.css?v=83" />
   <link rel="stylesheet" href="./crimemap.css?v=3" />
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
@@ -74,6 +75,12 @@
     .tech-col ul { list-style: disc; padding-left: 18px; }
     .tech-col li { font-size: 15px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 4px; }
     @media (max-width: 799px) { .tech-stack-grid { flex-direction: column; } }
+    /* High contrast: always dark hero, white border */
+    [data-contrast="high"] .hero-wrapper .case-hero { background: rgba(0,0,0,0.85) !important; border: 2px solid #FFFFFF !important; box-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop { background: rgba(0,0,0,0.94) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,0.80) !important; box-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero h1 { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; text-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .case-tagline { color: #EEEEEE !important; -webkit-text-fill-color: #EEEEEE !important; text-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .subtitle { color: #EEEEEE !important; text-shadow: none !important; }
   </style>
 </head>
 <body data-page-tint="crimemap">
@@ -91,10 +98,10 @@
         </div>
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="case-eyebrow">Case Study — Capstone Project</p>
+          <p class="case-eyebrow">BSc Computer Science &middot; Capstone Project</p>
           <h1 id="case-heading">Crime Map</h1>
           <p class="case-tagline">Making you feel safer in your city.</p>
-          <p class="subtitle">A full-stack web application that visualises crime data and lets users report suspicious activity in their neighbourhood — built as a Computer Science undergraduate capstone.</p>
+          <p class="subtitle">A full-stack web application that visualises crime data and lets users report suspicious activity in their neighbourhood, built as a Computer Science undergraduate capstone.</p>
         </div>
       </section>
       <div class="hero-glass-sheen" aria-hidden="true"></div>
@@ -379,7 +386,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=14"></script>
+  <script src="./layout.js?v=15"></script>
 
   <!-- CrimeMap: Dark sonar / siren animation -->
   <script>

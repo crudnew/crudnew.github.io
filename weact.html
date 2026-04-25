@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WeAct: Reimagining Local Volunteering — Chris Rudnew</title>
   <meta name="description" content="WeAct case study — Making local volunteering easier to find and commit to. UX Research, Design, and Prototyping by Chris Rudnew.">
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=72">
+  <link rel="stylesheet" href="./style.css?v=83">
   <link rel="stylesheet" href="./weact.css?v=4">
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
@@ -55,6 +56,14 @@
     /* Image shadows */
     .phone-pair img       { box-shadow: var(--shadow-lg); }
     .image-col img        { box-shadow: var(--shadow-md); border-radius: var(--radius-md); max-height: 420px; width: auto; max-width: 100%; }
+    /* High contrast: always dark hero, white border */
+    [data-contrast="high"] .hero-wrapper .case-hero { background: rgba(0,0,0,0.85) !important; border: 2px solid #FFFFFF !important; box-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop { background: rgba(0,0,0,0.94) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 1px solid rgba(255,255,255,0.80) !important; box-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop .case-eyebrow { color: #FFD9CC !important; text-shadow: none !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop h1 { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; background: none !important; background-clip: initial !important; -webkit-background-clip: initial !important; text-shadow: none !important; }
+    [data-theme="dark"][data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop h1 { color: #EEEEEE !important; -webkit-text-fill-color: #EEEEEE !important; }
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop .case-tagline,
+    [data-contrast="high"] .hero-wrapper .case-hero .hero-text-backdrop p { color: #EEEEEE !important; text-shadow: none !important; }
   </style>
 </head>
 <body data-page-tint="weact">
@@ -72,7 +81,7 @@
       <section class="case-hero" aria-labelledby="case-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="case-eyebrow">Case Study</p>
+          <p class="case-eyebrow">UofT &middot; UX Research &amp; Design</p>
           <h1 id="case-heading">WeAct</h1>
           <p class="case-tagline">Reimagining Local Volunteering</p>
           <p class="subtitle">Making local volunteering easier to find and commit to.</p>
@@ -427,7 +436,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=14"></script>
+  <script src="./layout.js?v=15"></script>
 
   <!-- WeAct: Calming → Strengthening → Active gradient animation -->
   <script>
