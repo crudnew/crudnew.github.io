@@ -101,17 +101,15 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  /* Warm sand base — sits under the gradients */
   background-color: #F2EDE6;
-  /* 1. Fine paper grain (~3.5% opacity) — adds tactility without pattern
-     2. Warm light from top-left — primary ambient direction
-     3. Deeper anchor at bottom-right — creates depth for backdrop-filter to work against */
   background-image:
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.22  0 0 0 0 0.16  0 0 0 0 0.10  0 0 0 0.12 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>"),
+    linear-gradient(rgba(242, 237, 230, 0.25), rgba(242, 237, 230, 0.25)),
+    url('./assets/background-noise.png'),
     radial-gradient(ellipse at 14% 8%,  #FAF5EE 0%, transparent 58%),
     radial-gradient(ellipse at 88% 94%, #E0D5C0 0%, transparent 52%);
-  background-size: 180px 180px, 100% 100%, 100% 100%;
-  background-repeat: repeat, no-repeat, no-repeat;
+  background-size: 100% 100%, 200px 200px, 100% 100%, 100% 100%;
+  background-repeat: no-repeat, repeat, no-repeat, no-repeat;
+  background-blend-mode: normal, multiply, normal, normal;
   color: var(--text-primary);
   overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
@@ -119,9 +117,11 @@ body {
 [data-theme="dark"] body {
   background-color: #17110E;
   background-image:
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.85  0 0 0 0 0.78  0 0 0 0 0.68  0 0 0 0.08 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>"),
+    linear-gradient(rgba(23, 17, 14, 0.65), rgba(23, 17, 14, 0.65)),
+    url('./assets/background-noise.png'),
     radial-gradient(ellipse at 14% 8%,  rgba(40, 28, 16, 1) 0%, transparent 58%),
     radial-gradient(ellipse at 88% 94%, rgba(5,  2,  0,  1) 0%, transparent 52%);
+  background-blend-mode: normal, multiply, normal, normal;
 }
 
 /* ============================================================
@@ -329,6 +329,7 @@ nav.nav-pill > *,
     background: transparent;
   }
 }
+
 
 /* Per-page tint palette — each color is a muted reading of that page's
    primary background, kept translucent enough to read as glass not paint. */
@@ -753,6 +754,7 @@ footer {
   display: flex; flex-direction: column;
   align-items: center; gap: 16px;
   padding: 28px 44px; width: 100%;
+  padding-bottom: max(28px, env(safe-area-inset-bottom));
   transition: background 0.3s ease;
 }
 .footer-links {
@@ -1171,6 +1173,7 @@ main {
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%; max-width: 1220px;
+  contain: layout;
 }
 .more-projects-wrap.is-open {
   grid-template-rows: 1fr;
@@ -1187,6 +1190,7 @@ main {
 .more-projects-inner .card {
   opacity: 0;
   transform: translateY(28px);
+  will-change: transform, opacity;
 }
 /* Phase: entering — container has started expanding, now cards rise in */
 .more-projects-wrap.is-entering .more-projects-inner .card {
@@ -1292,7 +1296,7 @@ main {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/weact-phones.png');
   background-repeat: repeat-y;
-  background-size: 38% auto;
+  background-size: 927px auto;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1339,7 +1343,7 @@ main {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/linger-phones.png');
   background-repeat: repeat-y;
-  background-size: 38% auto;
+  background-size: 927px auto;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1374,7 +1378,7 @@ main {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/crimemap-phones.png');
   background-repeat: repeat-y;
-  background-size: 38% auto;
+  background-size: 927px auto;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1409,7 +1413,7 @@ main {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/portfolio-phones.png');
   background-repeat: repeat-y;
-  background-size: 38% auto;
+  background-size: 927px auto;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1766,7 +1770,7 @@ main {
 }
 
 .card-glass-panel {
-  position: absolute; bottom: 0; left: 0; right: 0;
+  position: absolute; bottom: -1px; left: -1px; right: -1px;
   z-index: 5;
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   display: flex; flex-direction: row;
@@ -1900,19 +1904,10 @@ main {
   transition: opacity 0.3s ease;
 }
 .bento-card[data-num]:hover::before { opacity: 0.13; }
-/* Apostrophe as its own element — sits below text in the padding zone */
-.bento-card[data-prefix]::after {
-  content: attr(data-prefix);
-  position: absolute; bottom: -20px; right: 138px;
-  font-family: var(--font-heading); font-size: 100px; font-weight: 700;
-  line-height: 1; letter-spacing: 0; font-feature-settings: "kern" 1;
-  color: var(--text-primary); opacity: 0.08;
-  pointer-events: none; user-select: none;
-  transition: opacity 0.3s ease;
-}
-.bento-card[data-prefix]:hover::after { opacity: 0.13; }
-/* '6' is wider than '3' in Playfair — push card-1 apostrophe left to match card-2 gap */
-.bento-card[data-num="26"]::after { right: 148px; }
+/* Longer strings need smaller size to avoid overlapping body text */
+.bento-card[data-num="Current"]::before { font-size: 58px; letter-spacing: -1px; bottom: 12px; }
+.bento-card[data-num="2023"]::before   { font-size: 80px; letter-spacing: -3px; bottom: 12px; }
+.bento-card[data-num="&"]::before      { bottom: 12px; }
 /* Deck-mode: JS adds .bento-deck-active, cards become absolute stack */
 .bento-grid-wrap.bento-deck-active { overflow: visible; }
 .bento-deck-active .bento-grid {
@@ -2497,6 +2492,17 @@ main {
 /* ============================================================
    RESPONSIVE — MID  800–1050px  (cards wrap to 2-up grid)
 ============================================================ */
+/* Phone loop — tablet: slightly zoomed out, speed adjusted to match desktop pace */
+@media (max-width: 1050px) and (min-width: 800px) {
+  .card--feature.card--weact .card-image::after,
+  .card--feature.card--linger .card-image::after,
+  .card--feature.card--crimemap .card-image::after,
+  .card--feature.card--portfolio .card-image::after {
+    background-size: 700px auto;
+    --loop-dur: 26s;
+  }
+}
+
 @media (max-width: 1050px) and (min-width: 800px) {
   .cards {
     display: grid;
@@ -2526,6 +2532,17 @@ main {
 /* ============================================================
    RESPONSIVE — MOBILE  1–799px
 ============================================================ */
+/* Phone loop — mobile: more zoomed out, speed adjusted to match desktop pace */
+@media (max-width: 799px) {
+  .card--feature.card--weact .card-image::after,
+  .card--feature.card--linger .card-image::after,
+  .card--feature.card--crimemap .card-image::after,
+  .card--feature.card--portfolio .card-image::after {
+    background-size: 500px auto;
+    --loop-dur: 22s;
+  }
+}
+
 @media (max-width: 799px) {
   body > header { padding: 14px 16px; grid-template-columns: auto 1fr auto; }
   /* Collapse the center pill to wordmark only, hide extras pill, show hamburger */
@@ -2559,7 +2576,7 @@ main {
   [data-theme="dark"] .card--row .card-image { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
   .bento-card { flex: 0 0 82vw; padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
   .bento-card h3 { font-size: 18px; }
-  footer { padding: 16px 20px; }
+  footer { padding: 16px 20px; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
   .footer-links { gap: 20px; }
   .footer-bottom { flex-direction: column; gap: 8px; }
   /* Case study */

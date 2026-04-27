@@ -365,7 +365,7 @@ function initLayout() {
   // Base hover targets — pages can add more via addCursorHover()
   addCursorHover('a, button');
 
-  if ('ontouchstart' in window) { dot.style.display = 'none'; ring.style.display = 'none'; }
+  if (window.matchMedia('(pointer: coarse)').matches) { dot.style.display = 'none'; ring.style.display = 'none'; }
 }
 
 /* ============================================================
