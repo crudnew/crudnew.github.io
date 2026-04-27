@@ -2539,7 +2539,7 @@ main {
   .card--feature.card--crimemap .card-image::after,
   .card--feature.card--portfolio .card-image::after {
     background-size: 500px auto;
-    --loop-dur: 22s;
+    --loop-dur: 11s;
   }
 }
 

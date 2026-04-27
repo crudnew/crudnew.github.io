@@ -342,6 +342,8 @@ function initLayout() {
   });
 
   /* ---- Custom cursor ---- */
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
   const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
   const ring = document.createElement('div'); ring.className = 'cursor-ring';
   document.body.appendChild(dot);
@@ -364,8 +366,6 @@ function initLayout() {
 
   // Base hover targets — pages can add more via addCursorHover()
   addCursorHover('a, button');
-
-  if (window.matchMedia('(pointer: coarse)').matches) { dot.style.display = 'none'; ring.style.display = 'none'; }
 }
 
 /* ============================================================
