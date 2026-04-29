@@ -234,7 +234,7 @@ body > header > * { pointer-events: auto; }
 nav.nav-pill,
 .extras-pill,
 .nav-menu-btn,
-.settings-btn {
+.settings-wrap {
   background-color: rgba(243, 232, 215, 0.50);
   backdrop-filter: blur(28px) saturate(1.35);
   -webkit-backdrop-filter: blur(28px) saturate(1.35);
@@ -247,7 +247,7 @@ nav.nav-pill,
 nav.nav-pill::before,
 .extras-pill::before,
 .nav-menu-btn::before,
-.settings-btn::before {
+.settings-wrap::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -260,7 +260,7 @@ nav.nav-pill::before,
 body.tint-filled nav.nav-pill::before,
 body.tint-filled .extras-pill::before,
 body.tint-filled .nav-menu-btn::before,
-body.tint-filled .settings-btn::before {
+body.tint-filled .settings-wrap::before {
   opacity: 1;
 }
 
@@ -269,7 +269,7 @@ body.tint-filled .settings-btn::before {
 nav.nav-pill::after,
 .extras-pill::after,
 .nav-menu-btn::after,
-.settings-btn::after {
+.settings-wrap::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -283,7 +283,8 @@ nav.nav-pill::after,
 
 /* Keep pill content above the tint layer */
 nav.nav-pill > *,
-.extras-pill > * {
+.extras-pill > *,
+.settings-wrap > .settings-btn {
   position: relative;
   z-index: 1;
 }
@@ -291,7 +292,7 @@ nav.nav-pill > *,
 [data-theme="dark"] nav.nav-pill,
 [data-theme="dark"] .extras-pill,
 [data-theme="dark"] .nav-menu-btn,
-[data-theme="dark"] .settings-btn {
+[data-theme="dark"] .settings-wrap {
   background-color: rgba(30,22,16,0.68);
   border-color: rgba(255,255,255,0.12);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
@@ -299,7 +300,7 @@ nav.nav-pill > *,
 [data-theme="dark"] nav.nav-pill::after,
 [data-theme="dark"] .extras-pill::after,
 [data-theme="dark"] .nav-menu-btn::after,
-[data-theme="dark"] .settings-btn::after {
+[data-theme="dark"] .settings-wrap::after {
   box-shadow:
     0 8px 28px rgba(0,0,0,0.35),
     0 2px 6px  rgba(0,0,0,0.20);
@@ -308,24 +309,24 @@ nav.nav-pill > *,
 [data-motion="reduced"] nav.nav-pill::before,
 [data-motion="reduced"] .extras-pill::before,
 [data-motion="reduced"] .nav-menu-btn::before,
-[data-motion="reduced"] .settings-btn::before {
+[data-motion="reduced"] .settings-wrap::before {
   transition: none;
 }
 /* High contrast: remove the tint overlay entirely so pills stay crisp */
 [data-contrast="high"] nav.nav-pill::before,
 [data-contrast="high"] .extras-pill::before,
 [data-contrast="high"] .nav-menu-btn::before,
-[data-contrast="high"] .settings-btn::before {
+[data-contrast="high"] .settings-wrap::before {
   background: transparent;
 }
 @supports not (backdrop-filter: blur(1px)) {
-  nav.nav-pill, .extras-pill, .nav-menu-btn, .settings-btn {
+  nav.nav-pill, .extras-pill, .nav-menu-btn, .settings-wrap {
     background-color: var(--surface-solid);
   }
   nav.nav-pill::before,
   .extras-pill::before,
   .nav-menu-btn::before,
-  .settings-btn::before {
+  .settings-wrap::before {
     background: transparent;
   }
 }
@@ -351,6 +352,7 @@ nav.nav-pill,
 .extras-pill {
   display: flex; align-items: center; gap: 2px;
   padding: 7px; border-radius: 999px;
+  height: 54px; box-sizing: border-box;
   animation: fadeIn 0.6s ease both;
   animation-delay: 0.1s;
 }
@@ -488,7 +490,7 @@ nav.nav-pill {
 .nav-menu-btn {
   display: none;
   grid-column: 3; justify-self: end;
-  width: 46px; height: 46px; border-radius: 50%;
+  width: 54px; height: 54px; border-radius: 50%;
   color: var(--text-primary);
   cursor: pointer;
   align-items: center; justify-content: center;
@@ -595,32 +597,60 @@ nav.nav-pill {
 }
 .nav-sheet-link svg { flex-shrink: 0; }
 
-/* Settings cog — floating circle, separate from the extras pill */
+.nav-sheet-group-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1.8px; color: var(--text-muted);
+  padding: 0 16px 6px;
+}
+.nav-sheet-toggle[aria-checked="true"] {
+  background: rgba(255,255,255,0.50);
+  font-weight: 600;
+}
+[data-theme="dark"] .nav-sheet-toggle[aria-checked="true"] {
+  background: rgba(255,255,255,0.10);
+}
+
+/* Display pill — same outer shell as .extras-pill */
 .settings-wrap {
-  position: relative; display: flex; align-items: center;
+  display: flex; align-items: center; gap: 2px;
+  padding: 7px; border-radius: 999px;
+  height: 54px; box-sizing: border-box;
   animation: fadeIn 0.6s ease both;
   animation-delay: 0.1s;
 }
 
 .settings-btn {
-  display: flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: 50%;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 14px; border-radius: 999px;
+  border: none; background: transparent;
   cursor: pointer;
   color: var(--text-primary);
-  transition: box-shadow 0.25s ease, transform 0.4s var(--ease), color 0.2s ease;
-  position: relative; z-index: 2;
+  font-family: var(--font-body); font-size: 14px; font-weight: 550;
+  letter-spacing: 0.01em; white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+  opacity: 0.82;
 }
 .settings-btn:hover,
 .settings-wrap.is-open .settings-btn,
 .settings-wrap:focus-within .settings-btn {
-  transform: rotate(90deg);
+  background: rgba(255,255,255,0.35);
+  opacity: 1;
 }
-.settings-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+[data-theme="dark"] .settings-btn:hover,
+[data-theme="dark"] .settings-wrap.is-open .settings-btn,
+[data-theme="dark"] .settings-wrap:focus-within .settings-btn {
+  background: rgba(255,255,255,0.08);
+}
+.display-cog { display: none; }
+.display-chevron { width: 12px; height: 12px; transition: transform 0.3s var(--ease); }
+.settings-wrap.is-open .display-chevron,
+.settings-wrap:focus-within .display-chevron { transform: rotate(180deg); }
 
 .settings-bubbles {
-  position: absolute; top: 100%; right: 0;
+  position: absolute; top: 100%; left: 50%;
+  transform: translateX(-50%);
   display: flex; flex-direction: column;
-  align-items: flex-end; gap: 8px; padding-top: 10px;
+  align-items: center; gap: 8px; padding-top: 10px;
   z-index: 1; pointer-events: auto;
 }
 
@@ -805,6 +835,26 @@ footer {
 [data-motion="reduced"] .footer-avail-dot { animation: none; }
 [data-theme="dark"]     .footer-avail-dot,
 [data-contrast="high"]  .footer-avail-dot { background: #4caf6e; }
+
+/* About page status chip */
+.about-status-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 16px; line-height: 1.4;
+  color: var(--text-secondary);
+}
+.about-status-dot {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  background: #4caf6e;
+  box-shadow: 0 0 0 0 rgba(76, 175, 110, 0.5);
+  animation: aboutStatusPulse 2.4s ease-in-out infinite;
+}
+@keyframes aboutStatusPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 110, 0.85); }
+  50%       { box-shadow: 0 0 0 6px rgba(76, 175, 110, 0.1); }
+}
+[data-theme="dark"] .about-status-dot { background: #4caf6e; animation-name: aboutStatusPulse; }
+[data-motion="reduced"] .about-status-dot { animation: none; }
+[data-contrast="high"] .about-status-dot { animation: none; }
 .footer-cta-text {
   font-family: var(--font-heading);
   font-size: clamp(24px, 3vw, 34px);
@@ -1010,6 +1060,7 @@ main {
     transparent 60%);
 }
 .hero-text-backdrop > .hero-eyebrow,
+.hero-text-backdrop > .about-status-chip,
 .hero-text-backdrop > h1,
 .hero-text-backdrop > .hero-subtitle {
   position: relative; z-index: 3;
@@ -2188,6 +2239,29 @@ main {
   gap: 24px;
   margin-bottom: 48px;
 }
+.overview-grid--3 {
+  grid-template-columns: 1fr;
+}
+
+/* About gallery — fixed card size, wraps at breakpoints */
+.about-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px 64px 64px;
+  width: 100%;
+  max-width: 1212px;
+  box-sizing: border-box;
+}
+.about-gallery-card {
+  flex: 0 0 300px;
+  height: 280px;
+}
+@media (max-width: 599px) {
+  .about-gallery { padding: 16px 18px 40px; gap: 16px; }
+  .about-gallery-card { flex: 0 0 100%; height: 220px; }
+}
 .overview-card {
   padding: 40px;
   background: var(--surface);
@@ -2430,6 +2504,18 @@ main {
 .reflection-card--wide {
   grid-column: 1 / -1;
 }
+/* Gallery cards suppress the reflection-card padding/bg */
+.about-gallery .reflection-card {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.about-gallery .reflection-card img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
 .reflection-card h3 {
   font-family: var(--font-heading); font-size: 22px; font-weight: 700;
   color: var(--text-primary); margin-bottom: 20px; letter-spacing: -0.12px;
@@ -2543,6 +2629,19 @@ main {
   }
 }
 
+/* Collision-collapse: triggered by JS (ResizeObserver) on wide viewports when
+   left pill would overlap the right pill group, or always on mobile. */
+body.nav-collapsed nav.nav-pill { padding: 6px 8px; }
+body.nav-collapsed .nav-pill-divider--name,
+body.nav-collapsed .nav-pill-sections { display: none; }
+body.nav-collapsed .extras-pill { display: none; }
+body.nav-collapsed .nav-menu-btn { display: flex; }
+/* Display pill stays visible but compacts to icon-only */
+body.nav-collapsed .display-label,
+body.nav-collapsed .display-chevron { display: none; }
+body.nav-collapsed .display-cog { display: block; }
+body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
+
 @media (max-width: 799px) {
   body > header { padding: 14px 16px; grid-template-columns: auto 1fr auto; }
   /* Collapse the center pill to wordmark only, hide extras pill, show hamburger */
@@ -2551,6 +2650,10 @@ main {
   .nav-pill-sections { display: none; }
   .extras-pill { display: none; }
   .nav-menu-btn { display: flex; grid-column: 3; }
+  /* Display pill stays visible, compacts to icon-only */
+  .display-label, .display-chevron { display: none; }
+  .display-cog { display: block; }
+  .settings-btn { padding: 9px 11px; width: 38px; height: 38px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
   /* Homepage */
   main { padding: var(--header-clearance) 18px 40px; gap: 36px; }
   .hero-wrapper::before, .hero-wrapper::after { display: none; }
@@ -2794,8 +2897,10 @@ main {
   box-shadow: none;
 }
 
-/* Settings bubbles */
-[data-contrast="high"] .settings-btn,
+/* All header pills + settings bubbles */
+[data-contrast="high"] nav.nav-pill,
+[data-contrast="high"] .extras-pill,
+[data-contrast="high"] .settings-wrap,
 [data-contrast="high"] .settings-bubble {
   background: var(--surface-solid);
   backdrop-filter: none;

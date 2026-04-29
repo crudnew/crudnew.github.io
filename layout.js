@@ -30,15 +30,10 @@ const HEADER_HTML = `
       <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
     </svg>
   </button>
-  <div class="extras-pill" aria-label="Site links and settings">
-    <a class="extras-item extras-internal" href="/about.html" data-path="/about.html">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-      <span>About</span>
-    </a>
-    <span class="extras-divider" aria-hidden="true"></span>
+  <div class="extras-pill about-pill" aria-label="About page">
+    <a class="extras-item extras-internal" href="/about.html" data-path="/about.html">About</a>
+  </div>
+  <div class="extras-pill" aria-label="Social links">
     <a class="extras-item extras-external" href="https://linkedin.com/in/chris-rudnew" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn profile (opens in new tab)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -47,6 +42,7 @@ const HEADER_HTML = `
       </svg>
       <span class="extras-label">LinkedIn</span>
     </a>
+    <span class="extras-divider" aria-hidden="true"></span>
     <a class="extras-item extras-external" href="mailto:crudnew@gmail.com" aria-label="Email Chris">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -56,10 +52,13 @@ const HEADER_HTML = `
     </a>
   </div>
   <div class="settings-wrap">
-      <button class="settings-btn" aria-label="Accessibility settings" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      <button class="settings-btn" aria-label="Display preferences" aria-expanded="false">
+        <svg class="display-cog" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span class="display-label">Display</span>
+        <svg class="display-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M6 9l6 6 6-6"/>
         </svg>
       </button>
       <div class="settings-bubbles" role="group" aria-label="Accessibility options">
@@ -203,6 +202,27 @@ function initLayout() {
 
   /* ---- Mobile menu sheet ---- */
   initNavSheet();
+
+  /* ---- Collision collapse: hamburger when left pill meets right pills ---- */
+  (function () {
+    var header   = document.querySelector('body > header');
+    var leftPill = header && header.querySelector('nav.nav-pill');
+    var getRightEdge = function () {
+      var rightEls = header.querySelectorAll('.extras-pill, .settings-wrap');
+      var min = Infinity;
+      rightEls.forEach(function (el) { var l = el.getBoundingClientRect().left; if (l < min) min = l; });
+      return min;
+    };
+    if (!header || !leftPill) return;
+    var check = function () {
+      if (window.innerWidth <= 799) { document.body.classList.remove('nav-collapsed'); return; }
+      var gap = getRightEdge() - leftPill.getBoundingClientRect().right;
+      document.body.classList.toggle('nav-collapsed', gap < 24);
+    };
+    var ro = new ResizeObserver(check);
+    ro.observe(header);
+    check();
+  }());
 
   /* Replace <footer-component> */
   document.querySelectorAll('footer-component').forEach(el => {
@@ -507,7 +527,7 @@ function initNavSheet() {
   });
   if (!sectionsGroup.children.length) sectionsGroup.hidden = true;
 
-  // Mirror extras (About, LinkedIn, Contact) into the sheet
+  // Mirror extras (About, LinkedIn, Contact) into the sheet — queries across all .extras-pill elements
   document.querySelectorAll('.extras-pill .extras-item').forEach(link => {
     const clone = link.cloneNode(true);
     clone.classList.remove('extras-item', 'extras-internal', 'extras-external');
@@ -515,6 +535,7 @@ function initNavSheet() {
     clone.addEventListener('click', () => closeSheet());
     extrasGroup.appendChild(clone);
   });
+
 
   let lastFocus = null;
   function openSheet() {

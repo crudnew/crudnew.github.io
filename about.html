@@ -155,7 +155,10 @@
       <section class="hero" aria-labelledby="about-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="hero-eyebrow" aria-hidden="true">Designer &amp; Researcher</p>
+          <p class="about-status-chip">
+            <span class="about-status-dot" aria-hidden="true"></span>
+            <span>Currently completing my MI (UX Design) at UofT <b>·</b> Open to Co-Op roles in 2026</span>
+          </p>
           <h1 id="about-heading">About Me</h1>
           <span class="underline-draw" aria-hidden="true"></span>
           <p class="hero-subtitle">UX/UI designer with a CS and business foundation, building accessible and user-centered digital experiences.</p>
@@ -202,7 +205,7 @@
     <div class="case-band">
       <div class="case-band-inner">
         <h2 style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; color:var(--text-primary); margin-bottom:32px;">Why Me?</h2>
-        <div class="overview-grid">
+        <div class="overview-grid overview-grid--3">
           <div class="overview-card about-card">
             <h3>What I Bring</h3>
             <ul>
@@ -216,6 +219,10 @@
             <p>I value collaboration, curiosity, creativity, and grounding design decisions in evidence. I enjoy working in diverse environments and see every project as an opportunity for personal and professional growth.</p>
             <p style="margin-top:16px;">Open communication, respect, and humor (where appropriate) help teams thrive, and I aspire to be someone who can create a positive and productive team environment.</p>
           </div>
+          <div class="overview-card about-card">
+            <h3>Inclusivity</h3>
+            <p>I believe accessibility is extremely important, but also fun to implement. Dark mode, high contrast, and reduced motion are wired into every page on this site (with more to come), with WCAG checks throughout my process. If a feature can be made more usable for someone, that's the version I want to ship.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -227,7 +234,7 @@
 
       <div class="content-full">
         <div class="about-card">
-          <h2 id="human-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:16px;">The Human Part...</h2>
+          <h2 id="human-heading" style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-0.72px; margin-bottom:16px;">The Human Part</h2>
           <p>I'm interested in how things work, and how people experience them. I love learning new things, and being able to apply them to all aspects of my life.</p>
           <p style="margin-top:12px;">Outside of UX, I enjoy the usual things like gaming, spending time with friends, or getting immersed in a new series. I'm influenced by a wide range of music and visual styles, and while I often lean toward minimalism and neutrality, I also appreciate bold ideas when they're executed with intention.</p>
           <p style="margin-top:12px;">I'm very comfortable in conversation, enjoy exchanging ideas, love learning new things, and I try my best to make the people around me feel included. I'm quite spontaneous, but when it comes to education or work, I enjoy thinking things through so that decisions feel grounded, not rushed.</p>
@@ -235,21 +242,15 @@
       </div>
 
       <!-- Gallery: each image in a glass card frame -->
-      <div class="about-gallery" style="display:flex; gap:20px; padding:24px 64px 64px; width:100%; max-width:1212px; box-sizing:border-box;">
-        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
-          <img src="./assets/about-gallery-1.png"
-               alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div class="about-gallery">
+        <div class="about-gallery-card reflection-card">
+          <img src="./assets/about-gallery-1.png" alt="" aria-hidden="true">
         </div>
-        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
-          <img src="./assets/about-gallery-2.png"
-               alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div class="about-gallery-card reflection-card">
+          <img src="./assets/about-gallery-2.png" alt="" aria-hidden="true">
         </div>
-        <div class="reflection-card" style="flex:1; padding:0; overflow:hidden; height:280px;">
-          <img src="./assets/about-gallery-3.png"
-               alt="" aria-hidden="true"
-               style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div class="about-gallery-card reflection-card">
+          <img src="./assets/about-gallery-3.png" alt="" aria-hidden="true">
         </div>
       </div>
 
@@ -401,7 +402,7 @@
       gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
       gsap.timeline({ defaults: { ease: 'power3.out' } })
         .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
-        .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
+        .from('.about-status-chip', { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
         .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
         .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
         .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
