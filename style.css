@@ -1524,6 +1524,32 @@ main {
 }
 .card-overlay-impact { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.95); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
 .card-overlay-impact strong { color: #fff; font-weight: 600; }
+.card-impact {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(26,22,20,0.10);
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(61,52,48,0.78);
+}
+.card-impact-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7A5C42;
+  margin-right: 5px;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.5px;
+}
+[data-theme="dark"] .card-impact { color: rgba(238,238,238,0.62); border-top-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .card-impact-label { color: #C4956A; }
+[data-contrast="high"] .card-impact { color: #2A2220; border-top-color: rgba(0,0,0,0.18); }
+[data-contrast="high"] .card-impact-label { color: #5C3E28; }
+[data-theme="dark"][data-contrast="high"] .card-impact { color: #EEEEEE; border-top-color: rgba(255,255,255,0.25); }
+[data-theme="dark"][data-contrast="high"] .card-impact-label { color: #DDA878; }
 .card-text {
   display: flex; flex-direction: column;
   gap: 12px; padding: 22px 22px 24px; flex-grow: 1;
@@ -1838,12 +1864,40 @@ main {
 .card-glass-panel-text { flex: 1; min-width: 0; }
 .card-glass-panel-text h3 {
   font-family: var(--font-heading);
-  font-size: 36px; font-weight: 700;
-  line-height: 1.08; letter-spacing: -0.8px;
+  font-size: 29px; font-weight: 700;
+  line-height: 1.08; letter-spacing: -0.5px;
   color: #1A1614;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+.card-arrow {
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  opacity: 0.32;
+  transform: translateX(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.card:hover .card-arrow,
+.card:focus-within .card-arrow {
+  opacity: 0.72;
+  transform: translateX(3px);
+}
+.card-stretched-link {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  background: transparent;
+}
+.card-stretched-link:focus-visible {
+  outline: 2px solid #7A5C42;
+  outline-offset: 4px;
+}
+[data-theme="dark"] .card-stretched-link:focus-visible { outline-color: #C4956A; }
 .card-glass-panel-text p {
   font-size: 14px; line-height: 1.55;
   color: #3D3430;
