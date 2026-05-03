@@ -1074,6 +1074,7 @@ main {
   .hero-text-backdrop { background: rgba(255, 255, 255, 0.80); }
   [data-theme="dark"] .hero-text-backdrop { background: rgba(36, 26, 22, 0.88); }
 }
+
 .hero-eyebrow {
   font-size: 14px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 2.0px;
