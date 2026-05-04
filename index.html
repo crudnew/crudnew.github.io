@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=83">
+  <link rel="stylesheet" href="./style.css?v=92">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -21,26 +21,26 @@
 
   <header-component></header-component>
 
+  <!-- Hero atmospheric backdrop — full-bleed canvas, hero zone only -->
+  <div class="hero-bg-zone" aria-hidden="true">
+    <canvas class="liquid-canvas"></canvas>
+  </div>
+
   <!-- ===== MAIN CONTENT ===== -->
   <main id="main-content">
 
     <!-- Hero -->
     <div class="hero-wrapper">
-      <div class="hero-liquid-bg" aria-hidden="true">
-        <canvas class="liquid-canvas"></canvas>
-      </div>
       <section class="hero" aria-labelledby="hero-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
           <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
           <h1 id="hero-heading">Designing at the intersection of <span><span class="highlight">users</span>, <span class="highlight">systems</span>, and <span class="highlight">business</span>.</span><span class="underline-draw" aria-hidden="true"></span></h1>
           <p class="hero-subtitle">
-            CS and Business grad completing a Master's in UX Design at the University of Toronto. I design accessible interfaces that balance user needs, technical constraints, and business goals.
+            Completing a Master's in UX Design at the University of Toronto, with a BSc in Computer Science and Business. I design accessible interfaces that balance user needs, technical constraints, and business goals.
           </p>
         </div>
       </section>
-      <!-- Glass dome sheen — rim highlights + dome gradient, sits above hero content -->
-      <div class="hero-glass-sheen" aria-hidden="true"></div>
     </div>
 
 
@@ -477,9 +477,11 @@
 
     /* ==================== HERO ENTRANCE ==================== */
     if (motionOk()) {
-      gsap.set(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { opacity: 0, y: 60 });
+      gsap.set('.hero-bg-zone', { opacity: 0 });
+      gsap.set('.hero', { opacity: 0, y: 60 });
       gsap.timeline({ defaults: { ease: 'power3.out' } })
-        .to(['.hero-liquid-bg', '.hero-glass-sheen', '.hero'], { y: 0, opacity: 1, duration: 1, delay: 0.2 })
+        .to('.hero-bg-zone', { opacity: 1, duration: 1.2, delay: 0.1 })
+        .to('.hero', { y: 0, opacity: 1, duration: 1 }, '<+0.1')
         .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
         .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
         .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')

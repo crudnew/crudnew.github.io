@@ -614,6 +614,7 @@ function _twOut(el, cb) {
 /* Intercept internal link clicks — erase name then navigate */
 document.addEventListener('click', function (e) {
   if (e.defaultPrevented) return;
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return; // let ctrl/cmd/middle-click open new tab natively
   const link = e.target.closest('a[href]');
   if (!link) return;
   if (link.target === '_blank') return;           // external tab

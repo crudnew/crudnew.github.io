@@ -910,7 +910,8 @@ main {
    so they're fully computed when opacity animates in — no 1-2 frame blur delay. */
 .hero-liquid-bg,
 .hero-glass-sheen,
-.hero {
+.hero,
+.hero-bg-zone {              /* atmospheric bg zone — home + about */
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -1075,6 +1076,131 @@ main {
   [data-theme="dark"] .hero-text-backdrop { background: rgba(36, 26, 22, 0.88); }
 }
 
+/* ============================================================
+   ATMOSPHERIC HERO BACKDROP — home + about pages
+   Full-bleed canvas at page level (body sibling of header).
+   .hero → transparent shell (perspective only).
+   .hero-text-backdrop → sole visible frosted card.
+   Gradient masks: 80px top fade (under floating pills),
+   240px / 200px bottom fade (dissolves into page bg).
+============================================================ */
+body[data-page-tint="home"],
+body[data-page-tint="about"] { position: relative; }
+
+.hero-bg-zone {
+  position: absolute; top: 0; left: 0; right: 0;
+  z-index: 0; pointer-events: none; overflow: hidden;
+}
+.hero-bg-zone .liquid-canvas { width: 100%; height: 100%; display: block; }
+
+/* Dark-mode tint — warms to cool/dark so the page actually feels dark */
+.hero-bg-zone::after {
+  content: ''; position: absolute; inset: 0;
+  pointer-events: none; background: transparent;
+  transition: background 0.4s;
+}
+[data-theme="dark"] .hero-bg-zone::after { background: rgba(8, 5, 3, 0.58); }
+
+/* Main floats above the atmospheric backdrop */
+body[data-page-tint="home"] main,
+body[data-page-tint="about"] main { position: relative; z-index: 1; }
+
+/* Outer .hero → transparent shell; keeps flex layout + perspective */
+body[data-page-tint="home"] .hero,
+body[data-page-tint="about"] .hero {
+  padding: 0; background: transparent;
+  border: 1px solid transparent; box-shadow: none; transition: none;
+}
+[data-theme="dark"] body[data-page-tint="home"] .hero,
+[data-theme="dark"] body[data-page-tint="about"] .hero {
+  background: transparent; border-color: transparent; box-shadow: none;
+}
+
+/* Wrapper blob decorations compete with atmospheric bg — suppress */
+body[data-page-tint="home"] .hero-wrapper::before,
+body[data-page-tint="home"] .hero-wrapper::after,
+body[data-page-tint="about"] .hero-wrapper::before,
+body[data-page-tint="about"] .hero-wrapper::after { display: none; }
+
+/* HOME — bg zone height + gradient mask */
+body[data-page-tint="home"] .hero-bg-zone {
+  height: clamp(820px, 95vh, 1080px);
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0, rgba(0,0,0,1) 80px,
+    rgba(0,0,0,1) calc(100% - 240px), transparent 100%);
+          mask-image: linear-gradient(to bottom,
+    transparent 0, rgba(0,0,0,1) 80px,
+    rgba(0,0,0,1) calc(100% - 240px), transparent 100%);
+}
+/* HOME — frosted card adopts full outer-card padding + radius + stronger frost */
+body[data-page-tint="home"] .hero-text-backdrop {
+  padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
+  -webkit-backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
+}
+[data-theme="dark"] body[data-page-tint="home"] .hero-text-backdrop {
+  background: rgba(36, 26, 22, 0.71);
+}
+
+/* ABOUT — bg zone shorter (about hero has less content) */
+body[data-page-tint="about"] .hero-bg-zone {
+  height: clamp(540px, 70vh, 760px);
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0, rgba(0,0,0,1) 80px,
+    rgba(0,0,0,1) calc(100% - 200px), transparent 100%);
+          mask-image: linear-gradient(to bottom,
+    transparent 0, rgba(0,0,0,1) 80px,
+    rgba(0,0,0,1) calc(100% - 200px), transparent 100%);
+}
+/* ABOUT — same card padding + stronger frost */
+body[data-page-tint="about"] .hero-text-backdrop {
+  padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
+  -webkit-backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
+}
+[data-theme="dark"] body[data-page-tint="about"] .hero-text-backdrop {
+  background: rgba(36, 26, 22, 0.71);
+}
+
+/* Tablet responsive */
+@media (max-width: 1279px) {
+  body[data-page-tint="home"] .hero  { padding: 0; }
+  body[data-page-tint="home"] .hero-text-backdrop { padding: 52px 44px; }
+  body[data-page-tint="about"] .hero { padding: 0; }
+  body[data-page-tint="about"] .hero-text-backdrop { padding: 52px 44px; }
+}
+/* Mobile responsive */
+@media (max-width: 799px) {
+  body[data-page-tint="home"] .hero { padding: 0; }
+  body[data-page-tint="home"] .hero-text-backdrop {
+    padding: 40px 22px; gap: 20px; border-radius: var(--radius-lg);
+  }
+  body[data-page-tint="home"] .hero-bg-zone {
+    height: clamp(620px, 85vh, 840px);
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 60px,
+      rgba(0,0,0,1) calc(100% - 160px), transparent 100%);
+              mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 60px,
+      rgba(0,0,0,1) calc(100% - 160px), transparent 100%);
+  }
+  body[data-page-tint="about"] .hero { padding: 0; }
+  body[data-page-tint="about"] .hero-text-backdrop {
+    padding: 36px 22px; gap: 20px; border-radius: var(--radius-lg);
+  }
+  body[data-page-tint="about"] .hero-bg-zone {
+    height: clamp(400px, 60vh, 580px);
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 60px,
+      rgba(0,0,0,1) calc(100% - 120px), transparent 100%);
+              mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 60px,
+      rgba(0,0,0,1) calc(100% - 120px), transparent 100%);
+  }
+}
+
 .hero-eyebrow {
   font-size: 14px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 2.0px;
@@ -1084,10 +1210,11 @@ main {
   border: none;
   border-radius: 9999px;
   box-shadow:
-    inset 0  1.5px 0 rgba(0,   0,   0,   0.18),
-    inset 0 -1.5px 0 rgba(255, 255, 255, 0.85),
-    inset  1.5px 0 0 rgba(0,   0,   0,   0.10),
-    inset -1.5px 0 0 rgba(255, 255, 255, 0.45);
+    inset 0  1.5px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1.5px 0 rgba(0,   0,   0,   0.18),
+    inset  1.5px 0 0 rgba(255, 255, 255, 0.45),
+    inset -1.5px 0 0 rgba(0,   0,   0,   0.10),
+    0 1px 4px rgba(0, 0, 0, 0.12);
   text-shadow:
     0  2px 0 rgba(255, 255, 255, 0.90),
     0 -1px 0 rgba(0,   0,   0,   0.18);
@@ -1105,7 +1232,7 @@ main {
     0  2px 8px rgba(0,   0,   0,   0.06);
 }
 .hero h1 .highlight {
-  color: rgba(92, 78, 69, 0.82);
+  color: var(--text-muted);
   text-shadow:
     0  2px 0   rgba(255, 255, 255, 0.92),
     0 -1px 0   rgba(0,   0,   0,   0.20),
@@ -1115,7 +1242,7 @@ main {
 .underline-draw {
   display: block; width: 0%;
   height: 4px; margin-top: 8px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  background: linear-gradient(90deg, var(--text-muted), transparent);
   border-radius: 2px;
 }
 .hero-subtitle {
@@ -1132,33 +1259,25 @@ main {
 [data-theme="dark"] .hero-eyebrow {
   color: rgba(245, 240, 234, 0.85);
   box-shadow:
-    inset 0  1.5px 0 rgba(0,   0,   0,   0.50),
-    inset 0 -1.5px 0 rgba(255, 255, 255, 0.22),
-    inset  1.5px 0 0 rgba(0,   0,   0,   0.28),
-    inset -1.5px 0 0 rgba(255, 255, 255, 0.12);
-  text-shadow:
-    0  2px 0 rgba(0,   0,   0,   0.65),
-    0 -1px 0 rgba(255, 255, 255, 0.14);
+    inset 0  1.5px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1.5px 0 rgba(0,   0,   0,   0.50),
+    inset  1.5px 0 0 rgba(255, 255, 255, 0.12),
+    inset -1.5px 0 0 rgba(0,   0,   0,   0.28),
+    0 1px 4px rgba(0, 0, 0, 0.35);
+  text-shadow: none;
 }
-[data-theme="dark"] .hero h1 {
+[data-theme="dark"] .hero h1,
+[data-theme="dark"] .hero-wrapper .hero-text-backdrop h1 {
   color: rgba(245, 240, 234, 0.88);
-  text-shadow:
-    0  2px 0   rgba(0,   0,   0,   0.65),
-    0 -1px 0   rgba(255, 255, 255, 0.12),
-    0  2px 8px rgba(0,   0,   0,   0.40);
+  text-shadow: none;
 }
 [data-theme="dark"] .hero h1 .highlight {
-  color: rgba(212, 197, 188, 0.90);
-  text-shadow:
-    0  2px 0   rgba(0,   0,   0,   0.65),
-    0 -1px 0   rgba(255, 255, 255, 0.10),
-    0  2px 8px rgba(0,   0,   0,   0.40);
+  color: var(--text-muted);
+  text-shadow: none;
 }
 [data-theme="dark"] .hero-subtitle {
   color: rgba(245, 240, 234, 0.85);
-  text-shadow:
-    0  2px 0 rgba(0,   0,   0,   0.60),
-    0 -1px 0 rgba(255, 255, 255, 0.10);
+  text-shadow: none;
 }
 
 /* ============================================================
@@ -2993,6 +3112,24 @@ body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px;
 /* Dividers */
 [data-contrast="high"] .divider,
 [data-contrast="high"] .case-divider { background: var(--border); }
+
+/* Hero card — index + about: solid white/black surfaces, no frosting */
+[data-contrast="high"] body[data-page-tint="home"] .hero-text-backdrop,
+[data-contrast="high"] body[data-page-tint="about"] .hero-text-backdrop {
+  background: #FFFFFF !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1.5px solid #000000 !important;
+  box-shadow: none !important;
+}
+[data-theme="dark"][data-contrast="high"] body[data-page-tint="home"] .hero-text-backdrop,
+[data-theme="dark"][data-contrast="high"] body[data-page-tint="about"] .hero-text-backdrop {
+  background: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: none !important;
+}
 
 /* Stronger focus ring */
 [data-contrast="high"] :focus-visible {
