@@ -21,6 +21,9 @@
 
   <header-component></header-component>
 
+  <!-- Dark mode nudge tooltip — shown once per session via sessionStorage -->
+  <div class="display-tooltip" id="display-tooltip" aria-hidden="true">Try Dark Mode</div>
+
   <!-- Hero atmospheric backdrop — full-bleed canvas, hero zone only -->
   <div class="hero-bg-zone" aria-hidden="true">
     <canvas class="liquid-canvas"></canvas>
@@ -34,11 +37,33 @@
       <section class="hero" aria-labelledby="hero-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
-          <h1 id="hero-heading">Designing at the intersection of <span><span class="highlight">users</span>, <span class="highlight">systems</span>, and <span class="highlight">business</span>.</span><span class="underline-draw" aria-hidden="true"></span></h1>
-          <p class="hero-subtitle">
-            Completing a Master's in UX Design at the University of Toronto, with a BSc in Computer Science and Business. I design accessible interfaces that balance user needs, technical constraints, and business goals.
-          </p>
+
+          <!-- Header row: pill + ping paired, centered -->
+          <div class="hero-header-row">
+            <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
+            <div class="hero-avail-chip">
+              <span class="hero-avail-dot" aria-hidden="true"></span>
+              <span>Open to co-op and internship roles in 2026</span>
+            </div>
+          </div>
+
+          <!-- Two-column body: text left, portrait right, centered -->
+          <div class="hero-body">
+
+            <div class="hero-text-col">
+              <h1 id="hero-heading">Designing at the intersection of <span><span class="highlight">users</span>, <span class="highlight">systems</span>, and <span class="highlight">business</span>.</span><span class="underline-draw" aria-hidden="true"></span></h1>
+              <p class="hero-subtitle">Completing a <em>Master of Information in UX Design</em> at the University of Toronto, with a foundation in Computer Science and Business.</p>
+            </div>
+
+            <div class="hero-portrait-col">
+              <div class="hero-portrait-frame">
+                <img class="hero-portrait-img"
+                     src="./assets/about-portrait.jpg"
+                     alt="Portrait of Chris Rudnew">
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
     </div>
@@ -480,12 +505,13 @@
       gsap.set('.hero-bg-zone', { opacity: 0 });
       gsap.set('.hero', { opacity: 0, y: 60 });
       gsap.timeline({ defaults: { ease: 'power3.out' } })
-        .to('.hero-bg-zone', { opacity: 1, duration: 1.2, delay: 0.1 })
-        .to('.hero', { y: 0, opacity: 1, duration: 1 }, '<+0.1')
-        .from('.hero-eyebrow',  { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
-        .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
-        .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-        .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+        .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
+        .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
+        .from('.hero-header-row',     { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
+        .from('.hero-portrait-frame', { x: 18, opacity: 0, duration: 0.7 },  '-=0.30')
+        .from('.hero h1',             { y: 36, opacity: 0, duration: 0.8 },  '-=0.55')
+        .to('.underline-draw',        { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+        .from('.hero-subtitle',       { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
     }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
@@ -606,6 +632,55 @@
     }); // end mm.add desktop
   </script>
 
+
+  <!-- Dark mode nudge — sessionStorage, once per session -->
+  <script>
+  (function () {
+    if (sessionStorage.getItem('displayTipSeen')) return;
+    sessionStorage.setItem('displayTipSeen', '1');
+
+    var tip = document.getElementById('display-tooltip');
+    if (!tip) return;
+
+    function position() {
+      var btn = document.querySelector('.settings-btn');
+      if (!btn) return false;
+      var r = btn.getBoundingClientRect();
+      if (r.width === 0) return false;
+
+      var tipW = tip.offsetWidth || 150;
+      var left = r.left + r.width / 2 - tipW / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
+
+      tip.style.top  = (r.bottom + 10) + 'px';
+      tip.style.left = left + 'px';
+      tip.style.setProperty('--arrow-x', (r.left + r.width / 2 - left) + 'px');
+      return true;
+    }
+
+    function dismiss() {
+      tip.classList.remove('is-visible');
+      tip.setAttribute('aria-hidden', 'true');
+      document.removeEventListener('click',  dismiss);
+      document.removeEventListener('scroll', dismiss);
+    }
+
+    function show() {
+      if (!position()) return;
+      tip.removeAttribute('aria-hidden');
+      requestAnimationFrame(function () { tip.classList.add('is-visible'); });
+      // Dismiss on click, scroll, or after 6 s
+      setTimeout(function () {
+        document.addEventListener('click',  dismiss, { once: true });
+        document.addEventListener('scroll', dismiss, { once: true, passive: true });
+      }, 400);
+      setTimeout(dismiss, 6000);
+    }
+
+    // Fire after hero entrance animation (~3 s)
+    setTimeout(show, 3000);
+  })();
+  </script>
 
 </body>
 </html>
