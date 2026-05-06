@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=92">
+  <link rel="stylesheet" href="./style.css?v=101">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -22,7 +22,10 @@
   <header-component></header-component>
 
   <!-- Dark mode nudge tooltip — shown once per session via sessionStorage -->
-  <div class="display-tooltip" id="display-tooltip" aria-hidden="true">Try Dark Mode</div>
+  <div class="display-tooltip" id="display-tooltip" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0; opacity:0.75;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    Try Dark Mode
+  </div>
 
   <!-- Hero atmospheric backdrop — full-bleed canvas, hero zone only -->
   <div class="hero-bg-zone" aria-hidden="true">
@@ -38,19 +41,18 @@
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
 
-          <!-- Header row: pill + ping paired, centered -->
-          <div class="hero-header-row">
-            <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
-            <div class="hero-avail-chip">
-              <span class="hero-avail-dot" aria-hidden="true"></span>
-              <span>Open to co-op and internship roles in 2026</span>
-            </div>
-          </div>
-
-          <!-- Two-column body: text left, portrait right, centered -->
+          <!-- Two-column body: text left, portrait right -->
           <div class="hero-body">
 
             <div class="hero-text-col">
+              <!-- Eyebrow: pill + availability ping, now in normal flow above h1 -->
+              <div class="hero-header-row">
+                <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
+                <div class="hero-avail-chip hero-avail-chip--top">
+                  <span class="hero-avail-dot" aria-hidden="true"></span>
+                  <span>Open to co-op &amp; internship roles in 2026</span>
+                </div>
+              </div>
               <h1 id="hero-heading">Designing at the intersection of <span><span class="highlight">users</span>, <span class="highlight">systems</span>, and <span class="highlight">business</span>.</span><span class="underline-draw" aria-hidden="true"></span></h1>
               <p class="hero-subtitle">Completing a <em>Master of Information in UX Design</em> at the University of Toronto, with a foundation in Computer Science and Business.</p>
             </div>
@@ -73,32 +75,55 @@
 
     <!-- Projects -->
     <section id="projects" class="projects-section" aria-labelledby="projects-heading" data-nav-label="Projects">
-      <h2 class="section-heading" id="projects-heading">Featured Projects</h2>
-      <div class="cards cards--rows">
-
-        <!-- Linger (featured case) -->
-        <article class="card card--feature card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
-          <a class="card-stretched-link" href="./linger.html" aria-label="View Linger case study"></a>
-          <div class="card-image" aria-hidden="true">
-            <img src="./assets/linger-phones.png"
-                 alt="Linger app — phone screens showing the scent-mapping ecosystem">
-            <div class="card-overlay" aria-hidden="true">
-              <span class="card-overlay-date">2026</span>
-              <div class="card-overlay-tags">
-                <span class="card-overlay-tag">Speculative Design</span>
-                <span class="card-overlay-tag">UX/UI Design</span>
-                <span class="card-overlay-tag">Designathon</span>
-                <span class="card-overlay-tag">Figma</span>
-              </div>
-            </div>
-            <div class="card-glass-panel">
-              <div class="card-glass-panel-text">
-                <h3>Linger<svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg></h3>
-                <p>A speculative scent-oriented app prototype built around the relationship between smell and memory, with Alzheimer's and dementia as the core use case. Built in 83 hours at FigBuild 2026 by Figma.</p>
-              </div>
+      <h2 class="section-heading" id="projects-heading">Featured Project</h2>
+      <!-- Linger (featured hero — full width) -->
+      <article class="card card--feature card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
+        <a class="card-stretched-link" href="./linger.html" aria-label="View Linger case study"></a>
+        <div class="card-image" aria-hidden="true">
+          <img src="./assets/linger-phones.png"
+               alt="Linger app — phone screens showing the scent-mapping ecosystem">
+          <div class="card-overlay" aria-hidden="true">
+            <span class="card-overlay-date">2026</span>
+            <div class="card-overlay-tags">
+              <span class="card-overlay-tag">Speculative Design</span>
+              <span class="card-overlay-tag">UX/UI Design</span>
+              <span class="card-overlay-tag">Designathon</span>
+              <span class="card-overlay-tag">Figma</span>
             </div>
           </div>
-        </article>
+          <div class="card-glass-panel">
+            <div class="card-glass-panel-text">
+              <h3>Linger<svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg></h3>
+              <p>A speculative scent-oriented app prototype built around the relationship between smell and memory, with Alzheimer's and dementia as the core use case. Built in 83 hours at FigBuild 2026 by Figma.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- MORE PROJECTS toggle + expandable section — preserved for future use
+      <div class="more-toggle-wrap">
+        <button class="more-toggle-btn" aria-expanded="false" aria-controls="more-projects" aria-label="Show more projects">
+          <span class="more-toggle-label">MORE PROJECTS</span>
+          <svg class="more-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+      <div class="more-projects-wrap" id="more-projects" aria-hidden="true">
+        <div class="more-projects-inner">
+          <div class="cards cards--rows">
+          </div>
+        </div>
+      </div>
+      -->
+
+    </section>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- More projects grid -->
+    <section class="projects-section projects-section--more">
+      <h2 class="section-heading">More</h2>
+
+      <div class="cards cards--grid">
 
         <!-- AI-Assisted Portfolio -->
         <article class="card card--feature card--portfolio" aria-label="AI-Assisted Portfolio: This Site">
@@ -147,47 +172,30 @@
           </div>
         </article>
 
-      </div><!-- /.cards.cards--rows (featured) -->
-
-      <!-- MORE / LESS toggle -->
-      <div class="more-toggle-wrap">
-        <button class="more-toggle-btn" aria-expanded="false" aria-controls="more-projects" aria-label="Show more projects">
-          <span class="more-toggle-label">MORE PROJECTS</span>
-          <svg class="more-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-      </div>
-
-      <!-- Expandable additional projects -->
-      <div class="more-projects-wrap" id="more-projects" aria-hidden="true">
-        <div class="more-projects-inner">
-          <div class="cards cards--rows">
-
-            <!-- Crime Map -->
-            <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
-              <a class="card-stretched-link" href="./crimemap.html" aria-label="View Crime Map case study"></a>
-              <div class="card-image" aria-hidden="true">
-                <img src="./assets/crimemap-phones.png"
-                     alt="Crime Map website showing a map with incident markers and statistical overlays">
-                <div class="card-overlay" aria-hidden="true">
-                  <span class="card-overlay-date">2021</span>
-                  <div class="card-overlay-tags">
-                    <span class="card-overlay-tag">UI Design</span>
-                    <span class="card-overlay-tag">Data Visualization</span>
-                    <span class="card-overlay-tag">Front-End Dev</span>
-                  </div>
-                </div>
-                <div class="card-glass-panel">
-                  <div class="card-glass-panel-text">
-                    <h3>Crime Map: Undergraduate Capstone<svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg></h3>
-                    <p>A real-time crime mapping site that surfaced police incident statistics, and user additions, so users could make safer, more informed decisions when traversing their city.</p>
-                  </div>
-                </div>
+        <!-- Crime Map -->
+        <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
+          <a class="card-stretched-link" href="./crimemap.html" aria-label="View Crime Map case study"></a>
+          <div class="card-image" aria-hidden="true">
+            <img src="./assets/crimemap-phones.png"
+                 alt="Crime Map website showing a map with incident markers and statistical overlays">
+            <div class="card-overlay" aria-hidden="true">
+              <span class="card-overlay-date">2021</span>
+              <div class="card-overlay-tags">
+                <span class="card-overlay-tag">UI Design</span>
+                <span class="card-overlay-tag">Data Visualization</span>
+                <span class="card-overlay-tag">Front-End Dev</span>
               </div>
-            </article>
+            </div>
+            <div class="card-glass-panel">
+              <div class="card-glass-panel-text">
+                <h3>Crime Map<svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7"/></svg></h3>
+                <p>A real-time crime mapping site that surfaced police incident statistics, and user additions, so users could make safer, more informed decisions when traversing their city.</p>
+              </div>
+            </div>
+          </div>
+        </article>
 
-          </div><!-- /.cards.cards--rows (more) -->
-        </div><!-- /.more-projects-inner -->
-      </div><!-- /.more-projects-wrap -->
+      </div><!-- /.cards.cards--grid -->
 
     </section>
 
@@ -507,11 +515,11 @@
       gsap.timeline({ defaults: { ease: 'power3.out' } })
         .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
         .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
-        .from('.hero-header-row',     { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
-        .from('.hero-portrait-frame', { x: 18, opacity: 0, duration: 0.7 },  '-=0.30')
-        .from('.hero h1',             { y: 36, opacity: 0, duration: 0.8 },  '-=0.55')
-        .to('.underline-draw',        { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-        .from('.hero-subtitle',       { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
+        .from('.hero-header-row',        { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
+        .from('.hero-portrait-frame',    { x: 18, opacity: 0, duration: 0.7 },  '-=0.30')
+        .from('.hero h1',                { y: 36, opacity: 0, duration: 0.8 },  '-=0.55')
+        .to('.underline-draw',           { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+        .from('.hero-subtitle',          { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
     }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
@@ -537,7 +545,17 @@
         });
       });
 
-      /* Row cards — staggered reveal */
+      /* Featured hero card */
+      ScrollTrigger.create({
+        trigger: '.card--feature.card--linger', start: 'top 85%', once: true,
+        onEnter: () => gsap.to('.card--feature.card--linger', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+      });
+      /* Featured grid cards */
+      ScrollTrigger.create({
+        trigger: '.cards--grid', start: 'top 85%', once: true,
+        onEnter: () => gsap.to('.cards--grid .card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
+      });
+      /* More projects row cards */
       ScrollTrigger.create({
         trigger: '.cards--rows', start: 'top 85%', once: true,
         onEnter: () => gsap.to('.cards--rows .card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
@@ -642,43 +660,85 @@
     var tip = document.getElementById('display-tooltip');
     if (!tip) return;
 
-    function position() {
-      var btn = document.querySelector('.settings-btn');
-      if (!btn) return false;
-      var r = btn.getBoundingClientRect();
-      if (r.width === 0) return false;
-
-      var tipW = tip.offsetWidth || 150;
-      var left = r.left + r.width / 2 - tipW / 2;
-      left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
-
-      tip.style.top  = (r.bottom + 10) + 'px';
-      tip.style.left = left + 'px';
-      tip.style.setProperty('--arrow-x', (r.left + r.width / 2 - left) + 'px');
-      return true;
-    }
+    var dismissed = false;
 
     function dismiss() {
-      tip.classList.remove('is-visible');
-      tip.setAttribute('aria-hidden', 'true');
-      document.removeEventListener('click',  dismiss);
-      document.removeEventListener('scroll', dismiss);
+      if (dismissed) return;
+      dismissed = true;
+      gsap.killTweensOf(tip);
+      tip.classList.remove('is-demo-dark', 'is-traveling');
+      gsap.to(tip, { opacity: 0, y: 6, duration: 0.3, ease: 'power2.in',
+        onComplete: function () {
+          tip.classList.remove('is-visible');
+          tip.setAttribute('aria-hidden', 'true');
+        }
+      });
+      document.removeEventListener('click', dismiss);
+      var sw = document.querySelector('.settings-wrap');
+      if (sw) sw.removeEventListener('mouseenter', dismiss);
+    }
+
+    function bindDismiss() {
+      setTimeout(function () {
+        document.addEventListener('click', dismiss, { once: true });
+        var sw = document.querySelector('.settings-wrap');
+        if (sw) sw.addEventListener('mouseenter', dismiss, { once: true });
+      }, 300);
+    }
+
+    function runDemoCycle() {
+      // light (hold 1.0s) → dark transition → hold 1.4s → back to light → auto-dismiss
+      setTimeout(function () { if (!dismissed) tip.classList.add('is-demo-dark'); }, 1000);
+      setTimeout(function () { if (!dismissed) tip.classList.remove('is-demo-dark'); }, 2800);
+      setTimeout(dismiss, 4800);
     }
 
     function show() {
-      if (!position()) return;
+      var btn = document.querySelector('.settings-btn');
+      if (!btn) return;
+      var r = btn.getBoundingClientRect();
+      if (r.width === 0) return;
+
+      // Compute final (destination) position — below the Display button
+      var tipW = tip.offsetWidth || 160;
+      var finalLeft = r.left + r.width / 2 - tipW / 2;
+      finalLeft = Math.max(8, Math.min(finalLeft, window.innerWidth - tipW - 8));
+      var finalTop = r.bottom + 20;
+      var arrowX   = r.left + r.width / 2 - finalLeft;
+
+      // Tooltip STARTS at viewport center — left is set here, GSAP x stays 0
+      var centerLeft = window.innerWidth / 2 - tipW / 2;
+      centerLeft = Math.max(8, Math.min(centerLeft, window.innerWidth - tipW - 8));
+
+      // Place tooltip at viewport center — GSAP animates `left` directly to finalLeft (no x trick)
+      tip.style.top  = finalTop + 'px';
+      tip.style.left = centerLeft + 'px';
+      tip.style.setProperty('--arrow-x', (tipW / 2) + 'px');
+
       tip.removeAttribute('aria-hidden');
-      requestAnimationFrame(function () { tip.classList.add('is-visible'); });
-      // Dismiss on click, scroll, or after 6 s
-      setTimeout(function () {
-        document.addEventListener('click',  dismiss, { once: true });
-        document.addEventListener('scroll', dismiss, { once: true, passive: true });
-      }, 400);
-      setTimeout(dismiss, 6000);
+      tip.classList.add('is-visible', 'is-traveling');
+
+      // ── GSAP entrance — scale pop then slide to button ──
+      gsap.set(tip, { y: 4, opacity: 0, scale: 0.68, transformOrigin: 'top center' });
+
+      gsap.timeline({
+        onComplete: function () {
+          tip.classList.remove('is-traveling');
+          tip.style.setProperty('--arrow-x', arrowX + 'px');
+          runDemoCycle();
+          bindDismiss();
+        }
+      })
+        // 1. Pop in with spring overshoot
+        .to(tip, { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: 'back.out(2.8)' })
+        // 2. Hold at center so the eye registers it appeared, then casual slide
+        //    back.out(1.4) = gentle overshoot of ~6px, settles smoothly. Single
+        //    motion — no separate "squish" or "compress" phases (they look cheap).
+        .to(tip, { left: finalLeft, duration: 1.10, ease: 'back.out(1.4)' }, '+=0.45');
     }
 
-    // Fire after hero entrance animation (~3 s)
-    setTimeout(show, 3000);
+    // Fire shortly after page load — just enough for header + GSAP to be ready
+    setTimeout(show, 600);
   })();
   </script>
 

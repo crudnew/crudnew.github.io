@@ -30,8 +30,8 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --focus-color: #5C4E45;
   /* Header chips are fixed at top:20px, ~55px tall → bottom at ~75px.
-     Add 24px breathing room = 99px. Round up to 100px. */
-  --header-clearance: 124px;
+     64px breathing room (matching main gap) = 139px. */
+  --header-clearance: 140px;
 }
 
 /* ---- Dark mode ---- */
@@ -735,10 +735,12 @@ nav.nav-pill {
 .settings-bubble:has(.settings-state--visible)::before {
   transform: translateY(-50%) translateX(-54px);
 }
-.settings-bubble .icon-moon { display: none; }
-.settings-bubble .icon-sun  { display: block; }
-[data-theme="dark"] .settings-bubble .icon-moon { display: block; }
-[data-theme="dark"] .settings-bubble .icon-sun  { display: none; }
+/* Light mode: show moon (suggests switching to dark) */
+.settings-bubble .icon-moon { display: block; }
+.settings-bubble .icon-sun  { display: none; }
+/* Dark mode: show sun (suggests switching to light) */
+[data-theme="dark"] .settings-bubble .icon-moon { display: none; }
+[data-theme="dark"] .settings-bubble .icon-sun  { display: block; }
 
 /* ---- Settings On/Off state pill ---- */
 .settings-bubble { overflow: visible; }
@@ -1124,19 +1126,20 @@ body[data-page-tint="home"] .hero-wrapper::after,
 body[data-page-tint="about"] .hero-wrapper::before,
 body[data-page-tint="about"] .hero-wrapper::after { display: none; }
 
-/* HOME — bg zone height + gradient mask */
+/* HOME — bg zone height + gradient mask.
+   Height sized so the fade completes around the divider below the hero card. */
 body[data-page-tint="home"] .hero-bg-zone {
-  height: clamp(820px, 95vh, 1080px);
+  height: clamp(720px, 78vh, 800px);
   -webkit-mask-image: linear-gradient(to bottom,
     transparent 0, rgba(0,0,0,1) 80px,
-    rgba(0,0,0,1) calc(100% - 240px), transparent 100%);
+    rgba(0,0,0,1) calc(100% - 130px), transparent 100%);
           mask-image: linear-gradient(to bottom,
     transparent 0, rgba(0,0,0,1) 80px,
-    rgba(0,0,0,1) calc(100% - 240px), transparent 100%);
+    rgba(0,0,0,1) calc(100% - 130px), transparent 100%);
 }
 /* HOME — frosted card adopts full outer-card padding + radius + stronger frost */
 body[data-page-tint="home"] .hero-text-backdrop {
-  padding: 176px 80px 76px; gap: 32px; border-radius: var(--radius-lg);
+  padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.26);
   backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
   -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
@@ -1159,9 +1162,9 @@ body[data-page-tint="about"] .hero-bg-zone {
 /* ABOUT — same card padding + stronger frost */
 body[data-page-tint="about"] .hero-text-backdrop {
   padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
-  -webkit-backdrop-filter: blur(39px) saturate(1.65) brightness(1.04);
+  background: rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
 }
 [data-theme="dark"] body[data-page-tint="about"] .hero-text-backdrop {
   background: rgba(36, 26, 22, 0.71);
@@ -1170,9 +1173,18 @@ body[data-page-tint="about"] .hero-text-backdrop {
 /* Tablet responsive */
 @media (max-width: 1279px) {
   body[data-page-tint="home"] .hero  { padding: 0; }
-  body[data-page-tint="home"] .hero-text-backdrop { padding: 68px 44px; }
+  body[data-page-tint="home"] .hero-text-backdrop { padding: 56px 44px; }
   body[data-page-tint="about"] .hero { padding: 0; }
   body[data-page-tint="about"] .hero-text-backdrop { padding: 52px 44px; }
+  body[data-page-tint="home"] .hero-bg-zone {
+    height: clamp(640px, 74vh, 700px);
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 80px,
+      rgba(0,0,0,1) calc(100% - 120px), transparent 100%);
+              mask-image: linear-gradient(to bottom,
+      transparent 0, rgba(0,0,0,1) 80px,
+      rgba(0,0,0,1) calc(100% - 120px), transparent 100%);
+  }
 }
 /* Mobile responsive */
 @media (max-width: 799px) {
@@ -1181,7 +1193,7 @@ body[data-page-tint="about"] .hero-text-backdrop {
     padding: 52px 22px; gap: 20px; border-radius: var(--radius-lg);
   }
   body[data-page-tint="home"] .hero-bg-zone {
-    height: clamp(620px, 85vh, 840px);
+    height: clamp(820px, 97vh, 880px);
     -webkit-mask-image: linear-gradient(to bottom,
       transparent 0, rgba(0,0,0,1) 60px,
       rgba(0,0,0,1) calc(100% - 160px), transparent 100%);
@@ -1305,21 +1317,25 @@ body[data-page-tint="about"] .hero-text-backdrop {
 }
 [data-contrast="high"] .hero-avail-dot { animation: none; background: #2e7d4f; }
 
+/* Ping in header row — offset 5px right so pulse glow's leftmost edge
+   aligns with the pill border and heading at x=0 */
+.hero-avail-chip--top {
+  width: auto;
+  position: relative; z-index: 3;
+  padding-left: 5px;
+}
+
 /* ============================================================
    HOMEPAGE HERO — TWO-COLUMN BODY
 ============================================================ */
 /* Header row — floats in top padding zone, doesn't push body down */
 .hero-header-row {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  position: absolute;
-  top: 64px;
-  left: 50%; transform: translateX(-50%);
-  z-index: 3;
-  white-space: nowrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
-[data-contrast="high"] .hero-header-row { gap: 16px; }
+[data-contrast="high"] .hero-header-row { gap: 6px; }
 
 body[data-page-tint="home"] .hero-body {
   display: grid;
@@ -1360,6 +1376,11 @@ body[data-page-tint="home"] .hero-body {
   align-items: flex-start; gap: 20px;
 }
 
+/* Extra separation between eyebrow group and headline */
+body[data-page-tint="home"] .hero-text-col .hero-header-row {
+  margin-bottom: 8px;
+}
+
 /* Override centered defaults for home text column */
 body[data-page-tint="home"] .hero-text-col h1 {
   text-align: left;
@@ -1389,15 +1410,9 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
     gap: 24px;
     justify-items: center;
   }
-  /* Header row back to normal flow on mobile */
+  /* Header row centers on mobile to match centered text column */
   .hero-header-row {
-    position: relative;
-    top: auto; left: auto;
-    transform: none;
-    flex-direction: column;
-    gap: 12px;
     align-items: center;
-    white-space: normal;
   }
   .hero-portrait-frame { width: 110px; height: 110px; }
   .hero-text-col { align-items: center; }
@@ -1411,29 +1426,38 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .display-tooltip {
   position: fixed;
   z-index: 10000;
-  padding: 11px 16px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 18px;
   border-radius: 12px;
-  background: rgba(244, 234, 220, 0.90);
+  background: rgba(240, 228, 212, 0.96);
   backdrop-filter: blur(20px) saturate(1.5);
   -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.62);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    0 4px 20px rgba(62, 40, 22, 0.16),
-    0 1px 4px  rgba(62, 40, 22, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    0 6px 24px rgba(62, 40, 22, 0.20),
+    0 2px 6px  rgba(62, 40, 22, 0.10);
   font-family: var(--font-body);
-  font-size: 13px; font-weight: 500;
-  color: rgba(26, 22, 20, 0.80);
+  font-size: 14px; font-weight: 600;
+  color: rgba(26, 22, 20, 0.88);
   white-space: nowrap;
-  pointer-events: auto;
+  pointer-events: none;
   cursor: default;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  /* Visibility + theme-demo color transitions */
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    background 0.55s ease,
+    border-color 0.55s ease,
+    color 0.55s ease,
+    box-shadow 0.55s ease;
 }
 .display-tooltip.is-visible {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 /* Notch arrow — rotated square pointing up toward Display button */
 .display-tooltip::before {
@@ -1446,7 +1470,24 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   background: rgba(244, 234, 220, 0.90);
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-bottom: none; border-right: none;
+  transition: background 0.55s ease, border-color 0.55s ease;
 }
+/* Hide arrow notch while the tooltip is sliding from center to button */
+.display-tooltip.is-traveling::before { opacity: 0; }
+/* Theme-demo dark state — JS adds this class to run the preview cycle */
+.display-tooltip.is-demo-dark {
+  background: rgba(30, 22, 16, 0.92);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 20px rgba(0, 0, 0, 0.40);
+  color: rgba(245, 240, 234, 0.82);
+}
+.display-tooltip.is-demo-dark::before {
+  background: rgba(30, 22, 16, 0.92);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+/* Respect page dark mode too */
 [data-theme="dark"] .display-tooltip {
   background: rgba(30, 22, 16, 0.88);
   border-color: rgba(255, 255, 255, 0.14);
@@ -1475,7 +1516,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 ============================================================ */
 .projects-section {
   display: flex; flex-direction: column; align-items: center;
-  gap: 40px; width: 100%; max-width: 1212px;
+  gap: 40px; width: 100%;
 }
 
 /* ── MORE / LESS toggle ── */
@@ -1635,7 +1676,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* WeAct feature card — gradient bg, phones loop, noise */
 .card--feature.card--weact .card-image {
   background: linear-gradient(135deg, #E8F2FF 0%, #0D52A0 100%);
-  --tile-h: 1560px;
+  --tile-h: 1182px;
   overflow: hidden;
 }
 .card--feature.card--weact .card-image img {
@@ -1647,7 +1688,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/weact-phones.png');
   background-repeat: repeat-y;
-  background-size: 927px auto;
+  background-size: 927px 1182px;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1683,7 +1724,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* Linger phone loop */
 .card--feature.card--linger .card-image {
   background: linear-gradient(135deg, #C2F6FE 0%, #FEC7F8 100%);
-  --tile-h: 1560px;
+  --tile-h: 1182px;
   overflow: hidden;
 }
 .card--feature.card--linger .card-image img {
@@ -1694,7 +1735,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/linger-phones.png');
   background-repeat: repeat-y;
-  background-size: 927px auto;
+  background-size: 927px 1182px;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1718,7 +1759,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* Crime Map phone loop */
 .card--feature.card--crimemap .card-image {
   background: linear-gradient(135deg, #90595A 0%, #000000 100%);
-  --tile-h: 1560px;
+  --tile-h: 1512px;
   overflow: hidden;
 }
 .card--feature.card--crimemap .card-image img {
@@ -1729,7 +1770,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/crimemap-phones.png');
   background-repeat: repeat-y;
-  background-size: 927px auto;
+  background-size: 927px 1512px;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1753,7 +1794,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* Portfolio card — white-to-black gradient, phone loop, crimemap noise */
 .card--feature.card--portfolio .card-image {
   background: linear-gradient(135deg, #FFFFFF 0%, #000000 100%);
-  --tile-h: 1560px;
+  --tile-h: 1512px;
   overflow: hidden;
 }
 .card--feature.card--portfolio .card-image img {
@@ -1764,7 +1805,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   position: absolute; inset: -50%; z-index: 1;
   background-image: url('./assets/portfolio-phones.png');
   background-repeat: repeat-y;
-  background-size: 927px auto;
+  background-size: 927px 1512px;
   background-position: center 0;
   transform: rotate(-18deg);
   animation: weact-phones var(--loop-dur, 20s) linear infinite;
@@ -1783,6 +1824,23 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   background-repeat: no-repeat;
   opacity: 0.33;
   mix-blend-mode: overlay;
+}
+
+/* Grid cards — per-image scaled sprites; tile heights are exact integers computed
+   from each asset's native ratio to avoid subpixel seam flicker at loop boundary. */
+.cards--grid .card--feature.card--weact .card-image::after,
+.cards--grid .card--feature.card--linger .card-image::after {
+  background-size: 680px 868px;
+  --tile-h: 868px;
+  animation-duration: 26s;
+  will-change: background-position;
+}
+.cards--grid .card--feature.card--crimemap .card-image::after,
+.cards--grid .card--feature.card--portfolio .card-image::after {
+  background-size: 680px 1109px;
+  --tile-h: 1109px;
+  animation-duration: 26s;
+  will-change: background-position;
 }
 
 .card:hover .card-image img {
@@ -1989,6 +2047,34 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   gap: 22px;
   max-width: 1220px;
 }
+.projects-section > .card--feature {
+  width: 100%;
+}
+.cards--grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  width: 100%;
+  max-width: none;
+}
+/* Lone last card on an odd count — center at one column's width so it reads as intentional,
+   without breaking the hero/grid hierarchy by going full-width. */
+.cards--grid > .card--feature:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  width: calc(50% - 14px);
+  justify-self: center;
+}
+.cards--grid .card--feature {
+  min-height: 380px;
+}
+.cards--grid .card-glass-panel {
+  padding: 20px 24px;
+  gap: 20px;
+}
+.cards--grid .card-glass-panel-text h3 {
+  font-size: 22px;
+  letter-spacing: -0.3px;
+}
 .card--row {
   flex: 1 1 auto;
   max-width: 100%;
@@ -2143,6 +2229,15 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
     rgba(10, 8, 6, 0.58) 0%,
     rgba(10, 8, 6, 0.20) 42%,
     transparent 62%
+  );
+}
+/* Grid cards — lighter overlay so smaller surface doesn't feel as heavy */
+.cards--grid .card--feature .card-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 8, 6, 0.38) 0%,
+    rgba(10, 8, 6, 0.10) 38%,
+    transparent 56%
   );
 }
 
@@ -2932,14 +3027,29 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* ============================================================
    RESPONSIVE — MID  800–1050px  (cards wrap to 2-up grid)
 ============================================================ */
-/* Phone loop — tablet: slightly zoomed out, speed adjusted to match desktop pace */
+/* Phone loop — tablet: Linger (full-width hero) uses a 700px sprite at ~15s to
+   match desktop scroll speed (~59px/s). Grid cards get a smaller sprite (~380px)
+   sized to their ~400px card width so phones aren't overly zoomed-in. */
 @media (max-width: 1050px) and (min-width: 800px) {
-  .card--feature.card--weact .card-image::after,
-  .card--feature.card--linger .card-image::after,
-  .card--feature.card--crimemap .card-image::after,
-  .card--feature.card--portfolio .card-image::after {
-    background-size: 700px auto;
-    --loop-dur: 26s;
+  /* Linger hero card — full-width, keep large sprite, fix speed */
+  .card--feature.card--linger .card-image::after {
+    background-size: 700px 893px;
+    --tile-h: 893px;
+    --loop-dur: 15s;
+  }
+  /* Grid cards (WeAct/Linger if ever in grid) — scale down to match card size */
+  .cards--grid .card--feature.card--weact .card-image::after,
+  .cards--grid .card--feature.card--linger .card-image::after {
+    background-size: 380px 485px;
+    --tile-h: 485px;
+    animation-duration: 15s;
+  }
+  /* Grid cards (Crimemap/Portfolio) */
+  .cards--grid .card--feature.card--crimemap .card-image::after,
+  .cards--grid .card--feature.card--portfolio .card-image::after {
+    background-size: 380px 620px;
+    --tile-h: 620px;
+    animation-duration: 19s;
   }
 }
 
@@ -2972,14 +3082,35 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* ============================================================
    RESPONSIVE — MOBILE  1–799px
 ============================================================ */
-/* Phone loop — mobile: more zoomed out, speed adjusted to match desktop pace */
+/* Phone loop — mobile: smaller sprites sized to full-width single-column cards.
+   Tile heights are exact integers to prevent seam jumps at loop boundary. */
 @media (max-width: 799px) {
-  .card--feature.card--weact .card-image::after,
-  .card--feature.card--linger .card-image::after,
-  .card--feature.card--crimemap .card-image::after,
-  .card--feature.card--portfolio .card-image::after {
-    background-size: 500px auto;
+  /* Linger full-width card on mobile */
+  .card--feature.card--linger .card-image::after {
+    background-size: 500px 638px;
+    --tile-h: 638px;
     --loop-dur: 11s;
+  }
+  /* Grid cards single-column on mobile — match Linger's 500px sprite scale */
+  .cards--grid .card--feature.card--weact .card-image::after,
+  .cards--grid .card--feature.card--linger .card-image::after {
+    background-size: 500px 638px;
+    --tile-h: 638px;
+    animation-duration: 11s;
+  }
+  .cards--grid .card--feature.card--crimemap .card-image::after,
+  .cards--grid .card--feature.card--portfolio .card-image::after {
+    background-size: 500px 815px;
+    --tile-h: 815px;
+    animation-duration: 14s;
+  }
+  .cards--grid {
+    grid-template-columns: 1fr;
+  }
+  .cards--grid > .card--feature:last-child:nth-child(odd) {
+    grid-column: auto;
+    width: 100%;
+    justify-self: stretch;
   }
 }
 
