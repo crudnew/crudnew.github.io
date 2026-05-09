@@ -216,11 +216,16 @@ function initLayout() {
     if (!header || !leftPill) return;
     var check = function () {
       if (window.innerWidth <= 799) { document.body.classList.remove('nav-collapsed'); return; }
+      if (window.innerWidth <= 1050) { document.body.classList.add('nav-collapsed'); return; }
+      /* Above 1050px: remove first so extras-pills are visible and measurable,
+         then re-add only if the pills still collide. */
+      document.body.classList.remove('nav-collapsed');
       var gap = getRightEdge() - leftPill.getBoundingClientRect().right;
-      document.body.classList.toggle('nav-collapsed', gap < 24);
+      if (gap < 24) document.body.classList.add('nav-collapsed');
     };
     var ro = new ResizeObserver(check);
     ro.observe(header);
+    window.addEventListener('resize', check, { passive: true });
     check();
   }());
 

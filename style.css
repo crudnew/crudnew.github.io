@@ -3060,7 +3060,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
     gap: 20px;
   }
   .card { max-width: none; }
-  .card:last-child {
+  .cards > .card:last-child {
     grid-column: 1 / -1;
     max-width: calc(50% - 10px);
     justify-self: center;
