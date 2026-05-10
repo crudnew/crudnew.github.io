@@ -85,11 +85,12 @@
     .content-full li { font-size: 16px; line-height: 1.65; color: var(--text-secondary); letter-spacing: -0.09px; margin-bottom: 6px; }
     .content-full li strong { color: var(--text-primary); }
 
-    /* Overview section wrapper — vertical separation only, no horizontal offset */
+    /* Overview section wrapper — pure spacing, no border line.
+       Page uses one divider style only: <hr class="case-divider">. */
     .linger-overview-section {
-      padding-bottom: 40px;
+      padding-bottom: 0;
       margin-bottom: 40px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: none;
     }
     .linger-overview-section .overview-grid { margin-bottom: 0; }
 
@@ -162,6 +163,250 @@
     @media (max-width: 600px) {
       .linger-showcase-row { padding: 24px 18px 0; gap: 24px; }
       .linger-showcase-row .phone-pair img { width: 44%; max-width: 200px; }
+    }
+
+    /* ── Vertical rhythm refinements (linger only) ───────────────
+       Uniform spacing pass: section-to-section breathing ~80–96px,
+       in-section rhythm ~32–48px. Overrides the shared case page CSS. */
+    .speculative-note            { padding-bottom: 32px !important; }
+    .case-meta                   { padding-bottom: 32px !important; }
+    .linger-showcase-row         { padding-top: 32px !important; padding-bottom: 8px !important; }
+    .case-band                   { padding: 64px 0 56px !important; margin-top: 64px !important; }
+    .linger-overview-section     { padding-bottom: 0 !important; margin-bottom: 40px !important; border-bottom: none !important; }
+    .case-divider                { margin: 32px 0 !important; }
+    .section-eyebrow             { padding-top: 56px !important; }
+
+    /* ── Lede paragraph for §01 (merged Challenge card content) ── */
+    .content-full p.lede {
+      font-size: 19px; line-height: 1.55;
+      color: var(--text-primary); font-weight: 500;
+      letter-spacing: -0.2px; margin-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+      .content-full p.lede { font-size: 17px; }
+    }
+
+    /* ── My Role card — premium full-width treatment with chip tags ── */
+    .overview-grid.overview-grid--3 { grid-template-columns: 1fr !important; }
+    .overview-card--role {
+      padding: 36px 40px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .overview-card--role .overview-eyebrow {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .overview-card--role h3 { margin-bottom: 4px; }
+    .role-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .role-chip {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500;
+      color: var(--text-primary);
+      background: var(--accent-light);
+      border: 1px solid var(--border-hi);
+      padding: 6px 14px;
+      border-radius: 999px;
+      letter-spacing: -0.05px;
+      transition:
+        transform 0.4s cubic-bezier(.34, 1.56, .64, 1),
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+    .role-chip:hover {
+      transform: translateY(-2px);
+      background: var(--accent-lighter);
+      border-color: var(--accent);
+    }
+    @media (max-width: 600px) {
+      .overview-card--role { padding: 28px 24px; }
+    }
+
+    /* ── Stat orbs — bump size to fit number / unit / label uniformly ── */
+    /* Override linger.css orb sizing (was 175×175, padding 0 12%, gap 3px) */
+    .stat-card {
+      max-width: 210px !important;
+      max-height: 210px !important;
+      padding: 0 13% !important;
+      gap: 2px !important;
+    }
+    .stat-number {
+      font-size: clamp(28px, 3.4vw, 40px) !important;
+      margin-bottom: 0 !important;
+    }
+    .stat-unit {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600;
+      color: rgba(40, 80, 140, 0.85);
+      letter-spacing: 0.5px;
+      text-transform: lowercase;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 6px rgba(255,255,255,0.6);
+    }
+    [data-theme="dark"] .stat-unit {
+      color: rgba(180, 215, 255, 0.85);
+      text-shadow: 0 1px 8px rgba(0,20,80,0.45);
+    }
+    .stat-label {
+      font-size: clamp(10px, 1.05vw, 11.5px) !important;
+      line-height: 1.25 !important;
+      max-width: 100%;
+    }
+    @media (max-width: 900px) {
+      .stat-card { max-width: 190px !important; max-height: 190px !important; }
+    }
+    @media (max-width: 600px) {
+      .stat-card { max-width: 170px !important; max-height: 170px !important; padding: 0 12% !important; }
+      .stat-number { font-size: 32px !important; }
+      .stat-unit { font-size: 11px; }
+    }
+
+    /* ── Sprint timeline as integrated process strip inside §01 ── */
+    .linger-process-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      width: 100%; max-width: 1212px;
+      padding: 8px 64px 32px;
+      box-sizing: border-box;
+    }
+    .process-day-card {
+      background: var(--surface);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 18px 16px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition:
+        transform 0.4s cubic-bezier(.34, 1.56, .64, 1),
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    }
+    .process-day-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hi);
+    }
+    .process-day-head {
+      display: flex; align-items: baseline; gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .process-day-num {
+      font-family: var(--font-heading);
+      font-size: 11px; font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+    }
+    .process-day-name {
+      font-family: var(--font-heading);
+      font-size: 16px; font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+    }
+    .process-day-activities {
+      display: flex; flex-direction: column; gap: 4px;
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    @media (max-width: 900px) {
+      .linger-process-strip { grid-template-columns: repeat(2, 1fr); padding: 8px 28px 28px; gap: 12px; }
+    }
+    @media (max-width: 600px) {
+      .linger-process-strip { grid-template-columns: 1fr; padding: 4px 18px 24px; gap: 10px; }
+    }
+
+    /* ── Bubbly "pop" hover for stat orbs ──────────────────────── */
+    /* linger.css already styles .stat-card as a 175px circular orb with
+       its own gradient + hover. Layer a bouncy spring on top, and let
+       the orb's bloom shadow stay. */
+    .stat-card {
+      transition:
+        transform 0.55s cubic-bezier(.34, 1.56, .64, 1),
+        box-shadow 0.45s ease !important;
+    }
+    .stat-card:hover {
+      transform: translateY(-8px) scale(1.06) !important;
+    }
+
+    /* ── Zoomable phone images + lightbox ──────────────────────── */
+    .zoomable-img {
+      cursor: zoom-in;
+      transition:
+        transform 0.55s cubic-bezier(.34, 1.56, .64, 1),
+        box-shadow 0.35s ease !important;
+    }
+    .zoomable-img:hover {
+      transform: translateY(-6px) scale(1.035) !important;
+      box-shadow: 0 20px 44px rgba(80,120,180,0.26), 0 6px 14px rgba(80,120,180,0.14) !important;
+    }
+    [data-theme="dark"] .zoomable-img:hover {
+      box-shadow: 0 20px 50px rgba(2,8,30,0.60), 0 6px 16px rgba(2,8,30,0.38) !important;
+    }
+    /* Phone pair: preserve the -2.5deg rotation on the second image while hovering */
+    .linger-showcase-row .phone-pair img:nth-child(2).zoomable-img:hover {
+      transform: translateY(-6px) scale(1.035) rotate(-2.5deg) !important;
+    }
+
+    .img-lightbox {
+      position: fixed; inset: 0;
+      background: rgba(8,16,40,0.82);
+      backdrop-filter: blur(18px) saturate(1.1);
+      -webkit-backdrop-filter: blur(18px) saturate(1.1);
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 9999;
+      padding: 48px;
+      box-sizing: border-box;
+    }
+    .img-lightbox.open { display: flex; animation: lb-fade 0.28s ease; }
+    .img-lightbox-img {
+      max-width: 92vw; max-height: 86vh;
+      width: auto; height: auto;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.55), 0 4px 20px rgba(0,0,0,0.35);
+      object-fit: contain;
+      animation: lb-pop 0.42s cubic-bezier(.34, 1.56, .64, 1);
+      cursor: zoom-out;
+    }
+    .img-lightbox-close {
+      position: absolute; top: 24px; right: 24px;
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 50%;
+      color: #fff; font-size: 26px; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+      transition: background 0.2s ease, transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .img-lightbox-close:hover {
+      background: rgba(255,255,255,0.28);
+      transform: scale(1.12);
+    }
+    @keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes lb-pop  { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+    @media (prefers-reduced-motion: reduce) {
+      .img-lightbox.open, .img-lightbox-img { animation: none; }
+      .stat-card, .zoomable-img { transition: none !important; }
+    }
+
+    /* Mobile rhythm — keep proportions tight on small viewports */
+    @media (max-width: 900px) {
+      .case-band                 { padding: 56px 0 48px !important; margin-top: 48px !important; }
+      .section-eyebrow           { padding-top: 40px !important; }
+      .case-divider              { margin: 24px 0 !important; }
+    }
+    @media (max-width: 600px) {
+      .case-band                 { padding: 44px 0 36px !important; margin-top: 36px !important; }
+      .section-eyebrow           { padding-top: 32px !important; }
+      .case-meta                 { padding-bottom: 24px !important; }
+      .case-divider              { margin: 20px 0 !important; }
     }
   </style>
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
@@ -240,10 +485,6 @@
         <span class="meta-label">Role</span>
         <span class="meta-value">UX &amp; UI Design</span>
       </div>
-      <div class="meta-item">
-        <span class="meta-label">Context</span>
-        <span class="meta-value">FigBuild 2026 by Figma</span>
-      </div>
     </div>
 
     <!-- Hero Showcase — logo left, phones right -->
@@ -261,99 +502,49 @@
     <section id="my-role" class="case-band" aria-label="Project overview" data-nav-label="My Role">
       <div class="case-band-inner">
         <div class="linger-overview-section">
-        <div class="overview-grid">
-          <div class="overview-card">
-            <h3>The Challenge</h3>
-            <p>FigBuild 2026 asked us to quantify a human sense. We picked the one without a vocabulary, and built for the people most failed by its absence.</p>
-          </div>
-          <div class="overview-card">
-            <h3>My Role</h3>
-            <div class="role-columns">
-              <ul>
-                <li>UX Research</li>
-                <li>UX/UI Design</li>
-                <li>Concept Strategy</li>
-                <li>Visual System</li>
-                <li>Ideation</li>
-              </ul>
-              <ul>
-                <li>Prototyping</li>
-                <li>Design Craft</li>
-                <li>Presentation</li>
-                <li>Collaboration</li>
-              </ul>
+          <div class="overview-grid overview-grid--3">
+            <div class="overview-card overview-card--role">
+              <span class="overview-eyebrow">My Contributions</span>
+              <h3>UX &amp; UI Design</h3>
+              <div class="role-chips">
+                <span class="role-chip">UX Research</span>
+                <span class="role-chip">UX/UI Design</span>
+                <span class="role-chip">Concept Strategy</span>
+                <span class="role-chip">Visual System</span>
+                <span class="role-chip">Ideation</span>
+                <span class="role-chip">Prototyping</span>
+                <span class="role-chip">Design Craft</span>
+                <span class="role-chip">Presentation</span>
+                <span class="role-chip">Collaboration</span>
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div class="case-stats">
           <div class="stat-card">
             <span class="stat-number">83</span>
-            <span class="stat-label">Hour Sprint</span>
+            <span class="stat-unit">hrs</span>
+            <span class="stat-label">Concept &rarr; Submission</span>
           </div>
           <div class="stat-card">
             <span class="stat-number">4</span>
-            <span class="stat-label">Designers</span>
+            <span class="stat-unit">flows</span>
+            <span class="stat-label">Prototyped in Figma</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-unit">safeguards</span>
+            <span class="stat-label">Ensuring Responsibility</span>
           </div>
           <div class="stat-card">
             <span class="stat-number">3</span>
-            <span class="stat-label">Core Features</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-number">1</span>
-            <span class="stat-label">Wearable + App</span>
+            <span class="stat-unit">features</span>
+            <span class="stat-label">+1 Wearable Concept</span>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Team Marquee -->
-    <div class="marquee-wrap" aria-label="Team members">
-      <div class="marquee-track">
-        <span class="marquee-name">Chris Rudnew</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Michelle Liu</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Vinay Adhya</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Raine Tse</span>
-        <span class="marquee-sep">|</span>
-      </div>
-    </div>
-
-    <!-- Sprint Timeline -->
-    <div class="sprint-timeline" aria-label="83-hour sprint timeline">
-      <div class="sprint-day">
-        <span class="sprint-day-label">Friday</span>
-        <ul>
-          <li>Brainstorming</li>
-          <li>Ideation</li>
-          <li>Research</li>
-        </ul>
-      </div>
-      <div class="sprint-day">
-        <span class="sprint-day-label">Saturday</span>
-        <ul>
-          <li>Design</li>
-        </ul>
-      </div>
-      <div class="sprint-day">
-        <span class="sprint-day-label">Sunday</span>
-        <ul>
-          <li>Design</li>
-          <li>Slide Deck</li>
-          <li>Video</li>
-        </ul>
-      </div>
-      <div class="sprint-day">
-        <span class="sprint-day-label">Monday</span>
-        <ul>
-          <li>Final Touches</li>
-          <li>Submission</li>
-        </ul>
-      </div>
-    </div>
 
     <hr class="case-divider" aria-hidden="true">
 
@@ -362,8 +553,54 @@
       <div class="section-eyebrow"><span class="section-num">01</span>Overview</div>
       <div class="content-full">
         <h2>83 hours to quantify a sense</h2>
-        <p>FigBuild 2026 asked designers to quantify a human sensory experience. Four of us, none of whom had worked together before, none of whom had done a designathon. We picked smell. It's the sense without a vocabulary, the one most tied to memory, and the one a sprint could actually prototype.</p>
+        <p class="lede">FigBuild 2026 asked us to quantify a human sense. We picked the one without a vocabulary, and built for the people most failed by its absence.</p>
+        <p>Four of us, none of whom had worked together before, none of whom had done a designathon. We picked smell. It's the sense without a vocabulary, the one most tied to memory, and the one a sprint could actually prototype.</p>
         <p>I pushed, consistently, for ideas that could benefit someone in a serious way. For scent, that meant Alzheimer's and dementia: reaching memories through a sense wired straight to them. That's why this project exists.</p>
+      </div>
+
+      <!-- Sprint timeline — folded into the Overview as a process strip -->
+      <div class="linger-process-strip" aria-label="83-hour sprint timeline">
+        <div class="process-day-card">
+          <div class="process-day-head">
+            <span class="process-day-num">01</span>
+            <span class="process-day-name">Friday</span>
+          </div>
+          <div class="process-day-activities">
+            <span>Brainstorming</span>
+            <span>Ideation</span>
+            <span>Research</span>
+          </div>
+        </div>
+        <div class="process-day-card">
+          <div class="process-day-head">
+            <span class="process-day-num">02</span>
+            <span class="process-day-name">Saturday</span>
+          </div>
+          <div class="process-day-activities">
+            <span>Design</span>
+          </div>
+        </div>
+        <div class="process-day-card">
+          <div class="process-day-head">
+            <span class="process-day-num">03</span>
+            <span class="process-day-name">Sunday</span>
+          </div>
+          <div class="process-day-activities">
+            <span>Design</span>
+            <span>Slide Deck</span>
+            <span>Video</span>
+          </div>
+        </div>
+        <div class="process-day-card">
+          <div class="process-day-head">
+            <span class="process-day-num">04</span>
+            <span class="process-day-name">Monday</span>
+          </div>
+          <div class="process-day-activities">
+            <span>Final Touches</span>
+            <span>Submission</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -603,6 +840,56 @@
     </section>
 
   </main>
+
+  <!-- Image lightbox for phone screens -->
+  <div id="img-lightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-label="Image preview" aria-hidden="true">
+    <button class="img-lightbox-close" type="button" aria-label="Close preview">&times;</button>
+    <img class="img-lightbox-img" alt="">
+  </div>
+
+  <script>
+    (function () {
+      const selector = '.linger-showcase-row .phone-pair img, .image-col img';
+      const imgs    = document.querySelectorAll(selector);
+      const box     = document.getElementById('img-lightbox');
+      const boxImg  = box.querySelector('.img-lightbox-img');
+      const closeBt = box.querySelector('.img-lightbox-close');
+      let lastFocus = null;
+
+      function openLB(img) {
+        lastFocus = document.activeElement;
+        boxImg.src = img.src;
+        boxImg.alt = img.alt || '';
+        box.classList.add('open');
+        box.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeBt.focus();
+      }
+      function closeLB() {
+        box.classList.remove('open');
+        box.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      imgs.forEach(img => {
+        img.classList.add('zoomable-img');
+        img.setAttribute('tabindex', '0');
+        img.setAttribute('role', 'button');
+        img.setAttribute('aria-label', 'View larger: ' + (img.alt || 'image'));
+        img.addEventListener('click', () => openLB(img));
+        img.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLB(img); }
+        });
+      });
+
+      closeBt.addEventListener('click', closeLB);
+      box.addEventListener('click', e => { if (e.target === box || e.target === boxImg) closeLB(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && box.classList.contains('open')) closeLB();
+      });
+    })();
+  </script>
 
   <footer-component></footer-component>
 
