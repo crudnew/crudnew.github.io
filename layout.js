@@ -214,14 +214,29 @@ function initLayout() {
       return min;
     };
     if (!header || !leftPill) return;
+    /* RAF-coalesced + hysteresis on the THRESHOLD (not the measurement).
+       Always measure with the uncollapsed layout — when nav-collapsed is on,
+       the extras-pills are display:none and their rects are zero, which would
+       corrupt the gap calculation. Briefly remove the class for a clean
+       measurement, then apply the final state via the hysteresis threshold
+       so a single gap value can't flip-flop the decision frame to frame. */
+    var _pending = false;
     var check = function () {
-      if (window.innerWidth <= 799) { document.body.classList.remove('nav-collapsed'); return; }
-      if (window.innerWidth <= 1050) { document.body.classList.add('nav-collapsed'); return; }
-      /* Above 1050px: remove first so extras-pills are visible and measurable,
-         then re-add only if the pills still collide. */
-      document.body.classList.remove('nav-collapsed');
-      var gap = getRightEdge() - leftPill.getBoundingClientRect().right;
-      if (gap < 24) document.body.classList.add('nav-collapsed');
+      if (_pending) return;
+      _pending = true;
+      requestAnimationFrame(function () {
+        _pending = false;
+        var w = window.innerWidth;
+        if (w <= 799) { document.body.classList.remove('nav-collapsed'); return; }
+        if (w <= 1050) { document.body.classList.add('nav-collapsed'); return; }
+        var wasCollapsed = document.body.classList.contains('nav-collapsed');
+        /* Measure with the uncollapsed layout for a consistent gap value */
+        document.body.classList.remove('nav-collapsed');
+        var gap = getRightEdge() - leftPill.getBoundingClientRect().right;
+        /* Hysteresis: stricter threshold to collapse, looser to uncollapse */
+        var nowCollapsed = wasCollapsed ? (gap < 60) : (gap < 24);
+        document.body.classList.toggle('nav-collapsed', nowCollapsed);
+      });
     };
     var ro = new ResizeObserver(check);
     ro.observe(header);
@@ -368,6 +383,10 @@ function initLayout() {
 
   /* ---- Custom cursor ---- */
   if (window.matchMedia('(pointer: coarse)').matches) return;
+  /* Skip the custom cursor entirely under reduced motion — the per-frame
+     RAF loop, hover-driven size changes, and inline-style mutations are all
+     incompatible with the spirit of reduced motion. */
+  if (!motionOk()) return;
 
   const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
   const ring = document.createElement('div'); ring.className = 'cursor-ring';

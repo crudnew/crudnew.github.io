@@ -647,8 +647,13 @@ nav.nav-pill {
 .settings-wrap:focus-within .display-chevron { transform: rotate(180deg); }
 
 .settings-bubbles {
-  position: absolute; top: 100%; left: 50%;
-  transform: translateX(-50%);
+  /* Anchor to BOTH left and right edges of the parent. The container then
+     spans the parent's full width, and the bubbles inside are centered via
+     flexbox (align-items: center). This avoids the transform-based 50%
+     offset that was vibrating under reduced motion — browsers compute
+     dual-edge anchoring more stably than a single-point + transform. */
+  position: absolute; top: 100%;
+  left: 0; right: 0;
   display: flex; flex-direction: column;
   align-items: center; gap: 8px; padding-top: 10px;
   z-index: 1; pointer-events: auto;
@@ -767,13 +772,36 @@ nav.nav-pill {
 [data-motion="reduced"] *::before,
 [data-motion="reduced"] *::after {
   animation: none !important;
+  transition: none !important;
+  transition-delay: 0s !important;
   scroll-behavior: auto !important;
 }
 /* Undo CSS pre-hides that GSAP would normally animate away */
 [data-motion="reduced"] .hero-liquid-bg,
 [data-motion="reduced"] .hero-glass-sheen,
 [data-motion="reduced"] .hero,
+[data-motion="reduced"] .hero-bg-zone,
 [data-motion="reduced"] .case-hero { opacity: 1 !important; transform: none !important; }
+
+/* Settings dropdown: under reduced motion, kill ALL transitions, animations,
+   and transforms across the entire settings tree so nothing bounces, slides,
+   or fades — elements just appear/disappear via opacity. */
+[data-motion="reduced"] .settings-wrap,
+[data-motion="reduced"] .settings-wrap *,
+[data-motion="reduced"] .settings-wrap *::before,
+[data-motion="reduced"] .settings-wrap *::after {
+  transition: none !important;
+  transition-delay: 0s !important;
+  animation: none !important;
+}
+[data-motion="reduced"] .settings-bubble {
+  transform: none !important;
+}
+/* Cursor ring also transitions size on hover — kill that too under reduced
+   motion so cursor effects don't appear to drift. */
+[data-motion="reduced"] .cursor-ring {
+  transition: none !important;
+}
 
 /* ============================================================
    FOOTER
