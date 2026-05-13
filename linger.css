@@ -1256,7 +1256,7 @@ main {
   --glass-border-t: rgba(255, 255, 255, 0.92);
   --glass-border-b: rgba(180, 215, 245, 0.28);
   --glass-shadow:   0 8px 36px rgba(80, 140, 210, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  --glass-filter:   blur(22px) saturate(2.4) brightness(1.12);
+  --glass-filter:   blur(22px) saturate(1.8) brightness(1.08);
 }
 
 /* ============================================================
@@ -1267,7 +1267,7 @@ main {
 ============================================================ */
 .orb-backdrop {
   position: fixed;
-  inset: 0;
+  inset: 0 0 -2000px 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -1450,8 +1450,8 @@ footer { position: relative; z-index: 1; }
   border-top-color: rgba(255, 255, 255, 0.92) !important;
   border-bottom-color: rgba(175, 210, 248, 0.32) !important;
   box-shadow: 0 4px 20px rgba(80, 130, 200, 0.14), inset 0 1px 0 rgba(255,255,255,0.88) !important;
-  backdrop-filter: blur(12px) saturate(2.0) brightness(1.10) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(2.0) brightness(1.10) !important;
+  backdrop-filter: blur(12px) saturate(1.8) brightness(1.08) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.08) !important;
 }
 
 /* Card headings — dark navy on light glass */
@@ -1470,8 +1470,8 @@ footer { position: relative; z-index: 1; }
   border-top-color: rgba(255, 255, 255, 0.92) !important;
   border-bottom-color: rgba(175, 210, 248, 0.32) !important;
   box-shadow: 0 4px 20px rgba(80, 130, 200, 0.14), inset 0 1px 0 rgba(255,255,255,0.88) !important;
-  backdrop-filter: blur(12px) saturate(2.0) brightness(1.10) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(2.0) brightness(1.10) !important;
+  backdrop-filter: blur(12px) saturate(1.8) brightness(1.08) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.08) !important;
 }
 .sprint-day-label {
   color: rgba(12, 42, 88, 0.95) !important;
@@ -1521,9 +1521,7 @@ footer { position: relative; z-index: 1; }
     rgba(218, 205, 252, 0.45) 86%,   /* pale lavender edge */
     rgba(240, 238, 255, 0.06) 100%   /* near-transparent rim */
   ) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.82) !important;
-  border-top-color: rgba(255, 255, 255, 0.96) !important;
-  border-bottom-color: rgba(185, 205, 252, 0.35) !important;
+  border: none !important;
   /* White bloom halo — key feature of the reference orb */
   box-shadow:
     0 0 55px rgba(205, 220, 255, 0.68),

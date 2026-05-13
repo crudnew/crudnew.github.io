@@ -273,9 +273,12 @@
       box-sizing: border-box;
     }
     .process-day-card {
-      background: var(--surface);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-filter); -webkit-backdrop-filter: var(--glass-filter);
+      border: 1px solid var(--glass-border);
+      border-top-color: var(--glass-border-t);
+      border-bottom-color: var(--glass-border-b);
+      box-shadow: var(--glass-shadow);
       border-radius: var(--radius-md);
       padding: 18px 18px 16px;
       display: flex; flex-direction: column; gap: 10px;
@@ -287,7 +290,6 @@
     .process-day-card:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-md);
-      border-color: var(--border-hi);
     }
     .process-day-head {
       display: flex; align-items: baseline; gap: 10px;
@@ -419,27 +421,39 @@
     <!-- Top-left mega orb -->
     <div class="orb orb--xxl" style="top:-140px;left:-160px;"></div>
     <!-- Top-right large -->
-    <div class="orb orb--xl"  style="top:2%;right:-110px;"></div>
+    <div class="orb orb--xl"  style="top:2vh;right:-110px;"></div>
     <!-- Upper-center accent -->
-    <div class="orb orb--md"  style="top:8%;left:38%;"></div>
+    <div class="orb orb--md"  style="top:8vh;left:38%;"></div>
     <!-- Upper-right small -->
-    <div class="orb orb--sm"  style="top:18%;right:28%;"></div>
+    <div class="orb orb--sm"  style="top:18vh;right:28%;"></div>
     <!-- Mid-left large -->
-    <div class="orb orb--lg"  style="top:32%;left:-80px;"></div>
+    <div class="orb orb--lg"  style="top:32vh;left:-80px;"></div>
     <!-- Mid-center accent -->
-    <div class="orb orb--xs"  style="top:40%;left:52%;"></div>
+    <div class="orb orb--xs"  style="top:40vh;left:52%;"></div>
     <!-- Mid-right medium -->
-    <div class="orb orb--md"  style="top:44%;right:-50px;"></div>
+    <div class="orb orb--md"  style="top:44vh;right:-50px;"></div>
     <!-- Lower-center-left -->
-    <div class="orb orb--lg"  style="top:58%;left:22%;"></div>
+    <div class="orb orb--lg"  style="top:58vh;left:22%;"></div>
     <!-- Lower-right large -->
-    <div class="orb orb--xl"  style="top:62%;right:-120px;"></div>
+    <div class="orb orb--xl"  style="top:62vh;right:-120px;"></div>
     <!-- Bottom accent small -->
-    <div class="orb orb--sm"  style="top:74%;right:30%;"></div>
+    <div class="orb orb--sm"  style="top:74vh;right:30%;"></div>
     <!-- Bottom-left mega -->
-    <div class="orb orb--xxl" style="top:80%;left:-180px;"></div>
+    <div class="orb orb--xxl" style="top:80vh;left:-180px;"></div>
     <!-- Bottom-center accent -->
-    <div class="orb orb--xs"  style="top:88%;left:60%;"></div>
+    <div class="orb orb--xs"  style="top:88vh;left:60%;"></div>
+    <!-- Extended fill — covers parallax scroll area below viewport -->
+    <div class="orb orb--lg"  style="top:100vh;left:30%;"></div>
+    <div class="orb orb--xl"  style="top:108vh;right:-100px;"></div>
+    <div class="orb orb--md"  style="top:116vh;left:55%;"></div>
+    <div class="orb orb--xxl" style="top:122vh;left:-160px;"></div>
+    <div class="orb orb--sm"  style="top:132vh;right:35%;"></div>
+    <div class="orb orb--lg"  style="top:140vh;left:42%;"></div>
+    <div class="orb orb--xl"  style="top:148vh;right:-120px;"></div>
+    <div class="orb orb--md"  style="top:156vh;left:18%;"></div>
+    <div class="orb orb--xxl" style="top:162vh;right:-180px;"></div>
+    <div class="orb orb--sm"  style="top:170vh;left:60%;"></div>
+    <div class="orb orb--lg"  style="top:175vh;left:-80px;"></div>
   </div>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -507,13 +521,12 @@
               <span class="overview-eyebrow">My Contributions</span>
               <h3>UX &amp; UI Design</h3>
               <div class="role-chips">
-                <span class="role-chip">UX Research</span>
                 <span class="role-chip">UX/UI Design</span>
+                <span class="role-chip">Visual Design</span>
+                <span class="role-chip">UX Research</span>
                 <span class="role-chip">Concept Strategy</span>
-                <span class="role-chip">Visual System</span>
                 <span class="role-chip">Ideation</span>
                 <span class="role-chip">Prototyping</span>
-                <span class="role-chip">Design Craft</span>
                 <span class="role-chip">Presentation</span>
                 <span class="role-chip">Collaboration</span>
               </div>
@@ -553,9 +566,9 @@
       <div class="section-eyebrow"><span class="section-num">01</span>Overview</div>
       <div class="content-full">
         <h2>83 hours to quantify a sense</h2>
-        <p class="lede">FigBuild 2026 asked us to quantify a human sense. We picked the one without a vocabulary, and built for the people most failed by its absence.</p>
-        <p>Four of us, none of whom had worked together before, none of whom had done a designathon. We picked smell. It's the sense without a vocabulary, the one most tied to memory, and the one a sprint could actually prototype.</p>
-        <p>I pushed, consistently, for ideas that could benefit someone in a serious way. For scent, that meant Alzheimer's and dementia: reaching memories through a sense wired straight to them. That's why this project exists.</p>
+        <p class="lede">FigBuild 2026 asked us to quantify a human sense. We picked <strong>smell</strong>.</p>
+        <p>We were a team of 4, and 2 of us had never partaken in a designathon. As we brainstormed, we decided that smell was not only intriguing, but also fun to speculate about.</p>
+        <p>I pushed, consistently, for ideas that could benefit someone in a serious way. For smell, that meant Alzheimer's and dementia: accessing memories through a sense, on command.</p>
       </div>
 
       <!-- Sprint timeline — folded into the Overview as a process strip -->
@@ -608,13 +621,13 @@
     <section id="concept" class="case-section" aria-label="How we landed on smell">
       <div class="section-eyebrow"><span class="section-num">02</span>Concept</div>
       <div class="content-full">
-        <h2>Two ideas we killed first</h2>
+        <h2>Two ideas we scrapped first</h2>
         <p>Before scent, we had two ambitious concepts on the table.</p>
         <ul>
           <li><strong>Biophilic AR.</strong> A speculative space-station UI that would swap sterile surroundings for responsive natural scenery, calibrated to your biophilic response. Scope consumed too many resources. AR was a skill gap, and the problem space was too open.</li>
-          <li><strong>A sensory-deprivation cloak.</strong> An app-controlled wearable that compresses your sense of time, built around pain and boredom: MRIs for chronic-pain patients, and long boring flights. The team didn't align. We moved on.</li>
+          <li><strong>A sensory-deprivation cloak.</strong> An app-controlled wearable that compresses your sense of time, built around pain and boredom: MRIs for chronic-pain patients, and long boring flights. The team didn't align, and the vision of our app prototype felt lackluster.</li>
         </ul>
-        <p>We returned to scent. It was feasible in 83 hours, and we had a shared visual excitement about what scent could <em>look</em> like. The use case shifted early: our first instinct was a scanner for identifying someone's perfume. It didn't feel weighty enough. Once we reframed around helping someone with Alzheimer's re-access a memory, the project earned its scope.</p>
+        <p>We returned to scent. It was feasible in 83 hours, and we had a shared visual excitement about what scent could <em>look</em> like. The use case shifted early: our first instinct was a scanner for identifying someone's perfume, but it didn't feel weighty or useful enough. A niche idea like that was good, but we wanted to use this opportunity to think outside the box. Once we reframed around helping someone with Alzheimer's re-access a memory, the project earned its scope.</p>
       </div>
     </section>
 
@@ -625,13 +638,13 @@
       <div class="section-eyebrow"><span class="section-num">03</span>The App</div>
       <div class="content-full">
         <h2>A scent app, and the wearable it would need to exist</h2>
-        <p>The app does four things: detect, archive, map, and emit. A speculative wearable enters the picture because scent has to come from somewhere. A brain chip felt lazy. A nose-worn attachment was the most honest delivery mechanism for a speculative concept, but the app is where our time was spent.</p>
+        <p>The app does four things: detect, archive, map, and emit (we consider detection and archiving to be part of 1 feature). A speculative wearable then entered the picture, because we had to emit from somewhere. A brain chip felt too easy (as it could be argued for any project in this designathon). A nose-worn attachment was the most honest delivery mechanism for our concept, it might seem basic, but we wanted it to feel like a product you could easily imagine. Most of our time, though, was spent on the app.</p>
       </div>
 
       <div class="content-row">
         <div class="text-col">
           <h2>A. Detect</h2>
-          <p>The wearable senses ambient chemical compounds in real-time. Users capture a scent as a memory signal, represented by an orb whose color reflects its chemical family, and whose texture and vibrancy reflect the state of the moment it was captured.</p>
+          <p>The wearable senses ambient chemical compounds in real-time. Users capture a scent as a "memory signal", represented by an orb whose color reflects its chemical family, and whose texture and vibrancy reflect the state of the moment it was captured (by default, but customizable).</p>
         </div>
         <div class="image-col">
           <img src="./assets/linger-detect.png" alt="Linger wearable interface showing scent detection and orb visualization">
@@ -667,7 +680,7 @@
 
       <div class="content-full">
         <h2>Orbs as a diegetic interface</h2>
-        <p>Before orbs, we tried perfume-bottle glass, gradients, and a few other directions. The orbs just felt right to all four of us. They stayed customizable in color, they felt abstract enough to hold meaning without prescribing it, and they doubled as a living home screen where favorite scents grow with each scan.</p>
+        <p>Before orbs, we tried perfume-bottles, gradients, and a few other directions. The orbs just felt right to all four of us. We all felt like we knew what they were attempting to portray, through speculation. They stayed customizable in color, they felt abstract enough to hold meaning without prescribing it, and they doubled as a living home screen where favorite scents grow with each scan.</p>
         <ul>
           <li><strong>Vibrancy</strong> = scent intensity</li>
           <li><strong>Hue</strong> = chemical family</li>
@@ -693,9 +706,9 @@
         <p>Select a flow to explore below.</p>
 
         <div class="proto-tabs" role="tablist" aria-label="Prototype flows">
-          <button class="proto-tab active" role="tab" aria-selected="true"  data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=468-12312%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=468%3A12312">Scent Capture</button>
-          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=267-541%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=267%3A541">Scent Tracking</button>
-          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=362-8240%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=362%3A8240">Scent Library</button>
+          <button class="proto-tab active" role="tab" aria-selected="true"  data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=468-12312%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=468%3A12312">Scent Detection</button>
+          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=267-541%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=267%3A541">Scent Mapping</button>
+          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=362-8240%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=362%3A8240">Scent Archive</button>
           <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=620-2574%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=620%3A2574">Scent Emission</button>
           <span class="proto-tab-indicator" aria-hidden="true"></span>
         </div>
@@ -726,10 +739,10 @@
       <script>
         (function () {
           const openLinks = {
-            'Scent Capture':  'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312',
-            'Scent Tracking': 'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=267-541&scaling=scale-down&content-scaling=fixed&starting-point-node-id=267%3A541',
-            'Scent Library':  'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=362-8240&scaling=scale-down&content-scaling=fixed&starting-point-node-id=362%3A8240',
-            'Scent Emission': 'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=620-2574&scaling=scale-down&content-scaling=fixed&starting-point-node-id=620%3A2574',
+            'Scent Detection': 'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=468-12312&scaling=scale-down&content-scaling=fixed&starting-point-node-id=468%3A12312',
+            'Scent Mapping':   'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=267-541&scaling=scale-down&content-scaling=fixed&starting-point-node-id=267%3A541',
+            'Scent Archive':   'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=362-8240&scaling=scale-down&content-scaling=fixed&starting-point-node-id=362%3A8240',
+            'Scent Emission':  'https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1&node-id=620-2574&scaling=scale-down&content-scaling=fixed&starting-point-node-id=620%3A2574',
           };
           const tabs      = document.querySelectorAll('.proto-tab');
           const iframe    = document.getElementById('proto-iframe');
@@ -788,12 +801,12 @@
       <div class="section-eyebrow"><span class="section-num">05</span>Responsibility</div>
       <div class="content-full">
         <h2>Designing around responsibility</h2>
-        <p>Olfactory data is deeply personal. The brief pushed us to think about this, and we leaned in. Four safeguards built into the product:</p>
+        <p>Olfactory data felt deeply personal. When I think of my favorite scent, I feel as if it's a memory that belongs only to me. The brief pushed us to heavily consider this. Four safeguards built into the product:</p>
         <ul>
           <li><strong>Ghost zones:</strong> user-defined areas where scent detection is automatically turned off, so others around you aren't quietly being scanned.</li>
           <li><strong>Cognitive-overload prevention:</strong> the app caps scent intensity and how many signals surface at once, so users aren't overwhelmed.</li>
           <li><strong>Palette-cleanser:</strong> a quick way to clear lingering scents between emissions, so one memory doesn't bleed into the next.</li>
-          <li><strong>Ambient-scent filter:</strong> a way to block unwanted scents from the environment, so users control what they take in.</li>
+          <li><strong>Ambient-scent filter:</strong> a way to block unwanted scents from the environment, so users control what they take in (could be considered an additional feature, in the future).</li>
         </ul>
       </div>
     </section>
@@ -809,13 +822,13 @@
         <div class="reflection-grid">
           <div class="reflection-card reflection-card--wide">
             <h3>Kill ideas faster</h3>
-            <p>Day 1 brainstorming ran long, and we nearly lost the build trying to settle on a concept. Next time: hard time caps per phase, everyone's top ideas on the table up front, and someone actively flagging when we're drifting past the deadline.</p>
+            <p>Day 1 brainstorming ran long, and we nearly lost our pacing trying to settle on a concept. Next time: hard time caps per phase, everyone's top ideas on the table up front, and someone actively flagging when we're drifting past the deadline.</p>
           </div>
 
           <div class="reflection-card">
             <h3>One question I'd keep workshopping</h3>
             <p><em>"Do users need to see the chemistry behind a scent like 'rain on asphalt,' or is naming the orb enough?"</em></p>
-            <p>We didn't have time to resolve this. The app shows both, and neither felt fully right. Honest answer: I don't know yet.</p>
+            <p style="margin-top: 16px;">We didn't have time to resolve this. The app shows both, and neither felt fully right. Honest answer: I don't know yet.</p>
           </div>
 
           <div class="reflection-card">
@@ -894,6 +907,21 @@
   <footer-component></footer-component>
 
   <script src="./layout.js?v=20"></script>
+
+  <script>
+    (function () {
+      if (!motionOk()) return;
+      const bg = document.querySelector('.orb-backdrop');
+      if (!bg) return;
+      let cur = 0, tgt = 0;
+      (function tick() {
+        tgt = window.scrollY * -0.2;
+        cur += (tgt - cur) * 0.04;
+        bg.style.transform = 'translateY(' + cur.toFixed(2) + 'px)';
+        requestAnimationFrame(tick);
+      })();
+    })();
+  </script>
 
   <!-- Linger: Frutiger Aero — shimmery light water bg, glassy orbs bouncing -->
   <script>
@@ -1032,14 +1060,9 @@
     }
 
     resize();
-    if (!motionOk()) {
-      canvas._stopped = true;
-      draw(5000);
-      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
-    } else {
-      new ResizeObserver(resize).observe(canvas);
-      requestAnimationFrame(draw);
-    }
+    canvas._stopped = true;
+    draw(5000);
+    new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
   })();
   </script>
 
