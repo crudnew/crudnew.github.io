@@ -26,9 +26,9 @@ const HEADER_HTML = `
     </div>
   </nav>
   <button class="nav-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-sheet">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
-    </svg>
+    <span class="burger-bar" aria-hidden="true"></span>
+    <span class="burger-bar" aria-hidden="true"></span>
+    <span class="burger-bar" aria-hidden="true"></span>
   </button>
   <div class="extras-pill about-pill" aria-label="About page">
     <a class="extras-item extras-internal" href="/about.html" data-path="/about.html">About</a>
@@ -339,6 +339,7 @@ function initLayout() {
     localStorage.setItem('theme', next);
     this.setAttribute('aria-checked', String(!isDark));
     _showState(this, !isDark);
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
   });
 
   contrastToggle.addEventListener('click', function () {
@@ -575,7 +576,7 @@ function initNavSheet() {
     sheet.classList.remove('is-open');
     openBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    setTimeout(() => { sheet.hidden = true; }, 220);
+    setTimeout(() => { sheet.hidden = true; }, 340);
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 

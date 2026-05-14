@@ -620,6 +620,7 @@
       canvas._stopped = true;
       draw(5000);
       new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+      document.addEventListener('themechange', () => draw(5000));
     } else {
       new ResizeObserver(resize).observe(canvas);
       requestAnimationFrame(draw);

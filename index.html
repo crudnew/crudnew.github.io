@@ -429,10 +429,12 @@
       }
       void main() {
         vec2 uv = gl_FragCoord.xy / u_resolution;
-        /* Frequency: enough cells to avoid a single big pool, few enough to
-           keep swirls calm and ambient. u_seed shifts the noise field per
-           page load so each visit starts from a different configuration. */
-        vec2 p = uv * vec2(2.95, 2.35) + u_seed;
+        /* On portrait/mobile viewports, boost only the y frequency so swirl
+           features stay wide (horizontal) rather than stretching vertically.
+           x scale is untouched — desktop rendering is identical. */
+        float aspect = u_resolution.x / u_resolution.y;
+        float yBoost = max(1.0, 1.6 / aspect);
+        vec2 p = uv * vec2(2.95, 2.35 * yBoost) + u_seed;
         float v = liquid(p, u_time);
         v = clamp(v, 0.0, 1.0);
         /* Soft compression toward the middle of the palette — keeps some

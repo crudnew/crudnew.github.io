@@ -1198,9 +1198,9 @@ main {
   .marquee-name { font-size: 16px; }
   .marquee-sep { font-size: 16px; }
   .case-showcase { padding: 24px 18px 0; gap: 28px; }
-  .phone-pair { flex-direction: column; }
-  .phone-pair img { height: 340px; }
-  .phone-pair img:nth-child(2) { margin-left: 0; margin-top: -20px; transform: rotate(-1deg); }
+  .phone-pair { flex-direction: row; justify-content: center; }
+  .phone-pair img { height: 220px; width: auto; }
+  .phone-pair img:nth-child(2) { margin-left: -10px; margin-top: 0; transform: rotate(-2deg); }
   .case-logo-img { max-width: 220px; }
   .case-band { padding: 48px 0; margin-top: 36px; }
   .case-band-inner { padding: 0 18px; }
@@ -1223,6 +1223,9 @@ main {
   .content-row h2 { font-size: 26px; }
   .content-full { padding: 28px 18px 16px; }
   .content-full h2 { font-size: 26px; }
+  .proto-tabs { overflow-x: auto; overflow-y: hidden; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .proto-tabs::-webkit-scrollbar { display: none; }
+  .proto-embed-wrap { height: 560px; }
   .proto-compare { flex-direction: column; padding: 16px 18px 32px; gap: 0; }
   .proto-compare img { max-height: 320px; }
   .proto-brace { font-size: 80px; transform: rotate(90deg); }
