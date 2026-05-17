@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=109">
+  <link rel="stylesheet" href="./style.css?v=111">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
-  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
 <body data-page-tint="home">
@@ -80,7 +80,7 @@
       <article class="card card--feature card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
         <a class="card-stretched-link" href="./linger.html" aria-label="View Linger case study"></a>
         <div class="card-image" aria-hidden="true">
-          <img src="./assets/linger-phones.png"
+          <img src="./assets/linger-phones.webp"
                alt="Linger app — phone screens showing the scent-mapping ecosystem">
           <div class="card-overlay" aria-hidden="true">
             <span class="card-overlay-date">2026</span>
@@ -129,8 +129,9 @@
         <article class="card card--feature card--portfolio" aria-label="AI-Assisted Portfolio: This Site">
           <a class="card-stretched-link" href="./portfolio.html" aria-label="View AI-Assisted Portfolio case study"></a>
           <div class="card-image" aria-hidden="true">
-            <img src="./assets/portfolio-phones.png"
-                 alt="AI-Assisted Portfolio — browser and phone screens showing the portfolio site">
+            <img src="./assets/portfolio-phones.webp"
+                 alt="AI-Assisted Portfolio — browser and phone screens showing the portfolio site"
+                 decoding="async">
             <div class="card-overlay" aria-hidden="true">
               <span class="card-overlay-date">ONGOING</span>
               <div class="card-overlay-tags">
@@ -154,7 +155,8 @@
           <a class="card-stretched-link" href="/weact.html" aria-label="View WeAct case study"></a>
           <div class="card-image" aria-hidden="true">
             <img src="./assets/Homepage-WeAct.png"
-                 alt="WeAct app — five iPhone screens showing the volunteer discovery and scheduling flow">
+                 alt="WeAct app — five iPhone screens showing the volunteer discovery and scheduling flow"
+                 decoding="async">
             <div class="card-overlay" aria-hidden="true">
               <span class="card-overlay-date">2025</span>
               <div class="card-overlay-tags">
@@ -176,8 +178,9 @@
         <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
           <a class="card-stretched-link" href="./crimemap.html" aria-label="View Crime Map case study"></a>
           <div class="card-image" aria-hidden="true">
-            <img src="./assets/crimemap-phones.png"
-                 alt="Crime Map website showing a map with incident markers and statistical overlays">
+            <img src="./assets/crimemap-phones.webp"
+                 alt="Crime Map website showing a map with incident markers and statistical overlays"
+                 decoding="async">
             <div class="card-overlay" aria-hidden="true">
               <span class="card-overlay-date">2021</span>
               <div class="card-overlay-tags">
@@ -634,8 +637,13 @@
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="./lenis.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
+    /* Drop the FOUC pre-hide class before any tween reads computed styles —
+       gsap.from() would otherwise record the hidden state as its destination. */
+    document.documentElement.classList.remove('pre-anim');
     const mm = gsap.matchMedia();
 
     // Extend cursor hover to page-specific elements
@@ -657,7 +665,7 @@
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
-      gsap.set('.card',            { opacity: 0, y: 50 });
+      gsap.set('.card',            { opacity: 0, y: 30, scale: 0.95 });
       gsap.set('.bento-card',      { opacity: 0 });
       gsap.set('.divider',         { width: 0 });
       gsap.set('.section-heading', { opacity: 0, y: 16 });
@@ -681,17 +689,19 @@
       /* Featured hero card */
       ScrollTrigger.create({
         trigger: '.card--feature.card--linger', start: 'top 85%', once: true,
-        onEnter: () => gsap.to('.card--feature.card--linger', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+        onEnter: () => gsap.to('.card--feature.card--linger', { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' })
       });
-      /* Featured grid cards */
+      /* Featured grid cards — staggered float-forward: each card scales up from
+         slightly small and drifts up, one at a time, so the GPU never handles
+         all three heavy glass panels in the same frame. */
       ScrollTrigger.create({
         trigger: '.cards--grid', start: 'top 85%', once: true,
-        onEnter: () => gsap.to('.cards--grid .card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
+        onEnter: () => gsap.to('.cards--grid .card', { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.22, ease: 'power3.out' })
       });
       /* More projects row cards */
       ScrollTrigger.create({
         trigger: '.cards--rows', start: 'top 85%', once: true,
-        onEnter: () => gsap.to('.cards--rows .card', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' })
+        onEnter: () => gsap.to('.cards--rows .card', { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.22, ease: 'power3.out' })
       });
 
       /* Bento grid cards */
@@ -748,10 +758,10 @@
     /* ==================== PHONE LOOP (shared) ==================== */
     (function() {
       [
-        { selector: '.card--feature.card--weact .card-image', src: './assets/weact-phones.png' },
-        { selector: '.card--feature.card--linger .card-image', src: './assets/linger-phones.png' },
-        { selector: '.card--feature.card--crimemap .card-image', src: './assets/crimemap-phones.png' },
-        { selector: '.card--feature.card--portfolio .card-image', src: './assets/portfolio-phones.png' }
+        { selector: '.card--feature.card--weact .card-image', src: './assets/weact-phones.webp' },
+        { selector: '.card--feature.card--linger .card-image', src: './assets/linger-phones.webp' },
+        { selector: '.card--feature.card--crimemap .card-image', src: './assets/crimemap-phones.webp' },
+        { selector: '.card--feature.card--portfolio .card-image', src: './assets/portfolio-phones.webp' }
       ].forEach(function(item) {
         const ci = document.querySelector(item.selector);
         if (!ci) return;

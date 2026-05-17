@@ -3,3 +3,7 @@ assets/.DS_Store
 .claude/
 assets/UofT-Logo.png
 assets/MacEwan-Logo.png
+
+# Local backups of original PNGs before WebP conversion — kept for safety,
+# not needed in repo.
+assets/*-original.png

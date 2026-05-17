@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=83">
+  <link rel="stylesheet" href="./style.css?v=84">
   <link rel="stylesheet" href="./weact.css?v=4">
-  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
     /* Hero card breathing room */
     .case-main .hero-wrapper { margin-top: var(--header-clearance) !important; margin-bottom: 48px !important; width: calc(100% - 88px) !important; }
@@ -630,8 +630,13 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="./lenis.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
+    /* Drop the FOUC pre-hide class before any tween reads computed styles —
+       gsap.from() would otherwise record the hidden state as its destination. */
+    document.documentElement.classList.remove('pre-anim');
     const mm = gsap.matchMedia();
 
     // Extend cursor hover to page-specific elements
