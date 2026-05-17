@@ -479,8 +479,10 @@
     resize();
     if (!motionOk()) {
       canvas._stopped = true;
-      draw(5000);
-      new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+      requestAnimationFrame(() => {
+        draw(5000);
+        new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
+      });
     } else {
       new ResizeObserver(resize).observe(canvas);
       requestAnimationFrame(draw);

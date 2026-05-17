@@ -416,8 +416,10 @@
     resize();
 
     if (typeof motionOk === 'function' && !motionOk()) {
-      render(0.0);
-      new ResizeObserver(() => { resize(); render(0.0); }).observe(canvas);
+      requestAnimationFrame(() => {
+        render(0.0);
+        new ResizeObserver(() => { resize(); render(0.0); }).observe(canvas);
+      });
       return;
     }
 

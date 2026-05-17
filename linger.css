@@ -659,7 +659,7 @@ main {
   -webkit-backdrop-filter: blur(10px) saturate(1.2);
   position: relative; z-index: 1;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 16px rgba(90,120,160,0.10);
-  will-change: backdrop-filter, transform, opacity;
+  will-change: transform, opacity;
 }
 [data-theme="dark"] .hero-text-backdrop {
   background: rgba(18,18,22,0.60);
