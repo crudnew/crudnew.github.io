@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Chris Rudnew's Portfolio - About Me</title>
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="icon" type="image/png" href="./assets/shared/favicon.png">
   <meta name="description" content="UX/UI designer with a CS and business foundation, building accessible and user-centered digital experiences.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,7 +178,7 @@
         <div class="image-col">
           <div class="reflection-card" style="padding:0; overflow:hidden; width:100%; max-width:420px; flex-shrink:0;">
             <img
-              src="./assets/about-portrait.jpg"
+              src="./assets/about/about-portrait.jpg"
               alt="A portrait of Chris Rudnew."
               style="width:100%; height:500px; object-fit:cover; object-position:top; display:block;">
           </div>
@@ -199,8 +199,6 @@
 
       </div>
     </section>
-
-    <hr class="case-divider" aria-hidden="true">
 
     <!-- Why Me — full-width band with glass overview cards -->
     <div class="case-band">
@@ -228,8 +226,6 @@
       </div>
     </div>
 
-    <hr class="case-divider" aria-hidden="true">
-
     <!-- The Human Part: text card + glass-framed gallery -->
     <section id="personal" class="case-section" aria-labelledby="human-heading" data-nav-label="Personal">
 
@@ -242,17 +238,53 @@
         </div>
       </div>
 
-      <!-- Gallery: each image in a glass card frame -->
-      <div class="about-gallery">
-        <div class="about-gallery-card reflection-card">
-          <img src="./assets/about-gallery-1.png" alt="" aria-hidden="true">
+      <!-- Glass-plate photo gallery (collapsible with mist-lift reveal) -->
+      <div class="glass-gallery" data-glass-collapsible>
+        <div class="glass-gallery-pane">
+          <div class="glass-gallery-grid" data-glass-grid>
+            <button class="glass-tile glass-tile--feature" type="button" data-glass-index="0"><img src="./assets/about/gallery/existing-1.webp" alt="Personal photo" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--tall" type="button" data-glass-index="1"><img src="./assets/about/gallery/tofino.webp" alt="Tofino, BC" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--tall" type="button" data-glass-index="2"><img src="./assets/about/gallery/costarica5.webp" alt="Costa Rica" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="3"><img src="./assets/about/gallery/existing-2.webp" alt="Personal photo" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--feature" type="button" data-glass-index="4"><img src="./assets/about/gallery/costarica.webp" alt="Costa Rica" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--wide" type="button" data-glass-index="5"><img src="./assets/about/gallery/toronto.webp" alt="Toronto" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--wide" type="button" data-glass-index="6"><img src="./assets/about/gallery/caimen.webp" alt="A caiman" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--tall" type="button" data-glass-index="7"><img src="./assets/about/gallery/tofino3.webp" alt="Tofino, BC" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="8"><img src="./assets/about/gallery/tofino2.webp" alt="Tofino, BC" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="9"><img src="./assets/about/gallery/costarica2.webp" alt="Costa Rica" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--feature" type="button" data-glass-index="10"><img src="./assets/about/gallery/toronto3.webp" alt="Toronto" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="11"><img src="./assets/about/gallery/sloth.webp" alt="A sloth" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--tall" type="button" data-glass-index="12"><img src="./assets/about/gallery/raven.webp" alt="A raven" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--wide" type="button" data-glass-index="13"><img src="./assets/about/gallery/costarica4.webp" alt="Costa Rica" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--feature" type="button" data-glass-index="14"><img src="./assets/about/gallery/costarica3.webp" alt="Costa Rica" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="15"><img src="./assets/about/gallery/squirrel.webp" alt="A squirrel" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="16"><img src="./assets/about/gallery/img-8392.webp" alt="Personal photo" loading="lazy" decoding="async" style="object-position: center bottom;"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="17"><img src="./assets/about/gallery/bc.webp" alt="British Columbia" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--wide" type="button" data-glass-index="18"><img src="./assets/about/gallery/edmonton.webp" alt="Edmonton" loading="lazy" decoding="async" style="object-position: center bottom;"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--feature" type="button" data-glass-index="19"><img src="./assets/about/gallery/banff.webp" alt="Banff, Alberta" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--wide" type="button" data-glass-index="20"><img src="./assets/about/gallery/banff-alt.webp" alt="Banff, Alberta" loading="lazy" decoding="async" style="object-position: center 75%;"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="21"><img src="./assets/about/gallery/toronto2.webp" alt="Toronto" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="22"><img src="./assets/about/gallery/existing-3.webp" alt="Personal photo" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile" type="button" data-glass-index="23"><img src="./assets/about/gallery/northernlights.webp" alt="Northern lights" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+            <button class="glass-tile glass-tile--panorama" type="button" data-glass-index="24"><img src="./assets/about/gallery/banff2.webp" alt="Banff, Alberta" loading="lazy" decoding="async"><span class="glass-tile-band" aria-hidden="true"></span></button>
+          </div>
+          <!-- Frosted-glass panel = the expand button (visible only when collapsed) -->
+          <button class="glass-gallery-veil" type="button" data-glass-toggle aria-expanded="false" aria-controls="glass-gallery-grid">
+            <span class="glass-gallery-veil-inner">
+              <span class="glass-gallery-veil-label">Show More</span>
+              <svg class="glass-gallery-veil-icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </span>
+          </button>
         </div>
-        <div class="about-gallery-card reflection-card">
-          <img src="./assets/about-gallery-2.png" alt="" aria-hidden="true">
-        </div>
-        <div class="about-gallery-card reflection-card">
-          <img src="./assets/about-gallery-3.png" alt="" aria-hidden="true">
-        </div>
+        <!-- Small pill button = the collapse button (visible only when expanded) -->
+        <button class="glass-gallery-toggle" type="button" data-glass-toggle aria-hidden="true">
+          <span class="glass-gallery-toggle-label">Show Less</span>
+          <svg class="glass-gallery-toggle-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </button>
       </div>
 
     </section>
@@ -271,15 +303,31 @@
 
   </main>
 
+  <!-- Glass photo viewer (lightbox replacement) -->
+  <div class="glass-viewer" data-glass-viewer aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="glass-viewer-close" type="button" aria-label="Close viewer">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6L18 18 M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <button class="glass-viewer-nav glass-viewer-nav--prev" type="button" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </button>
+    <button class="glass-viewer-nav glass-viewer-nav--next" type="button" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </button>
+    <figure class="glass-viewer-plate">
+      <img class="glass-viewer-img" src="" alt="" decoding="async">
+      <span class="glass-tile-band" aria-hidden="true"></span>
+    </figure>
+  </div>
+
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
   <script src="./layout.js?v=20"></script>
 
-  <!-- Liquid wave WebGL animation — identical to index.html -->
+  <!-- Liquid wave WebGL animation — identical to index.html (runs for every .liquid-canvas on the page) -->
   <script>
-  (function () {
-    const canvas = document.querySelector('.liquid-canvas');
+  document.querySelectorAll('.liquid-canvas').forEach(function (canvas) {
     if (!canvas) return;
     const gl = canvas.getContext('webgl2', {
       alpha: false, antialias: false, premultipliedAlpha: false,
@@ -471,7 +519,7 @@
     canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); stop(); });
 
     update();
-  })();
+  });
   </script>
 
   <!-- GSAP + ScrollTrigger -->
@@ -557,12 +605,13 @@
         })
       });
 
-      /* Gallery cards staggered */
+      /* Glass gallery: pane fade + tiles staggered */
       ScrollTrigger.create({
-        trigger: '.about-gallery', start: 'top 82%', once: true,
-        onEnter: () => gsap.to('.about-gallery .reflection-card', {
-          opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out'
-        })
+        trigger: '.glass-gallery', start: 'top 82%', once: true,
+        onEnter: () => {
+          gsap.to('.glass-gallery-pane', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform' });
+          gsap.to('.glass-tile', { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: 'power3.out', delay: 0.15, clearProps: 'transform' });
+        }
       });
 
       /* Footer */
@@ -579,6 +628,132 @@
         scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
       });
     });
+  </script>
+
+  <!-- ==================== GLASS GALLERY: sheen + viewer ==================== -->
+  <script>
+  (function () {
+    const grid    = document.querySelector('[data-glass-grid]');
+    const viewer  = document.querySelector('[data-glass-viewer]');
+    if (!grid || !viewer) return;
+
+    const tiles   = Array.from(grid.querySelectorAll('.glass-tile'));
+    const vImg    = viewer.querySelector('.glass-viewer-img');
+    const vClose  = viewer.querySelector('.glass-viewer-close');
+    const vPrev   = viewer.querySelector('.glass-viewer-nav--prev');
+    const vNext   = viewer.querySelector('.glass-viewer-nav--next');
+
+    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = -1, lastFocus = null;
+
+    /* ---------- Cursor-reactive sheen ---------- */
+    if (motionOK && window.matchMedia('(hover: hover)').matches) {
+      tiles.forEach(tile => {
+        let raf = 0;
+        const onMove = (e) => {
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            const r = tile.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width)  * 100;
+            const y = ((e.clientY - r.top)  / r.height) * 100;
+            tile.style.setProperty('--sheen-x', x + '%');
+            tile.style.setProperty('--sheen-y', y + '%');
+            raf = 0;
+          });
+        };
+        tile.addEventListener('pointerenter', () => tile.addEventListener('pointermove', onMove));
+        tile.addEventListener('pointerleave', () => {
+          tile.removeEventListener('pointermove', onMove);
+          tile.style.removeProperty('--sheen-x');
+          tile.style.removeProperty('--sheen-y');
+        });
+      });
+    }
+
+    /* ---------- Viewer ---------- */
+    const getFullSrc = (tileImg) => tileImg.src.replace(/\.webp$/, '-full.webp');
+    const getAlt     = (tileImg) => tileImg.alt || '';
+
+    function open(idx) {
+      current = idx;
+      const tile = tiles[idx];
+      const img  = tile.querySelector('img');
+      vImg.src = getFullSrc(img);
+      vImg.alt = getAlt(img);
+      lastFocus = document.activeElement;
+      viewer.classList.add('is-open');
+      viewer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      // focus close button for keyboard users
+      requestAnimationFrame(() => vClose.focus());
+    }
+    function close() {
+      viewer.classList.remove('is-open');
+      viewer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      current = -1;
+    }
+    function step(delta) {
+      if (current < 0) return;
+      const next = (current + delta + tiles.length) % tiles.length;
+      open(next);
+    }
+
+    tiles.forEach((t, i) => t.addEventListener('click', () => open(i)));
+    vClose.addEventListener('click', close);
+    vPrev .addEventListener('click', () => step(-1));
+    vNext .addEventListener('click', () => step( 1));
+    viewer.addEventListener('click', (e) => { if (e.target === viewer) close(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (!viewer.classList.contains('is-open')) return;
+      if (e.key === 'Escape')      { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); step( 1); }
+    });
+
+    /* ---------- Collapse / expand toggle ---------- */
+    const collapsible = document.querySelector('[data-glass-collapsible]');
+    const toggleBtns  = document.querySelectorAll('[data-glass-toggle]');
+    const veilBtn     = collapsible ? collapsible.querySelector('.glass-gallery-veil') : null;
+    const pane        = collapsible ? collapsible.querySelector('.glass-gallery-pane') : null;
+
+    if (collapsible && toggleBtns.length && pane) {
+      const motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const handleToggle = () => {
+        const wasExpanded = collapsible.classList.contains('is-expanded');
+
+        // If collapsing — kick off the scroll FIRST so it runs in parallel with the shrink
+        if (wasExpanded) {
+          const targetTop = collapsible.getBoundingClientRect().top + window.scrollY - 80;
+          if (window.lenis && !motionReduced) {
+            window.lenis.scrollTo(targetTop, { duration: 1.2, easing: t => 1 - Math.pow(1 - t, 3) });
+          } else {
+            window.scrollTo({ top: targetTop, behavior: motionReduced ? 'auto' : 'smooth' });
+          }
+        }
+
+        const expanded = collapsible.classList.toggle('is-expanded');
+        if (veilBtn) veilBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+        if (expanded && !motionReduced && typeof gsap !== 'undefined') {
+          // Cascade-stagger the tiles that were previously clipped — slower for "flowy" feel
+          const collapsedH = parseInt(getComputedStyle(pane).maxHeight) || 0;
+          const newlyVisible = tiles.filter(t => t.offsetTop >= collapsedH - 40);
+          if (newlyVisible.length) {
+            gsap.fromTo(newlyVisible,
+              { y: 22, scale: 0.975 },
+              { y: 0, scale: 1, duration: 1.25, stagger: 0.045, ease: 'expo.out', delay: 0.4, clearProps: 'transform' }
+            );
+          }
+        }
+      };
+
+      toggleBtns.forEach(btn => btn.addEventListener('click', handleToggle));
+    }
+  })();
   </script>
 
 </body>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Chris Rudnew's Portfolio</title>
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="icon" type="image/png" href="./assets/shared/favicon.png">
   <meta name="description" content="Designing at the intersection of users, systems, and business.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +60,7 @@
             <div class="hero-portrait-col">
               <div class="hero-portrait-frame">
                 <img class="hero-portrait-img"
-                     src="./assets/about-portrait.jpg"
+                     src="./assets/about/about-portrait.jpg"
                      alt="Portrait of Chris Rudnew">
               </div>
             </div>
@@ -80,7 +80,7 @@
       <article class="card card--feature card--linger" aria-label="Linger: Scent-Mapping Ecosystem">
         <a class="card-stretched-link" href="./linger.html" aria-label="View Linger case study"></a>
         <div class="card-image" aria-hidden="true">
-          <img src="./assets/linger-phones.webp"
+          <img src="./assets/projects/linger/linger-phones.webp"
                alt="Linger app — phone screens showing the scent-mapping ecosystem">
           <div class="card-overlay" aria-hidden="true">
             <span class="card-overlay-date">2026</span>
@@ -129,7 +129,7 @@
         <article class="card card--feature card--portfolio" aria-label="AI-Assisted Portfolio: This Site">
           <a class="card-stretched-link" href="./portfolio.html" aria-label="View AI-Assisted Portfolio case study"></a>
           <div class="card-image" aria-hidden="true">
-            <img src="./assets/portfolio-phones.webp"
+            <img src="./assets/projects/portfolio/portfolio-phones.webp"
                  alt="AI-Assisted Portfolio — browser and phone screens showing the portfolio site"
                  decoding="async">
             <div class="card-overlay" aria-hidden="true">
@@ -154,7 +154,7 @@
         <article class="card card--feature card--weact" aria-label="WeAct: Reimagining Local Volunteering">
           <a class="card-stretched-link" href="/weact.html" aria-label="View WeAct case study"></a>
           <div class="card-image" aria-hidden="true">
-            <img src="./assets/Homepage-WeAct.png"
+            <img src="./assets/projects/weact/Homepage-WeAct.png"
                  alt="WeAct app — five iPhone screens showing the volunteer discovery and scheduling flow"
                  decoding="async">
             <div class="card-overlay" aria-hidden="true">
@@ -178,7 +178,7 @@
         <article class="card card--feature card--crimemap" aria-label="Crime Map: Undergraduate Capstone">
           <a class="card-stretched-link" href="./crimemap.html" aria-label="View Crime Map case study"></a>
           <div class="card-image" aria-hidden="true">
-            <img src="./assets/crimemap-phones.webp"
+            <img src="./assets/projects/crimemap/crimemap-phones.webp"
                  alt="Crime Map website showing a map with incident markers and statistical overlays"
                  decoding="async">
             <div class="card-overlay" aria-hidden="true">
@@ -758,10 +758,10 @@
     /* ==================== PHONE LOOP (shared) ==================== */
     (function() {
       [
-        { selector: '.card--feature.card--weact .card-image', src: './assets/weact-phones.webp' },
-        { selector: '.card--feature.card--linger .card-image', src: './assets/linger-phones.webp' },
-        { selector: '.card--feature.card--crimemap .card-image', src: './assets/crimemap-phones.webp' },
-        { selector: '.card--feature.card--portfolio .card-image', src: './assets/portfolio-phones.webp' }
+        { selector: '.card--feature.card--weact .card-image', src: './assets/projects/weact/weact-phones.webp' },
+        { selector: '.card--feature.card--linger .card-image', src: './assets/projects/linger/linger-phones.webp' },
+        { selector: '.card--feature.card--crimemap .card-image', src: './assets/projects/crimemap/crimemap-phones.webp' },
+        { selector: '.card--feature.card--portfolio .card-image', src: './assets/projects/portfolio/portfolio-phones.webp' }
       ].forEach(function(item) {
         const ci = document.querySelector(item.selector);
         if (!ci) return;
