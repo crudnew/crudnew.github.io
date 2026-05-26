@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=84">
+  <link rel="stylesheet" href="./style.css?v=117">
   <link rel="stylesheet" href="./weact.css?v=4">
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
@@ -172,20 +172,6 @@
       </div>
     </section>
 
-    <!-- Team Marquee -->
-    <div class="marquee-wrap" aria-label="Team members">
-      <div class="marquee-track">
-        <span class="marquee-name">Chris Rudnew</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Ka Yi Gloria Lai</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Michelle Liu</span>
-        <span class="marquee-sep">|</span>
-        <span class="marquee-name">Suebin Moon</span>
-        <span class="marquee-sep">|</span>
-      </div>
-    </div>
-
     <!-- Process Pipeline -->
     <div class="process-pipeline">
       <div class="process-pipeline-card">
@@ -242,8 +228,6 @@
         </div>
       </div>
     </div>
-
-    <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 01 / RESEARCH ===== -->
     <section id="research" class="case-section" aria-label="Research, Synthesis and Ideation" data-nav-label="Research">
@@ -309,8 +293,6 @@
       </div>
     </section>
 
-    <hr class="case-divider" aria-hidden="true">
-
     <!-- ===== 03 / PROTOTYPING ===== -->
     <section class="case-section" aria-label="Prototyping">
       <div class="section-eyebrow"><span class="section-num">03</span>Design &amp; Prototyping</div>
@@ -339,8 +321,6 @@
       </div>
     </section>
 
-    <hr class="case-divider" aria-hidden="true">
-
     <!-- ===== 05 / OUTCOMES ===== -->
     <section id="outcomes" class="case-section" aria-label="Key Outcomes" data-nav-label="Outcomes">
       <div class="section-eyebrow"><span class="section-num">05</span>Outcomes &amp; Impact</div>
@@ -364,8 +344,6 @@
         </div>
       </div>
     </section>
-
-    <hr class="case-divider" aria-hidden="true">
 
     <!-- ===== 06 / REFLECTION ===== -->
     <section class="case-section" aria-label="Skills and Reflection">
@@ -722,14 +700,6 @@
         });
       });
 
-      /* Case dividers */
-      gsap.utils.toArray('.case-divider').forEach(div => {
-        gsap.from(div, {
-          width: 0, duration: 0.8, ease: 'power2.inOut', clearProps: 'width',
-          scrollTrigger: ST(div, 'top 90%')
-        });
-      });
-
       /* Content rows */
       gsap.utils.toArray('.content-row').forEach(row => {
         gsap.from(row.querySelectorAll('.text-col, .image-col'), {
@@ -758,64 +728,33 @@
         scrollTrigger: ST('.reflection-grid', 'top 82%')
       });
 
-      /* Header hide/show on scroll */
-      let lastScroll = 0;
-      const headerEl = document.querySelector('header');
-      ScrollTrigger.create({
-        start: 'top top', end: 99999,
-        onUpdate: self => {
-          const y = self.scroll();
-          gsap.to(headerEl, {
-            y: (y > lastScroll && y > 100) ? -100 : 0,
-            duration: 0.35,
-            ease: y > lastScroll ? 'power2.in' : 'power2.out'
-          });
-          lastScroll = y;
-        }
-      });
-
-      /* Footer */
-      gsap.from('footer', {
-        opacity: 0, y: 28, duration: 0.7,
-        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
-      });
-    });
-
-    /* ==================== MARQUEES — seamless infinite scroll ==================== */
-    document.querySelectorAll('.marquee-track').forEach(track => {
-      const wrap = track.closest('.marquee-wrap');
-      const origChildren = Array.from(track.children);
-      const measureClone = track.cloneNode(true);
-      measureClone.style.position = 'absolute';
-      measureClone.style.visibility = 'hidden';
-      document.body.appendChild(measureClone);
-      const oneSetWidth = measureClone.scrollWidth;
-      document.body.removeChild(measureClone);
-
-      const copies = Math.ceil(window.innerWidth / oneSetWidth) + 2;
-      for (let i = 0; i < copies; i++) {
-        origChildren.forEach(child => track.appendChild(child.cloneNode(true)));
-      }
-
-      const speed = 30;
-      let offset = 0, paused = false, lastTime = null;
-
-      wrap.addEventListener('mouseenter', () => { paused = true; });
-      wrap.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
-
-      function animate(now) {
-        if (!paused && motionOk()) {
-          if (lastTime !== null) {
-            const dt = (now - lastTime) / 1000;
-            offset -= speed * dt;
-            if (Math.abs(offset) >= oneSetWidth) offset += oneSetWidth;
-            track.style.transform = 'translateX(' + offset + 'px)';
+      /* Header hide/show on scroll — wait for the <header> injected by
+         <header-component> (layout.js custom element), then drive a single
+         quickTo tween instead of spawning a fresh gsap.to() per scroll tick. */
+      (function bindHeaderHide() {
+        const headerEl = document.querySelector('header');
+        if (!headerEl) { requestAnimationFrame(bindHeaderHide); return; }
+        const yTo = gsap.quickTo(headerEl, 'y', { duration: 0.35, ease: 'power2.out' });
+        let lastScroll = 0;
+        ScrollTrigger.create({
+          start: 'top top', end: 99999,
+          onUpdate: self => {
+            const y = self.scroll();
+            yTo((y > lastScroll && y > 100) ? -100 : 0);
+            lastScroll = y;
           }
-          lastTime = now;
-        } else { lastTime = null; }
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
+        });
+      })();
+
+      /* Footer reveal — wait for <footer> to be injected by <footer-component>. */
+      (function bindFooterReveal() {
+        const footerEl = document.querySelector('footer');
+        if (!footerEl) { requestAnimationFrame(bindFooterReveal); return; }
+        gsap.from(footerEl, {
+          opacity: 0, y: 28, duration: 0.7,
+          scrollTrigger: { trigger: footerEl, start: 'top 95%' }
+        });
+      })();
     });
 
     /* ==================== PERSONA CAROUSEL ==================== */

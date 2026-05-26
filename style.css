@@ -101,6 +101,7 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
+  scrollbar-gutter: stable;
   background-color: #F2EDE6;
   background-image:
     linear-gradient(rgba(242, 237, 230, 0.25), rgba(242, 237, 230, 0.25)),
@@ -1237,8 +1238,8 @@ body[data-page-tint="home"] .hero-bg-zone {
 body[data-page-tint="home"] .hero-text-backdrop {
   padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.26);
-  backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
+  backdrop-filter: blur(14px) saturate(1.4) brightness(1.02);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4) brightness(1.02);
   justify-content: center;
 }
 [data-theme="dark"] body[data-page-tint="home"] .hero-text-backdrop {
@@ -3294,7 +3295,9 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   font-size: 13px; font-weight: 600;
   letter-spacing: 2px; text-transform: uppercase;
   color: var(--accent);
-  padding: 48px 64px 0;
+  /* 80px top compensates for removed case-dividers (~41.5px) while keeping a
+     deliberate section break. Was 48px when dividers handled the break. */
+  padding: 80px 64px 0;
   width: 100%; max-width: 1212px;
 }
 .section-num {
@@ -3336,7 +3339,8 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* Process pipeline */
 .process-pipeline {
   display: flex; align-items: center; justify-content: center;
-  padding: 20px 64px 40px; width: 100%; max-width: 1212px;
+  /* Symmetric vertical padding — card has equal breathing room top and bottom. */
+  padding: 40px 64px; width: 100%; max-width: 1212px;
 }
 .process-pipeline-card {
   background: var(--surface);
@@ -3503,7 +3507,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   .case-stats { grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .stat-card { padding: 24px 12px; }
   .stat-number { font-size: 36px; }
-  .process-pipeline { padding: 20px 28px 32px; }
+  .process-pipeline { padding: 32px 28px; }
   .process-pipeline-card { padding: 32px 28px; flex-wrap: wrap; gap: 16px; }
   .section-eyebrow { padding: 40px 28px 0; }
   .content-row { padding: 36px 28px 28px; gap: 40px; }
@@ -3684,7 +3688,7 @@ body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px;
   .stat-number { font-size: 36px; }
   .case-divider { width: 80px; }
   .section-eyebrow { padding: 32px 18px 0; font-size: 12px; }
-  .process-pipeline { padding: 10px 18px 24px; }
+  .process-pipeline { padding: 24px 18px; }
   .process-pipeline-card { padding: 24px 18px; flex-wrap: wrap; gap: 20px; justify-content: center; }
   .process-step { gap: 8px; }
   .process-icon { width: 40px; height: 40px; border-radius: 10px; }
@@ -4020,4 +4024,162 @@ html[data-motion="reduced"] .bento-card { scroll-snap-align: center; opacity: 1 
 }
 ::view-transition-new(root) {
   animation: 450ms cubic-bezier(0, 0, 0.2, 1) vt-blur-in both;
+}
+
+/* ============================================================
+   INTRO — Glass Orb Unfold (first visit per session, index only)
+   The existing hero canvas is lifted to fixed/fullscreen and
+   clip-pathed to a small circle, masquerading as liquid inside
+   a glass orb. The orb morphs into the hero card silhouette,
+   then expands the clip to inset(0) revealing the page.
+============================================================ */
+html.intro-running, html.intro-running body { overflow: hidden; }
+
+/* Hide the scrollbar-gutter strip during the intro by tinting both html AND
+   body to match the canvas's tan palette. The cream default body bg would
+   otherwise show as a visible vertical strip in the reserved gutter area on
+   Win/Linux (and any tablet/system that renders classic scrollbar gutters). */
+html.intro-running {
+  background-color: rgb(200, 178, 149);
+}
+html.intro-running body {
+  background-color: rgb(200, 178, 149);
+  background-image: none;
+}
+[data-theme="dark"] html.intro-running,
+[data-theme="dark"] html.intro-running body {
+  background-color: rgb(36, 26, 22);
+}
+
+/* Page content stays in layout but invisible — fade-in is choreographed
+   by the hero entrance during phase 3 alongside the veil fade. */
+html.intro-running > body > header,
+html.intro-running > body > footer-component,
+html.intro-running > body > .display-tooltip,
+html.intro-running > body > .skip-link {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Hide everything in main-content except the hero-wrapper so the real hero
+   card is visible as the intro circle. Projects, divider, etc. stay hidden. */
+html.intro-running > body > #main-content > *:not(.hero-wrapper) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Canvas: stays at its NORMAL z-index (0) during intro, so the veil (4501)
+   sits ABOVE it. The veil's box-shadow paints --bg-primary everywhere except
+   the hole, hiding the canvas wherever we don't want it visible. */
+html.intro-running .hero-bg-zone {
+  opacity: 1 !important;
+}
+
+/* Veil — full-viewport SVG painted --bg-primary, with a mask that punches a
+   hole at the orb's position. JS animates the #intro-veil-hole rect's x/y/
+   width/height/rx attributes in lockstep with the orb so the hole tracks the
+   morph. Through the hole the canvas is visible; orbFrost (at z:4502) sits
+   over the hole and blurs that same canvas — identical to what the real hero
+   card will blur, so the 1.65s handoff is seamless. */
+.intro-veil {
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 4501;
+  display: none;
+}
+html.intro-running .intro-veil { display: block; }
+/* The rect inside the SVG that gets painted (and masked) — colored bg-primary */
+.intro-veil > rect { fill: var(--bg); }
+
+.intro-root {
+  position: fixed; inset: 0; z-index: 5000;
+  pointer-events: none;
+  display: none;
+}
+html.intro-running .intro-root { display: block; }
+
+/* Glass shell — sits above orbFrost frost layer to create glass-sphere illusion.
+   Fades OUT as the shape morphs to a rectangle (highlights look wrong on rect). */
+.intro-orb {
+  position: absolute;
+  width: 180px; height: 180px;
+  border-radius: 90px;
+  pointer-events: none;
+  opacity: 0;
+  /* Dome sheen matching .hero-glass-sheen — fades in during the circle→card morph */
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%,
+      rgba(255,255,255,0.45) 0%,
+      rgba(255,255,255,0.12) 45%,
+      transparent 70%),
+    linear-gradient(148deg, rgba(255,255,255,0.22) 0%, transparent 38%),
+    linear-gradient(328deg, rgba(255,255,255,0.10) 0%, transparent 35%);
+  box-shadow:
+    inset 0   1.5px 0 rgba(255,255,255,0.92),
+    inset 1.5px 0   0 rgba(255,255,255,0.55),
+    inset -1.5px 0  0 rgba(255,255,255,0.40),
+    inset 0  -1px   0 rgba(255,255,255,0.22);
+  z-index: 2;
+}
+[data-theme="dark"] .intro-orb {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%,
+      rgba(255,255,255,0.14) 0%,
+      transparent 70%),
+    linear-gradient(148deg, rgba(255,255,255,0.08) 0%, transparent 38%);
+  box-shadow:
+    inset 0   1.5px 0 rgba(255,255,255,0.22),
+    inset 1.5px 0   0 rgba(255,255,255,0.12),
+    inset -1.5px 0  0 rgba(255,255,255,0.08),
+    inset 0  -1px   0 rgba(255,255,255,0.05);
+}
+
+/* Frost overlay — lives at body level (NOT inside .intro-root) so its
+   backdrop-filter can blur the canvas. .intro-root's stacking context
+   would otherwise isolate the frost from the canvas behind it.
+   Visual values MIRROR .hero-text-backdrop on the home page exactly
+   (style.css:1237 override) so the handoff is pixel-identical.
+   Backdrop blur starts smaller — set inline by JS — because a 24px blur on
+   a 180px disc averages all canvas content to one flat color. */
+.intro-orb-frost {
+  position: fixed;
+  width: 180px; height: 180px;
+  border-radius: 90px;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    0 6px 40px rgba(90,58,18,0.22),
+    0 2px 10px rgba(90,58,18,0.14),
+    0 1px 0   rgba(255,255,255,0.80);
+  backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
+  z-index: 4502;
+}
+[data-theme="dark"] .intro-orb-frost {
+  background: rgba(36, 26, 22, 0.71);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 6px 40px rgba(0,0,0,0.40),
+    0 2px 10px rgba(0,0,0,0.28),
+    0 1px 0   rgba(255,255,255,0.08);
+}
+
+.intro-name {
+  position: absolute;
+  left: 0; right: 0;
+  /* top is set by JS to sit below the orb */
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+  z-index: 4;
 }

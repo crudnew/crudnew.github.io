@@ -415,47 +415,6 @@
 </head>
 <body data-page-tint="linger">
 
-  <!-- ===== ORB BACKDROP ===== -->
-  <!-- Iridescent glass orbs from the Linger design system, scattered as fixed atmosphere -->
-  <div class="orb-backdrop" aria-hidden="true">
-    <!-- Top-left mega orb -->
-    <div class="orb orb--xxl" style="top:-140px;left:-160px;"></div>
-    <!-- Top-right large -->
-    <div class="orb orb--xl"  style="top:2vh;right:-110px;"></div>
-    <!-- Upper-center accent -->
-    <div class="orb orb--md"  style="top:8vh;left:38%;"></div>
-    <!-- Upper-right small -->
-    <div class="orb orb--sm"  style="top:18vh;right:28%;"></div>
-    <!-- Mid-left large -->
-    <div class="orb orb--lg"  style="top:32vh;left:-80px;"></div>
-    <!-- Mid-center accent -->
-    <div class="orb orb--xs"  style="top:40vh;left:52%;"></div>
-    <!-- Mid-right medium -->
-    <div class="orb orb--md"  style="top:44vh;right:-50px;"></div>
-    <!-- Lower-center-left -->
-    <div class="orb orb--lg"  style="top:58vh;left:22%;"></div>
-    <!-- Lower-right large -->
-    <div class="orb orb--xl"  style="top:62vh;right:-120px;"></div>
-    <!-- Bottom accent small -->
-    <div class="orb orb--sm"  style="top:74vh;right:30%;"></div>
-    <!-- Bottom-left mega -->
-    <div class="orb orb--xxl" style="top:80vh;left:-180px;"></div>
-    <!-- Bottom-center accent -->
-    <div class="orb orb--xs"  style="top:88vh;left:60%;"></div>
-    <!-- Extended fill — covers parallax scroll area below viewport -->
-    <div class="orb orb--lg"  style="top:100vh;left:30%;"></div>
-    <div class="orb orb--xl"  style="top:108vh;right:-100px;"></div>
-    <div class="orb orb--md"  style="top:116vh;left:55%;"></div>
-    <div class="orb orb--xxl" style="top:122vh;left:-160px;"></div>
-    <div class="orb orb--sm"  style="top:132vh;right:35%;"></div>
-    <div class="orb orb--lg"  style="top:140vh;left:42%;"></div>
-    <div class="orb orb--xl"  style="top:148vh;right:-120px;"></div>
-    <div class="orb orb--md"  style="top:156vh;left:18%;"></div>
-    <div class="orb orb--xxl" style="top:162vh;right:-180px;"></div>
-    <div class="orb orb--sm"  style="top:170vh;left:60%;"></div>
-    <div class="orb orb--lg"  style="top:175vh;left:-80px;"></div>
-  </div>
-
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header-component></header-component>
 
@@ -777,8 +736,24 @@
           // Init indicator on first tab
           moveIndicator(tabs[0]);
 
-          // Load first flow immediately
-          loadFlow(tabs[0]);
+          // Lazy-load the prototype: defer iframe src until the section nears
+          // the viewport. The iframe runs a full React/canvas app on its own,
+          // so loading it upfront costs baseline CPU + ~hundreds of KB of JS
+          // for a section the user may never scroll to. Show the loader
+          // shimmer in the meantime so there's no empty box.
+          loader.classList.add('visible');
+          const protoSection = document.getElementById('prototype');
+          if ('IntersectionObserver' in window && protoSection) {
+            const io = new IntersectionObserver(function (entries) {
+              if (entries[0].isIntersecting) {
+                io.disconnect();
+                loadFlow(tabs[0]);
+              }
+            }, { rootMargin: '600px 0px' });
+            io.observe(protoSection);
+          } else {
+            loadFlow(tabs[0]);
+          }
 
           tabs.forEach(function (tab) {
             tab.addEventListener('click', function () {
@@ -907,21 +882,6 @@
   <footer-component></footer-component>
 
   <script src="./layout.js?v=20"></script>
-
-  <script>
-    (function () {
-      if (!motionOk()) return;
-      const bg = document.querySelector('.orb-backdrop');
-      if (!bg) return;
-      let cur = 0, tgt = 0;
-      (function tick() {
-        tgt = window.scrollY * -0.2;
-        cur += (tgt - cur) * 0.04;
-        bg.style.transform = 'translateY(' + cur.toFixed(2) + 'px)';
-        requestAnimationFrame(tick);
-      })();
-    })();
-  </script>
 
   <!-- Linger: Frutiger Aero — shimmery light water bg, glassy orbs bouncing -->
   <script>
@@ -1136,15 +1096,6 @@
         scrollTrigger: { trigger: '.case-stats', start: 'top 85%' }
       });
 
-      gsap.from('.process-pipeline-card', {
-        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: '.process-pipeline', start: 'top 85%' }
-      });
-      gsap.from('.process-step', {
-        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.process-pipeline', start: 'top 80%' }
-      });
-
       gsap.utils.toArray('.section-eyebrow').forEach(el => {
         gsap.from(el, {
           x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
@@ -1178,26 +1129,34 @@
         scrollTrigger: { trigger: '.reflection-grid', start: 'top 82%' }
       });
 
-      /* Header hide/show on scroll */
-      let lastScroll = 0;
-      const headerEl = document.querySelector('header');
-      ScrollTrigger.create({
-        start: 'top top', end: 99999,
-        onUpdate: self => {
-          const y = self.scroll();
-          gsap.to(headerEl, {
-            y: (y > lastScroll && y > 100) ? -100 : 0,
-            duration: 0.35,
-            ease: y > lastScroll ? 'power2.in' : 'power2.out'
-          });
-          lastScroll = y;
-        }
-      });
+      /* Header hide/show on scroll — wait for the <header> injected by
+         <header-component> (layout.js custom element), then drive a single
+         quickTo tween instead of spawning a fresh gsap.to() per scroll tick. */
+      (function bindHeaderHide() {
+        const headerEl = document.querySelector('header');
+        if (!headerEl) { requestAnimationFrame(bindHeaderHide); return; }
+        const yTo = gsap.quickTo(headerEl, 'y', { duration: 0.35, ease: 'power2.out' });
+        let lastScroll = 0;
+        ScrollTrigger.create({
+          start: 'top top', end: 99999,
+          onUpdate: self => {
+            const y = self.scroll();
+            yTo((y > lastScroll && y > 100) ? -100 : 0);
+            lastScroll = y;
+          }
+        });
+      })();
 
-      gsap.from('footer', {
-        opacity: 0, y: 28, duration: 0.7,
-        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
-      });
+      /* Footer reveal — wait for <footer> to be injected by <footer-component>
+         (layout.js custom element) before binding the scroll trigger. */
+      (function bindFooterReveal() {
+        const footerEl = document.querySelector('footer');
+        if (!footerEl) { requestAnimationFrame(bindFooterReveal); return; }
+        gsap.from(footerEl, {
+          opacity: 0, y: 28, duration: 0.7,
+          scrollTrigger: { trigger: footerEl, start: 'top 95%' }
+        });
+      })();
     });
 
     /* ==================== MARQUEE — seamless infinite scroll ==================== */

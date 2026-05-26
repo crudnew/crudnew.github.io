@@ -9,15 +9,39 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=111">
+  <link rel="stylesheet" href="./style.css?v=115">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
-  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;/* INTRO_GATE: set to true to play every reload (testing); set to false to gate per-session via sessionStorage (production) */var INTRO_ALWAYS=true;var introWillRun=motionOn&&(INTRO_ALWAYS||!sessionStorage.getItem('introPlayed'))&&window.innerWidth>=768;window._introWillRun=introWillRun;if(introWillRun){document.documentElement.classList.add('intro-running');setTimeout(function(){document.documentElement.classList.remove('intro-running');},4000);}else if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
 <body data-page-tint="home">
 
   <!-- Skip to main content — keyboard / screen reader -->
   <a class="skip-link" href="#projects-heading">Skip to main content</a>
+
+<!-- Intro: Glass Orb Unfold (first visit per session, ≥768px only)
+       Note: intro-orb-frost lives OUTSIDE intro-root so its backdrop-filter
+       can blur the canvas behind it (intro-root creates a stacking context
+       that would otherwise isolate the frost from the canvas backdrop). -->
+  <!-- Veil: full-viewport SVG painted with --bg-primary, with a mask that
+       punches a hole at the orb position. JS animates #intro-veil-hole's
+       attributes (x/y/width/height/rx) in sync with the orb so the hole
+       tracks the morph. SVG mask is bulletproof across Chrome/Safari/Firefox
+       and supports rounded-rectangle holes natively via the rx attribute. -->
+  <svg class="intro-veil" id="intro-veil" aria-hidden="true">
+    <defs>
+      <mask id="intro-veil-mask">
+        <rect width="100%" height="100%" fill="white"/>
+        <rect id="intro-veil-hole" x="0" y="0" width="0" height="0" rx="0" fill="black"/>
+      </mask>
+    </defs>
+    <rect width="100%" height="100%" mask="url(#intro-veil-mask)"/>
+  </svg>
+  <div class="intro-orb-frost" id="intro-orb-frost" aria-hidden="true"></div>
+  <div class="intro-root" id="intro-root" aria-hidden="true">
+    <div class="intro-orb" id="intro-orb"></div>
+    <div class="intro-name" id="intro-name"></div>
+  </div>
 
   <header-component></header-component>
 
@@ -650,18 +674,265 @@
     addCursorHover('.card, .bento-card');
 
     /* ==================== HERO ENTRANCE ==================== */
-    if (motionOk()) {
-      gsap.set('.hero-bg-zone', { opacity: 0 });
-      gsap.set('.hero', { opacity: 0, y: 60 });
-      gsap.timeline({ defaults: { ease: 'power3.out' } })
-        .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
-        .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
-        .from('.hero-header-row',        { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
-        .from('.hero-portrait-frame',    { x: 18, opacity: 0, duration: 0.7 },  '-=0.30')
-        .from('.hero h1',                { y: 36, opacity: 0, duration: 0.8 },  '-=0.55')
-        .to('.underline-draw',           { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-        .from('.hero-subtitle',          { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
+    function _runHeroEntrance(opts) {
+      if (!motionOk()) return;
+      opts = opts || {};
+      if (opts.skipBgFade) {
+        /* Intro path: card frame is already revealed by the orb morph, so we
+           ONLY animate inner content. FROM states (offset/invisible) are
+           pre-staged at the 1.05s callback in the intro IIFE — synchronously
+           with intro-running removal — so the card reveals empty, then this
+           runs at 1.65s when the orb has fully expanded into the card. */
+        gsap.timeline({ defaults: { ease: 'power3.out' } })
+          .to('.hero-header-row',     { y: 0, opacity: 1, duration: 0.6 })
+          .to('.hero-portrait-frame', { x: 0, opacity: 1, duration: 0.7 },  '-=0.30')
+          .to('.hero h1',             { y: 0, opacity: 1, duration: 0.8 },  '-=0.55')
+          .to('.underline-draw',      { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+          .to('.hero-subtitle',       { y: 0, opacity: 1, duration: 0.65 }, '-=0.50');
+      } else {
+        gsap.set('.hero-bg-zone', { opacity: 0 });
+        gsap.set('.hero',         { opacity: 0, y: 60 });
+        gsap.timeline({ defaults: { ease: 'power3.out' } })
+          .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
+          .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
+          .from('.hero-header-row',        { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
+          .from('.hero-portrait-frame',    { x: 18, opacity: 0, duration: 0.7 },  '-=0.30')
+          .from('.hero h1',                { y: 36, opacity: 0, duration: 0.8 },  '-=0.55')
+          .to('.underline-draw',           { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+          .from('.hero-subtitle',          { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
+      }
     }
+    window._runHeroEntrance = _runHeroEntrance;
+
+    /* ==================== INTRO — Glass Orb Unfold ==================== */
+    (function runIntro() {
+      if (!document.documentElement.classList.contains('intro-running')) {
+        _runHeroEntrance();
+        return;
+      }
+
+      const ORB_R      = 90;
+      const NAME_TEXT  = 'Chris Rudnew';
+      const TYPE_MS    = 48;
+      const EASE_MORPH = 'cubic-bezier(0.65, 0, 0.35, 1)';
+      const EASE_SOFT  = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+      const introRoot = document.getElementById('intro-root');
+      const veil      = document.getElementById('intro-veil');       // <svg>
+      const veilHole  = document.getElementById('intro-veil-hole');  // <rect> inside <mask>
+      const orb       = document.getElementById('intro-orb');
+      const orbFrost  = document.getElementById('intro-orb-frost');
+      const nameEl    = document.getElementById('intro-name');
+      const bgZone    = document.querySelector('.hero-bg-zone');
+      const heroCard  = document.querySelector('.hero-text-backdrop');
+
+      if (!introRoot || !veil || !veilHole || !orb || !orbFrost || !nameEl || !bgZone) {
+        document.documentElement.classList.remove('intro-running');
+        _runHeroEntrance();
+        return;
+      }
+
+      window._suppressHeaderTypewriter = true;
+
+      // ── Measure layout (elements are visibility:hidden but still laid out) ──
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const bgRect = bgZone.getBoundingClientRect();
+
+      let cardRect = heroCard ? heroCard.getBoundingClientRect() : null;
+      if (!cardRect || cardRect.width === 0) {
+        cardRect = { top: 120, left: vw * 0.06, right: vw * 0.94,
+                     bottom: vh * 0.80, width: vw * 0.88, height: vh * 0.62 };
+      }
+
+      // The real hero section IS the intro circle — no fake element needed.
+      const heroSection = document.querySelector('section.hero');
+      const heroBody    = heroSection ? heroSection.querySelector('.hero-body') : null;
+
+      // Measure natural dimensions BEFORE any GSAP changes — layout is stable here.
+      // Used as explicit morph targets so we don't rely on GSAP reading reflowed values.
+      const heroSectionRect = heroSection ? heroSection.getBoundingClientRect() : cardRect;
+      const natSectionW = heroSectionRect.width;
+      const natSectionH = heroSectionRect.height;
+      const natCardH    = cardRect.height;
+
+      // orbFrost and orb are unused — keep hidden
+      gsap.set(orbFrost, { opacity: 0 });
+      gsap.set(orb,      { opacity: 0 });
+
+      // Shrink hero to 180×180 circle. CSS opacity:0 stays as fade-in start.
+      gsap.set(heroSection, {
+        width: 180, height: 180, borderRadius: '90px',
+        padding: 0, overflow: 'hidden',
+      });
+      // hero-text-backdrop fills the circle so backdrop-filter covers the whole disc
+      gsap.set(heroCard, {
+        borderRadius: '90px', padding: 0, height: 180, gap: 0,
+      });
+      // Hide text/portrait — stays hidden through the morph, revealed at handoff
+      if (heroBody) gsap.set(heroBody, { display: 'none' });
+      // Canvas visible immediately so backdrop-filter has the swirl to blur
+      gsap.set('.hero-bg-zone', { opacity: 1 });
+
+      // Center of the hero card (for name positioning)
+      const cardCX = cardRect.left + cardRect.width  / 2;
+      const cardCY = cardRect.top  + cardRect.height / 2;
+
+      // Name sits below the circle's bottom edge
+      gsap.set(nameEl, { top: cardRect.top + 180 + 34, opacity: 0, x: 0, y: 0, scale: 1 });
+
+      veil.style.display = 'none';
+
+      // ── Master timeline ──
+      const tl = gsap.timeline({ onComplete: endIntro });
+
+      /* Phase 1 — hero circle fades in (0.0 – 0.55s).
+         No breathing pulse — confident, static appearance reads as more deliberate. */
+      tl.to(heroSection, { opacity: 1, duration: 0.55, ease: EASE_SOFT }, 0);
+
+      /* Phase 2 — typewriter (0.35 – ~0.93s).
+         typingCancelled flag lets skip() halt the setTimeout chain so the name
+         doesn't keep typing during the fast-forward (which looks janky). */
+      let typingCancelled = false;
+      tl.add(() => {
+        if (typingCancelled) return;
+        nameEl.style.opacity = '1';
+        let i = 0;
+        (function tick() {
+          if (typingCancelled) return;
+          i++;
+          nameEl.textContent = NAME_TEXT.slice(0, i);
+          if (i < NAME_TEXT.length) setTimeout(tick, TYPE_MS);
+        })();
+      }, 0.35);
+
+      /* Phase 3 — shape morph: circle → hero card (1.20 – 1.70s).
+         Hold (~270ms) after typing before morph begins — lets the name register
+         as a deliberate brand moment. Overflow stays hidden THROUGH the morph
+         so revealing content inside is clipped to the card silhouette
+         (content appears to emerge from within the opening card). */
+      tl.add(() => {
+        // Typed center name starts fading out as the morph begins — so by the
+        // time the card has fully expanded, the name is gone.
+        gsap.to(nameEl, { opacity: 0, duration: 0.35, ease: 'power2.out' });
+
+        // Restore content so it's in layout during the morph (children pre-staged
+        // opacity:0 below so they stay invisible until the reveal tween).
+        if (heroBody) gsap.set(heroBody, { display: '' });
+
+        // Restore CSS padding/gap (NOT overflow — keep clipping during morph).
+        gsap.set(heroSection, {
+          clearProps: 'paddingTop,paddingRight,paddingBottom,paddingLeft',
+        });
+        gsap.set(heroCard, {
+          clearProps: 'paddingTop,paddingRight,paddingBottom,paddingLeft,gap',
+        });
+
+        // Animate width AND height to pre-measured natural values.
+        gsap.to(heroSection, {
+          width: natSectionW, height: natSectionH, borderRadius: '28px',
+          duration: 0.50, ease: EASE_MORPH,
+          onComplete: () => gsap.set(heroSection, {
+            clearProps: 'width,height,borderRadius,overflow',
+          }),
+        });
+        gsap.to(heroCard, {
+          height: natCardH, borderRadius: '28px',
+          duration: 0.50, ease: EASE_MORPH,
+          onComplete: () => gsap.set(heroCard, { clearProps: 'height,borderRadius' }),
+        });
+      }, 1.20);
+
+
+      // Pre-stage hero content as offset/invisible — reveal tween at 1.50s runs
+      // these to their natural state. Pre-staged here (morph start) so DOM is
+      // ready before _runHeroEntrance fires partway through the morph.
+      tl.add(() => {
+        gsap.set('.hero-bg-zone',        { opacity: 1 });
+        gsap.set('.hero',                { opacity: 1 });
+        gsap.set('.hero-header-row',     { y: 16, opacity: 0 });
+        gsap.set('.hero-portrait-frame', { x: 18, opacity: 0 });
+        gsap.set('.hero h1',             { y: 36, opacity: 0 });
+        gsap.set('.hero-subtitle',       { y: 24, opacity: 0 });
+      }, 1.20);
+
+      /* Phase 4 — content reveal overlaps morph end (1.50s).
+         _runHeroEntrance animates content while morph is still finishing —
+         overflow:hidden on the section clips overflowing content to the card
+         silhouette, so visually it reads as "content emerges from the card." */
+      tl.add(() => {
+        _runHeroEntrance({ skipBgFade: true });
+      }, 1.50);
+
+      /* Phase 5 — handoff (1.70s)
+         Morph complete, content reveal in progress. Drop intro-running, fade out
+         the typed center name, and fire intro:done so layout.js can run the nav
+         typewriter (no FLIP — separate brand & navigation moments). */
+      tl.add(() => {
+        // Pin intro-root inline so it stays display:block after intro-running drops
+        // (CSS rule `html.intro-running .intro-root { display: block }` won't apply
+        // once the class is gone). endIntro removes the element entirely later.
+        introRoot.style.display = 'block';
+
+        // Drop intro-running — page content (header, main, etc.) becomes visible.
+        document.documentElement.classList.remove('intro-running');
+
+        // orbFrost/orb unused — keep hidden
+        gsap.set(orbFrost, { opacity: 0 });
+        gsap.set(orb,      { opacity: 0 });
+
+        // Typed center name already faded out during the morph. Just ensure it's
+        // hidden in case the fade was somehow interrupted.
+        gsap.set(nameEl, { opacity: 0 });
+
+        // Signal intro done — layout.js listens for this to fire the nav typewriter.
+        // Idempotent — endIntro() also sets the flag.
+        if (!window._introDone) {
+          window._introDone = true;
+          document.dispatchEvent(new CustomEvent('intro:done'));
+        }
+      }, 1.70);
+
+      // Placeholder extends timeline past the name fade-out (0.25s) so endIntro
+      // doesn't remove intro-root (and nameEl with it) mid-fade. 0.50s safety margin.
+      tl.to({}, { duration: 0.50 }, 1.70);
+
+      /* Skip — any input compresses remainder to ~0.25s.
+         Also immediately halts the typewriter and hides the typed name —
+         typing it out at fast-forward speed looks janky. */
+      let skipped = false;
+      function skip() {
+        if (skipped || tl.progress() >= 1) return;
+        skipped = true;
+        typingCancelled = true;
+        gsap.set(nameEl, { opacity: 0 });
+        tl.timeScale(Math.max(1, (tl.duration() - tl.time()) / 0.25));
+        removeListeners();
+      }
+      function removeListeners() {
+        window.removeEventListener('keydown', skip);
+        window.removeEventListener('click', skip);
+        window.removeEventListener('touchstart', skip);
+        window.removeEventListener('wheel', skip);
+      }
+      window.addEventListener('keydown', skip, { passive: true });
+      window.addEventListener('click',   skip, { passive: true });
+      window.addEventListener('touchstart', skip, { passive: true });
+      window.addEventListener('wheel',   skip, { passive: true });
+
+      function endIntro() {
+        removeListeners();
+        sessionStorage.setItem('introPlayed', '1');
+        // Canvas no longer uses inline clip-path (veil-hole replaces it).
+        if (introRoot && introRoot.parentNode) introRoot.parentNode.removeChild(introRoot);
+        if (orbFrost && orbFrost.parentNode) orbFrost.parentNode.removeChild(orbFrost);
+        document.documentElement.classList.remove('intro-running');
+        // Safety net: ensure intro:done fires even if the 1.65s callback was skipped
+        if (!window._introDone) {
+          window._introDone = true;
+          document.dispatchEvent(new CustomEvent('intro:done'));
+        }
+      }
+    })();
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
@@ -880,8 +1151,16 @@
         .to(tip, { left: finalLeft, duration: 1.10, ease: 'back.out(1.4)' }, '+=0.45');
     }
 
-    // Fire shortly after page load — just enough for header + GSAP to be ready
-    setTimeout(show, 600);
+    // Fire shortly after page load — but wait for the intro to finish first
+    // so the tooltip doesn't pop in during the orb morph.
+    function fire() { setTimeout(show, 500); }
+    if (window._introDone) {
+      fire();
+    } else if (window._introWillRun || document.documentElement.classList.contains('intro-running')) {
+      document.addEventListener('intro:done', fire, { once: true });
+    } else {
+      setTimeout(show, 600);
+    }
   })();
   </script>
 
