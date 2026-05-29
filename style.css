@@ -25,8 +25,8 @@
   --font-heading: 'Playfair Display', Georgia, serif;
   --font-body:    'Inter', system-ui, sans-serif;
   --radius-sm:  10px;
-  --radius-md:  20px;
-  --radius-lg:  28px;
+  --radius-md:  16px;
+  --radius-lg:  22px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --focus-color: #5C4E45;
   /* Header chips are fixed at top:20px, ~55px tall → bottom at ~75px.
@@ -97,10 +97,11 @@
    RESET & BASE
 ============================================================ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; } /* Lenis handles smooth scroll — native smooth fights it and causes layout thrashing */
 
 body {
   font-family: var(--font-body);
+  line-height: 1.6;
   scrollbar-gutter: stable;
   background-color: #F2EDE6;
   background-image:
@@ -182,15 +183,19 @@ button:focus-visible {
    CUSTOM CURSOR
 ============================================================ */
 .cursor-dot {
-  position: fixed; width: 8px; height: 8px;
+  position: fixed; left: 0; top: 0;
+  width: 8px; height: 8px;
   background: var(--accent-text); border-radius: 50%;
   pointer-events: none; z-index: 9999;
+  will-change: transform;
   transition: transform 0.15s ease;
 }
 .cursor-ring {
-  position: fixed; width: 36px; height: 36px;
+  position: fixed; left: 0; top: 0;
+  width: 36px; height: 36px;
   border: 1.5px solid rgba(92,78,69,0.4);
   border-radius: 50%; pointer-events: none; z-index: 9998;
+  will-change: transform;
   transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
 }
 .cursor-ring.hovering { width: 54px; height: 54px; border-color: var(--accent-text); }
@@ -378,6 +383,9 @@ nav.nav-pill {
   transition: color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
   position: relative; z-index: 2;
+  /* Optical correction — Playfair ascenders at this size sit visually high
+     against the shorter Inter section links; nudge down 1px to re-centre. */
+  translate: 0 1px;
 }
 .nav-pill-name:hover { background: var(--accent-lighter); }
 .nav-pill-name[aria-current="true"] { color: var(--text-primary); }
@@ -852,6 +860,53 @@ html.pre-anim .pf-meta { opacity: 0; }
   html.pre-anim footer { opacity: 0; }
 }
 
+/* ============================================================
+   IO ENTRANCE ANIMATIONS — replaces GSAP ScrollTrigger for
+   all one-shot scroll reveals. GPU-composited (transform +
+   opacity only) so they never block the main thread.
+   Only active on desktop (mirrors the GSAP 800px gate).
+============================================================ */
+@keyframes io-fade-up {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes io-slide-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes io-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes io-expand {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Hidden states — applied by anim-io.js before elements reach the viewport */
+@media (min-width: 800px) {
+  .io-pending          { opacity: 0; transform: translateY(28px) scale(0.98); will-change: transform, opacity; }
+  .io-pending-fade     { opacity: 0; will-change: opacity; }
+  .io-pending-slide    { opacity: 0; transform: translateX(-24px); will-change: transform, opacity; }
+  .io-pending-expand   { transform: scaleX(0); transform-origin: left center; opacity: 0; will-change: transform, opacity; }
+
+  /* Revealed states */
+  .io-pending.io-in          { animation: io-fade-up    0.72s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .io-pending-fade.io-in     { animation: io-fade-in    0.70s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .io-pending-slide.io-in    { animation: io-slide-left 0.60s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .io-pending-expand.io-in   { animation: io-expand     1.00s cubic-bezier(0.65, 0, 0.35, 1) both; }
+}
+
+/* Under reduced motion: skip hidden state entirely */
+@media (prefers-reduced-motion: reduce) {
+  .io-pending, .io-pending-fade, .io-pending-slide, .io-pending-expand { opacity: 1 !important; transform: none !important; }
+  .io-pending.io-in, .io-pending-fade.io-in, .io-pending-slide.io-in, .io-pending-expand.io-in { animation: none !important; }
+}
+[data-motion="reduced"] .io-pending,
+[data-motion="reduced"] .io-pending-fade,
+[data-motion="reduced"] .io-pending-slide,
+[data-motion="reduced"] .io-pending-expand { opacity: 1 !important; transform: none !important; animation: none !important; }
+
 /* Settings dropdown: under reduced motion, kill ALL transitions, animations,
    and transforms across the entire settings tree so nothing bounces, slides,
    or fades — elements just appear/disappear via opacity. */
@@ -957,7 +1012,7 @@ footer {
 .footer-cta-text {
   font-family: var(--font-heading);
   font-size: clamp(24px, 3vw, 34px);
-  font-weight: 700; letter-spacing: -0.8px;
+  font-weight: 400; font-style: italic; letter-spacing: -0.8px;
   color: var(--text-primary); margin: 0;
   line-height: 1.1;
 }
@@ -1136,7 +1191,7 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.20);
   position: relative; z-index: 1;
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 2px 12px rgba(90,58,18,0.07);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
   will-change: transform, opacity;
 }
 /* Sheen — soft radial hotspot that tracks the cursor across the glass face. */
@@ -1170,7 +1225,7 @@ main {
 [data-theme="dark"] .hero-text-backdrop {
   background: rgba(36, 26, 22, 0.48);
   border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 12px rgba(0,0,0,0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
 @supports not (backdrop-filter: blur(1px)) {
   .hero-text-backdrop { background: rgba(255, 255, 255, 0.80); }
@@ -1241,6 +1296,8 @@ body[data-page-tint="home"] .hero-text-backdrop {
   backdrop-filter: blur(14px) saturate(1.4) brightness(1.02);
   -webkit-backdrop-filter: blur(14px) saturate(1.4) brightness(1.02);
   justify-content: center;
+  /* Tall enough that Linger peeks just below the fold — creates scroll pull */
+  min-height: clamp(375px, 60vh, 540px);
 }
 [data-theme="dark"] body[data-page-tint="home"] .hero-text-backdrop {
   background: rgba(36, 26, 22, 0.71);
@@ -1287,7 +1344,13 @@ body[data-page-tint="about"] .hero-text-backdrop {
 @media (max-width: 799px) {
   body[data-page-tint="home"] .hero { padding: 0; }
   body[data-page-tint="home"] .hero-text-backdrop {
-    padding: 52px 22px; gap: 20px; border-radius: var(--radius-lg);
+    padding: 48px 24px; gap: 20px; border-radius: var(--radius-lg);
+    min-height: auto; /* remove desktop min-height on mobile */
+    justify-content: flex-start;
+  }
+  body[data-page-tint="home"] .hero-text-col { gap: 20px; }
+  body[data-page-tint="home"] .hero-text-col h1 {
+    font-size: clamp(28px, 8vw, 38px);
   }
   body[data-page-tint="home"] .hero-bg-zone {
     height: clamp(820px, 97vh, 880px);
@@ -1314,8 +1377,8 @@ body[data-page-tint="about"] .hero-text-backdrop {
 }
 
 .hero-eyebrow {
-  font-size: 14px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 2.0px;
+  font-size: 12px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: rgba(26, 22, 20, 0.82);
   padding: 6px 18px;
   background: rgba(255, 255, 255, 0.28);
@@ -1330,10 +1393,10 @@ body[data-page-tint="about"] .hero-text-backdrop {
 }
 .hero h1 {
   font-family: var(--font-heading);
-  font-size: 66px; font-weight: 700; line-height: 1.13;
+  font-size: 66px; font-weight: 400; font-style: italic; line-height: 1.13;
   text-align: center;
   color: rgba(26, 22, 20, 0.80);
-  letter-spacing: -1.5px; max-width: 880px;
+  letter-spacing: -0.02em; max-width: 880px;
   text-shadow:
     0  2px 0   rgba(255, 255, 255, 0.92),
     0 -1px 0   rgba(0,   0,   0,   0.18),
@@ -1350,7 +1413,7 @@ body[data-page-tint="about"] .hero-text-backdrop {
 }
 .underline-draw {
   display: block; width: 0%;
-  height: 4px; margin-top: 8px;
+  height: 4px; margin-top: 14px;
   background: linear-gradient(90deg, var(--text-muted), transparent);
   border-radius: 2px;
 }
@@ -1393,9 +1456,9 @@ body[data-page-tint="about"] .hero-text-backdrop {
 ============================================================ */
 .hero-avail-chip {
   display: flex; align-items: center; gap: 10px;
-  width: 100%;
+  width: auto;
   font-family: var(--font-body);
-  font-size: 14px; font-weight: 500;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
   color: rgba(26, 22, 20, 0.70);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
 }
@@ -1429,92 +1492,53 @@ body[data-page-tint="about"] .hero-text-backdrop {
 .hero-header-row {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
 }
 [data-contrast="high"] .hero-header-row { gap: 6px; }
 
 body[data-page-tint="home"] .hero-body {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr;
   gap: 52px;
   align-items: center;
   width: 100%;
 }
 
-/* Portrait frame — glass-edged circle */
-.hero-portrait-frame {
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.90),
-    0 6px 28px rgba(62, 40, 22, 0.18),
-    0 2px 8px  rgba(62, 40, 22, 0.10);
-}
-[data-theme="dark"] .hero-portrait-frame {
-  border-color: rgba(255, 255, 255, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    0 6px 28px rgba(0, 0, 0, 0.38),
-    0 2px 8px  rgba(0, 0, 0, 0.22);
-}
-.hero-portrait-img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: top center;
-  display: block;
-}
-
-/* Text column — left-aligned */
+/* Text column */
 .hero-text-col {
   display: flex; flex-direction: column;
-  align-items: flex-start; gap: 20px;
+  align-items: center; gap: 28px;
 }
 
 /* Extra separation between eyebrow group and headline */
 body[data-page-tint="home"] .hero-text-col .hero-header-row {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 /* Override centered defaults for home text column */
 body[data-page-tint="home"] .hero-text-col h1 {
-  text-align: left;
+  text-align: center;
   max-width: none;
-  font-size: clamp(34px, 3.6vw, 52px);
+  font-size: clamp(42px, 5.2vw, 72px);
 }
 body[data-page-tint="home"] .hero-text-col .hero-subtitle {
-  text-align: left;
+  text-align: center;
   max-width: none;
   font-size: 17px;
 }
 
-/* Tablet — shrink portrait, tighten gap */
+/* Tablet */
 @media (max-width: 1279px) {
   body[data-page-tint="home"] .hero-body { gap: 36px; }
-  .hero-portrait-frame { width: 210px; height: 210px; }
   body[data-page-tint="home"] .hero-text-col h1 {
-    font-size: clamp(30px, 3.8vw, 46px);
+    font-size: clamp(36px, 4.8vw, 60px);
   }
 }
 
-/* Mobile — stack vertically, center everything */
+/* Mobile — tighten body gap */
 @media (max-width: 799px) {
-  body[data-page-tint="home"] .hero-text-backdrop { justify-content: flex-start; }
-  body[data-page-tint="home"] .hero-body {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    justify-items: center;
-  }
-  /* Header row centers on mobile to match centered text column */
-  .hero-header-row {
-    align-items: center;
-  }
-  .hero-portrait-frame { width: 110px; height: 110px; }
-  .hero-text-col { align-items: center; }
-  body[data-page-tint="home"] .hero-text-col h1 { text-align: center; }
-  body[data-page-tint="home"] .hero-text-col .hero-subtitle { text-align: center; }
+  body[data-page-tint="home"] .hero-body { gap: 24px; }
 }
 
 /* ============================================================
@@ -1701,14 +1725,17 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   flex: 1 1 calc(33.333% - 20px); min-width: 0; max-width: 388px;
   position: relative;
   border-radius: var(--radius-md);
-  background: rgba(225, 212, 196, 0.38);
+  background:
+    linear-gradient(rgba(225, 212, 196, 0.38), rgba(225, 212, 196, 0.38)) padding-box,
+    linear-gradient(135deg,
+      rgba(255,255,255,0.52) 0%,
+      rgba(255,255,255,0.14) 45%,
+      rgba(255,255,255,0.04) 100%
+    ) border-box;
   backdrop-filter: blur(8px) saturate(1.08);
   -webkit-backdrop-filter: blur(8px) saturate(1.08);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.60),
-    0 4px 24px rgba(62, 40, 22, 0.16),
-    0 1px 6px  rgba(62, 40, 22, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  border: 1px solid transparent;
   overflow: hidden;
   transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
   /* Pre-promote to GPU layer so the heavy blur/blend effects inside are ready
@@ -1716,8 +1743,13 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   will-change: transform, opacity;
 }
 [data-theme="dark"] .card {
-  background: rgba(30, 20, 14, 0.52);
-  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(rgba(30, 20, 14, 0.52), rgba(30, 20, 14, 0.52)) padding-box,
+    linear-gradient(135deg,
+      rgba(255,255,255,0.22) 0%,
+      rgba(255,255,255,0.06) 45%,
+      rgba(255,255,255,0.01) 100%
+    ) border-box;
 }
 .card::before {
   content: '';
@@ -1738,24 +1770,19 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   transform: translateY(-8px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 12px 36px rgba(62, 40, 22, 0.18),
-    0 3px 10px  rgba(62, 40, 22, 0.10);
+    0 4px 16px rgba(62, 40, 22, 0.07);
   border-color: rgba(255, 255, 255, 0.35);
 }
 
 /* Cards in vertical column — shadow capped so blur − offset ≤ 11px (half the 22px gap)
    prevents the outer shadow from bleeding into adjacent card regions */
 .cards--rows .card {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.60),
-    0 6px 16px rgba(62, 40, 22, 0.22),
-    0 2px 5px  rgba(62, 40, 22, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.60);
 }
 .cards--rows .card:hover {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 8px 18px rgba(62, 40, 22, 0.26),
-    0 3px 6px  rgba(62, 40, 22, 0.14);
+    0 4px 16px rgba(62, 40, 22, 0.07);
 }
 
 .card-image {
@@ -1786,7 +1813,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .card--feature.card--weact .card-image::after {
   content: '';
   position: absolute; inset: -50%; z-index: 2;
-  background-image: url('./assets/projects/weact/weact-phones.webp');
+  background-image: url('./assets/homepage/weact-phones.webp');
   background-repeat: repeat-y;
   background-size: 927px 1182px;
   background-position: center 0;
@@ -1802,7 +1829,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/projects/weact/weact-noise.png?v=2');
+  background-image: url('./assets/homepage/weact-noise.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1833,7 +1860,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .card--feature.card--linger .card-image::after {
   content: '';
   position: absolute; inset: -50%; z-index: 2;
-  background-image: url('./assets/projects/linger/linger-phones.webp');
+  background-image: url('./assets/homepage/linger-phones.webp');
   background-repeat: repeat-y;
   background-size: 927px 1182px;
   background-position: center 0;
@@ -1848,7 +1875,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/projects/linger/linger-noise.png');
+  background-image: url('./assets/homepage/linger-noise.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1868,7 +1895,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .card--feature.card--crimemap .card-image::after {
   content: '';
   position: absolute; inset: -50%; z-index: 2;
-  background-image: url('./assets/projects/crimemap/crimemap-phones.webp');
+  background-image: url('./assets/homepage/crimemap-phones.webp');
   background-repeat: repeat-y;
   background-size: 927px 1512px;
   background-position: center 0;
@@ -1883,7 +1910,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/projects/crimemap/crimemap-noise.png');
+  background-image: url('./assets/homepage/crimemap-noise.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1891,9 +1918,9 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   mix-blend-mode: overlay;
 }
 
-/* Portfolio card — white-to-black gradient, phone loop, crimemap noise */
+/* Portfolio card — warm cream-to-tan gradient matching site palette, phone loop, crimemap noise */
 .card--feature.card--portfolio .card-image {
-  background: linear-gradient(135deg, #FFFFFF 0%, #000000 100%);
+  background: linear-gradient(160deg, #EDE6DC 0%, #C2B0A0 50%, #8A7868 100%);
   --tile-h: 1512px;
   overflow: hidden;
 }
@@ -1903,7 +1930,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .card--feature.card--portfolio .card-image::after {
   content: '';
   position: absolute; inset: -50%; z-index: 2;
-  background-image: url('./assets/projects/portfolio/portfolio-phones.webp');
+  background-image: url('./assets/homepage/portfolio-phones.webp');
   background-repeat: repeat-y;
   background-size: 927px 1512px;
   background-position: center 0;
@@ -1918,7 +1945,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/projects/crimemap/crimemap-noise.png');
+  background-image: url('./assets/homepage/crimemap-noise.png');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -2157,12 +2184,11 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   width: 100%;
   max-width: none;
 }
-/* Lone last card on an odd count — center at one column's width so it reads as intentional,
-   without breaking the hero/grid hierarchy by going full-width. */
+/* Lone last card on an odd count — left-align at one column's width. */
 .cards--grid > .card--feature:last-child:nth-child(odd) {
   grid-column: 1 / -1;
   width: calc(50% - 14px);
-  justify-self: center;
+  justify-self: start;
 }
 .cards--grid .card--feature {
   min-height: 380px;
@@ -2361,8 +2387,8 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 .card-glass-panel-text { flex: 1; min-width: 0; }
 .card-glass-panel-text h3 {
   font-family: var(--font-heading);
-  font-size: 29px; font-weight: 700;
-  line-height: 1.08; letter-spacing: -0.5px;
+  font-size: 29px; font-weight: 400;
+  line-height: 1.08; letter-spacing: -0.01em;
   color: #1A1614;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.60);
   margin-bottom: 5px;
@@ -2888,9 +2914,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
     inset 0 1px 0 rgba(255, 255, 255, 0.65),
     0 -28px 36px -16px rgba(50, 32, 14, 0.48),
     0 -10px 14px -8px rgba(50, 32, 14, 0.30);
-  transform: perspective(900px) rotateX(-8deg);
   transition:
-    transform  0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
     background 0.25s ease,
     box-shadow 0.25s ease;
 }
@@ -3961,8 +3985,8 @@ body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px;
 
   *:hover, *:focus { transform: none !important; }
   :root { --shadow-md: var(--shadow-sm); --shadow-lg: var(--shadow-sm); }
-  .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), 0 4px 24px rgba(62,40,22,0.16), 0 1px 6px rgba(62,40,22,0.10) !important; }
-  .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 18px rgba(62,40,22,0.26), 0 3px 6px rgba(62,40,22,0.14) !important; }
+  .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60) !important; }
+  .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55) !important; }
   .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 
   .bento-grid-wrap {
@@ -3985,8 +4009,8 @@ html[data-motion="reduced"] {
   --shadow-md: var(--shadow-sm);
   --shadow-lg: var(--shadow-sm);
 }
-html[data-motion="reduced"] .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), 0 4px 24px rgba(62,40,22,0.16), 0 1px 6px rgba(62,40,22,0.10) !important; }
-html[data-motion="reduced"] .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 18px rgba(62,40,22,0.26), 0 3px 6px rgba(62,40,22,0.14) !important; }
+html[data-motion="reduced"] .card:hover    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), 0 4px 16px rgba(62,40,22,0.07) !important; }
+html[data-motion="reduced"] .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 4px 16px rgba(62,40,22,0.07) !important; }
 html[data-motion="reduced"] .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 html[data-motion="reduced"] .bento-grid-wrap {
   padding-inline: calc(50% - 260px);

@@ -7,6 +7,10 @@
      <script src="./layout.js"></script>
 ============================================================ */
 
+/* Always start at the top on load/reload — prevents browser scroll restoration */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 /* ---- Header HTML ----
    Two-pill floating header:
    1. .nav-pill    — center pill: serif wordmark + in-page section links with a
@@ -153,7 +157,7 @@ const FOOTER_HTML = `
   </nav>
   <div class="footer-bottom">
     <p class="footer-copyright">&copy; 2026 Chris Rudnew</p>
-    <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <button class="footer-top-btn" onclick="window.lenis?window.lenis.scrollTo(0):window.scrollTo({top:0})" aria-label="Back to top">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M18 15l-6-6-6 6"/>
       </svg>
@@ -279,6 +283,7 @@ function initLayout() {
     let _lastY = window.scrollY;
     let _scrollLocked = false; // true during programmatic nav-link scrolls
     let _scrollLockTimer = null;
+    let _scrollRaf = false; // RAF guard — coalesces multiple scroll events per frame
 
     /* Public hook: section nav calls this to suppress the hide logic. */
     window._headerLockScroll = function () {
@@ -299,10 +304,14 @@ function initLayout() {
     };
 
     window.addEventListener('scroll', function () {
-      if (_scrollLocked || _mouseNearTop) return;
-      const y = window.scrollY;
-      _header.style.transform = (y > _lastY && y > 80) ? 'translateY(-110%)' : 'translateY(0)';
-      _lastY = y;
+      if (_scrollLocked || _mouseNearTop || _scrollRaf) return;
+      _scrollRaf = true;
+      requestAnimationFrame(function () {
+        _scrollRaf = false;
+        const y = window.scrollY;
+        _header.style.transform = (y > _lastY && y > 80) ? 'translateY(-110%)' : 'translateY(0)';
+        _lastY = y;
+      });
     }, { passive: true });
 
     /* Show header when mouse hovers within 60px of the top edge */
@@ -407,8 +416,12 @@ function initLayout() {
   document.body.appendChild(ring);
 
   let mx = 0, my = 0, dx = 0, dy = 0;
+  let _lastDotX = null, _lastDotY = null, _lastRingX = null, _lastRingY = null;
   window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
+  /* Use transform:translate() instead of left/top — runs on the GPU compositor,
+     no layout triggers. Dirty-check prevents any write when cursor is stationary,
+     dropping idle style-recalcs from ~120/sec to near zero. */
   (function tick() {
     if (motionOk()) {
       dx += (mx - dx) * 0.18;
@@ -416,8 +429,16 @@ function initLayout() {
     } else {
       dx = mx; dy = my;
     }
-    dot.style.cssText  = `left:${mx - 4}px;top:${my - 4}px`;
-    ring.style.cssText = `left:${dx - 18}px;top:${dy - 18}px`;
+    const dotX  = mx - 4,           dotY  = my - 4;
+    const ringX = Math.round(dx - 18), ringY = Math.round(dy - 18);
+    if (dotX !== _lastDotX || dotY !== _lastDotY) {
+      dot.style.transform = `translate(${dotX}px,${dotY}px)`;
+      _lastDotX = dotX; _lastDotY = dotY;
+    }
+    if (ringX !== _lastRingX || ringY !== _lastRingY) {
+      ring.style.transform = `translate(${ringX}px,${ringY}px)`;
+      _lastRingX = ringX; _lastRingY = ringY;
+    }
     requestAnimationFrame(tick);
   })();
 
@@ -473,8 +494,14 @@ function initSectionNav() {
       if (!target) return;
       e.preventDefault();
       if (window._headerLockScroll) window._headerLockScroll();
-      const y = target.getBoundingClientRect().top + window.scrollY - 120;
-      window.scrollTo({ top: y, behavior: smoothBehaviour });
+      /* Use Lenis when available (avoids native-smooth vs Lenis conflict).
+         Falls back to window.scrollTo on pages without Lenis (reduced motion). */
+      if (window.lenis) {
+        window.lenis.scrollTo(target, { offset: -120 });
+      } else {
+        const y = target.getBoundingClientRect().top + window.scrollY - 120;
+        window.scrollTo({ top: y, behavior: smoothBehaviour });
+      }
       history.replaceState(null, '', `#${id}`);
     });
   });

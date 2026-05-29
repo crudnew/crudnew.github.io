@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=93">
+  <link rel="stylesheet" href="./style.css?v=128">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -19,21 +19,28 @@
     position: relative;
     border-radius: var(--radius-md);
     padding: 36px;
-    background: rgba(225, 212, 196, 0.38);
+    background:
+      linear-gradient(rgba(225, 212, 196, 0.38), rgba(225, 212, 196, 0.38)) padding-box,
+      linear-gradient(135deg,
+        rgba(255,255,255,0.52) 0%,
+        rgba(255,255,255,0.14) 45%,
+        rgba(255,255,255,0.04) 100%
+      ) border-box;
     backdrop-filter: blur(8px) saturate(1.08);
     -webkit-backdrop-filter: blur(8px) saturate(1.08);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.60),
-      0 4px 24px rgba(62, 40, 22, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.38);
-    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s ease;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
+    border: 1px solid transparent;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
   }
   [data-theme="dark"] .about-card {
-    background: rgba(30, 20, 14, 0.52);
-    border-color: rgba(255, 255, 255, 0.12);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 4px 24px rgba(0, 0, 0, 0.32);
+    background:
+      linear-gradient(rgba(30, 20, 14, 0.52), rgba(30, 20, 14, 0.52)) padding-box,
+      linear-gradient(135deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(255,255,255,0.06) 45%,
+        rgba(255,255,255,0.01) 100%
+      ) border-box;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
   }
 
   .about-card::before {
@@ -58,9 +65,7 @@
     transform: translateY(-3px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 8px 28px rgba(62, 40, 22, 0.18),
-      0 3px 8px  rgba(62, 40, 22, 0.10);
-    border-color: rgba(255, 255, 255, 0.32);
+      0 4px 16px rgba(62, 40, 22, 0.07);
   }
 
   /* Raise content above the ::before sheen */
@@ -391,7 +396,7 @@
         vec2 uv = gl_FragCoord.xy / u_resolution;
         float aspect = u_resolution.x / u_resolution.y;
         float yBoost = max(1.0, 1.6 / aspect);
-        vec2 p = uv * vec2(2.95, 2.35 * yBoost) + u_seed;
+        vec2 p = uv * vec2(1.30, 1.00 * yBoost) + u_seed;
         float v = liquid(p, u_time);
         v = clamp(v, 0.0, 1.0);
         v = 0.18 + v * 0.72;
@@ -524,11 +529,12 @@
   });
   </script>
 
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP + ScrollTrigger (locally bundled — no CDN round-trips) -->
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script src="./assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="./assets/vendor/lenis.min.js"></script>
   <script src="./lenis.js"></script>
+  <script src="./anim-io.js?v=2"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
     /* Drop the FOUC pre-hide class before any tween reads computed styles —
@@ -570,58 +576,8 @@
     }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
-    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
-      gsap.set('.about-card',  { opacity: 0, y: 32 });
-      gsap.set('.reflection-card', { opacity: 0, y: 32 });
-      gsap.set('.divider',         { width: 0 });
-
-      /* Dividers */
-      gsap.utils.toArray('.divider').forEach(div => {
-        gsap.to(div, {
-          width: 200, duration: 1, ease: 'power2.inOut',
-          scrollTrigger: { trigger: div, start: 'top 88%' }
-        });
-      });
-
-      /* Stagger reflection cards */
-      ScrollTrigger.create({
-        trigger: '.content-row', start: 'top 80%', once: true,
-        onEnter: () => gsap.to('.content-row .about-card, .content-row .reflection-card', {
-          opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', clearProps: 'transform'
-        })
-      });
-
-      /* Overview cards in Why Me band */
-      ScrollTrigger.create({
-        trigger: '.overview-grid', start: 'top 82%', once: true,
-        onEnter: () => gsap.to('.about-card', {
-          opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out', clearProps: 'transform'
-        })
-      });
-
-      /* Human Part text card */
-      ScrollTrigger.create({
-        trigger: '.content-full .about-card', start: 'top 82%', once: true,
-        onEnter: () => gsap.to('.content-full .about-card', {
-          opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform'
-        })
-      });
-
-      /* Glass gallery: pane fade + tiles staggered */
-      ScrollTrigger.create({
-        trigger: '.glass-gallery', start: 'top 82%', once: true,
-        onEnter: () => {
-          gsap.to('.glass-gallery-pane', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform' });
-          gsap.to('.glass-tile', { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: 'power3.out', delay: 0.15, clearProps: 'transform' });
-        }
-      });
-
-      /* Footer */
-      gsap.from('footer', {
-        opacity: 0, y: 28, duration: 0.7,
-        scrollTrigger: { trigger: 'footer', start: 'top 95%' }
-      });
-    });
+    /* Handled by anim-io.js (CSS @keyframes + IntersectionObserver).
+       Zero per-frame JS — GPU-composited transform/opacity only. */
 
     /* ==================== HERO PARALLAX ==================== */
     if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {

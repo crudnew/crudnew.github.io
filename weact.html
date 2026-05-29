@@ -608,10 +608,12 @@
   })();
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP + ScrollTrigger (locally bundled — no CDN round-trips) -->
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script src="./assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="./assets/vendor/lenis.min.js"></script>
   <script src="./lenis.js"></script>
+  <script src="./anim-io.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
     /* Drop the FOUC pre-hide class before any tween reads computed styles —
@@ -653,109 +655,9 @@
     }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
-    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
-
-      const ST = (trigger, start) => ({ trigger, start, once: true });
-      const CP = 'transform,opacity';
-
-      /* Project meta */
-      gsap.from('.meta-item', {
-        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.case-meta', 'top 88%')
-      });
-
-      /* Showcase */
-      gsap.from('.case-showcase', {
-        y: 50, opacity: 0, duration: 1, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.case-showcase', 'top 85%')
-      });
-
-      /* Overview cards */
-      gsap.from('.overview-card', {
-        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.overview-grid', 'top 82%')
-      });
-
-      /* Stat cards */
-      gsap.from('.stat-card', {
-        y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.case-stats', 'top 88%')
-      });
-
-      /* Process pipeline */
-      gsap.from('.process-pipeline-card', {
-        y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.process-pipeline', 'top 85%')
-      });
-      gsap.from('.process-step', {
-        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.process-pipeline', 'top 80%')
-      });
-
-      /* Section eyebrows */
-      gsap.utils.toArray('.section-eyebrow').forEach(el => {
-        gsap.from(el, {
-          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out', clearProps: CP,
-          scrollTrigger: ST(el, 'top 88%')
-        });
-      });
-
-      /* Content rows */
-      gsap.utils.toArray('.content-row').forEach(row => {
-        gsap.from(row.querySelectorAll('.text-col, .image-col'), {
-          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out', clearProps: CP,
-          scrollTrigger: ST(row, 'top 80%')
-        });
-      });
-
-      /* Full-width content */
-      gsap.utils.toArray('.content-full').forEach(section => {
-        gsap.from(section, {
-          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out', clearProps: CP,
-          scrollTrigger: ST(section, 'top 85%')
-        });
-      });
-
-      /* Prototype comparison */
-      gsap.from('.proto-compare', {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.proto-compare', 'top 82%')
-      });
-
-      /* Reflection cards */
-      gsap.from('.reflection-card', {
-        y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out', clearProps: CP,
-        scrollTrigger: ST('.reflection-grid', 'top 82%')
-      });
-
-      /* Header hide/show on scroll — wait for the <header> injected by
-         <header-component> (layout.js custom element), then drive a single
-         quickTo tween instead of spawning a fresh gsap.to() per scroll tick. */
-      (function bindHeaderHide() {
-        const headerEl = document.querySelector('header');
-        if (!headerEl) { requestAnimationFrame(bindHeaderHide); return; }
-        const yTo = gsap.quickTo(headerEl, 'y', { duration: 0.35, ease: 'power2.out' });
-        let lastScroll = 0;
-        ScrollTrigger.create({
-          start: 'top top', end: 99999,
-          onUpdate: self => {
-            const y = self.scroll();
-            yTo((y > lastScroll && y > 100) ? -100 : 0);
-            lastScroll = y;
-          }
-        });
-      })();
-
-      /* Footer reveal — wait for <footer> to be injected by <footer-component>. */
-      (function bindFooterReveal() {
-        const footerEl = document.querySelector('footer');
-        if (!footerEl) { requestAnimationFrame(bindFooterReveal); return; }
-        gsap.from(footerEl, {
-          opacity: 0, y: 28, duration: 0.7,
-          scrollTrigger: { trigger: footerEl, start: 'top 95%' }
-        });
-      })();
-    });
+    /* Handled by anim-io.js (CSS @keyframes + IntersectionObserver).
+       Header hide/show handled by layout.js RAF handler.
+       Zero per-frame JS — GPU-composited transform/opacity only. */
 
     /* ==================== PERSONA CAROUSEL ==================== */
     (function() {

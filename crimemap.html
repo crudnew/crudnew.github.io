@@ -468,10 +468,12 @@
   })();
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP + ScrollTrigger (locally bundled — no CDN round-trips) -->
+  <script src="./assets/vendor/gsap.min.js"></script>
+  <script src="./assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="./assets/vendor/lenis.min.js"></script>
   <script src="./lenis.js"></script>
+  <script src="./anim-io.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
     /* Drop the FOUC pre-hide class before any tween reads computed styles —
@@ -511,54 +513,8 @@
     }
 
     /* ── Scroll animations ── */
-    if (motionOk()) mm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {
-
-      /* Project meta */
-      gsap.from('.meta-item', {
-        y: 25, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.case-meta', start: 'top 88%' }
-      });
-
-      /* Overview cards */
-      gsap.from('.overview-card', {
-        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
-        scrollTrigger: { trigger: '.overview-grid', start: 'top 82%' }
-      });
-
-      /* Section eyebrows */
-      gsap.utils.toArray('.section-eyebrow').forEach(el => {
-        gsap.from(el, {
-          x: -30, opacity: 0, duration: 0.6, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%' }
-        });
-      });
-
-      /* Content rows */
-      gsap.utils.toArray('.content-row').forEach(row => {
-        gsap.from(row.querySelectorAll('.text-col, .image-col'), {
-          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
-          scrollTrigger: { trigger: row, start: 'top 80%' }
-        });
-      });
-
-      /* Full-width content */
-      gsap.utils.toArray('.content-full').forEach(section => {
-        gsap.from(section, {
-          y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: section, start: 'top 85%' }
-        });
-      });
-
-      /* Footer reveal — wait for <footer> to be injected by <footer-component>. */
-      (function bindFooterReveal() {
-        const footerEl = document.querySelector('footer');
-        if (!footerEl) { requestAnimationFrame(bindFooterReveal); return; }
-        gsap.from(footerEl, {
-          opacity: 0, y: 28, duration: 0.7,
-          scrollTrigger: { trigger: footerEl, start: 'top 95%' }
-        });
-      })();
-    });
+    /* Handled by anim-io.js (CSS @keyframes + IntersectionObserver).
+       Zero per-frame JS — GPU-composited transform/opacity only. */
   </script>
 
 </body>
