@@ -1829,7 +1829,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/homepage/weact-noise.png');
+  background-image: url('./assets/homepage/weact-noise.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1875,7 +1875,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/homepage/linger-noise.png');
+  background-image: url('./assets/homepage/linger-noise.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1910,7 +1910,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/homepage/crimemap-noise.png');
+  background-image: url('./assets/homepage/crimemap-noise.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1945,7 +1945,7 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   content: '';
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
-  background-image: url('./assets/homepage/crimemap-noise.png');
+  background-image: url('./assets/homepage/crimemap-noise.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

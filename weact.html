@@ -327,7 +327,7 @@
       <div class="content-full" style="text-align: center;">
         <h2>Key Outcomes &amp; Deliverables...</h2>
         <p>Hi-Fidelity deliverables &mdash; created by me.</p>
-        <img class="deliverables-img" src="./assets/projects/weact/weact-deliverables.png" alt="Hi-fidelity prototype deliverables showing multiple app screens">
+        <img class="deliverables-img" src="./assets/projects/weact/weact-deliverables.webp" alt="Hi-fidelity prototype deliverables showing multiple app screens">
       </div>
 
       <div class="content-row">
@@ -340,7 +340,7 @@
           </ul>
         </div>
         <div class="image-col">
-          <img class="outcomes-img" src="./assets/projects/weact/weact-outcomes.png" alt="Final app outcome screens">
+          <img class="outcomes-img" src="./assets/projects/weact/weact-outcomes.webp" alt="Final app outcome screens">
         </div>
       </div>
     </section>
@@ -590,12 +590,16 @@
         ctx.fillStyle = puff; ctx.fill();
       });
 
-      if (!canvas._stopped) requestAnimationFrame(draw);
+      if (running) rafId = requestAnimationFrame(draw);
     }
+
+    let rafId = 0, running = false, inView = true, visible = true;
+    function start() { if (running) return; running = true; rafId = requestAnimationFrame(draw); }
+    function stop()  { running = false; if (rafId) cancelAnimationFrame(rafId); rafId = 0; }
+    function update(){ if (inView && visible) start(); else stop(); }
 
     resize();
     if (!motionOk()) {
-      canvas._stopped = true;
       requestAnimationFrame(() => {
         draw(5000);
         new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
@@ -603,7 +607,9 @@
       document.addEventListener('themechange', () => draw(5000));
     } else {
       new ResizeObserver(resize).observe(canvas);
-      requestAnimationFrame(draw);
+      document.addEventListener('visibilitychange', () => { visible = !document.hidden; update(); });
+      new IntersectionObserver(e => { inView = e[0].isIntersecting; update(); }, { rootMargin: '50px' }).observe(canvas);
+      update();
     }
   })();
   </script>

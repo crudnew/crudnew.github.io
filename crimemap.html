@@ -133,7 +133,7 @@
     <div class="crimemap-screenshot-wrap">
       <img
         class="crimemap-screenshot"
-        src="./assets/projects/crimemap/crimemap-main-screen.png"
+        src="./assets/projects/crimemap/crimemap-main-screen.webp"
         alt="Crime Map application — main interface showing a map of Edmonton with crime markers"
       />
     </div>
@@ -451,19 +451,25 @@
         ctx.shadowBlur  = 0;
       }
 
-      if (!canvas._stopped) requestAnimationFrame(draw);
+      if (running) rafId = requestAnimationFrame(draw);
     }
+
+    let rafId = 0, running = false, inView = true, visible = true;
+    function start() { if (running) return; running = true; rafId = requestAnimationFrame(draw); }
+    function stop()  { running = false; if (rafId) cancelAnimationFrame(rafId); rafId = 0; }
+    function update(){ if (inView && visible) start(); else stop(); }
 
     resize();
     if (!motionOk()) {
-      canvas._stopped = true;
       requestAnimationFrame(() => {
         draw(5000);
         new ResizeObserver(() => { resize(); draw(5000); }).observe(canvas);
       });
     } else {
       new ResizeObserver(resize).observe(canvas);
-      requestAnimationFrame(draw);
+      document.addEventListener('visibilitychange', () => { visible = !document.hidden; update(); });
+      new IntersectionObserver(e => { inView = e[0].isIntersecting; update(); }, { rootMargin: '50px' }).observe(canvas);
+      update();
     }
   })();
   </script>

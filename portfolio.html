@@ -376,10 +376,10 @@
           </div>
           <!-- Image track -->
           <div class="pf-acc-img-track">
-            <img class="pf-acc-img active" src="./assets/projects/portfolio/acc-default.png" alt="Homepage in default light mode" id="acc-img-default">
-            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-dark.png" alt="Homepage in dark mode" id="acc-img-dark">
-            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-hc.png" alt="Homepage in high contrast mode" id="acc-img-hc">
-            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-both.png" alt="Homepage with dark mode and high contrast both active" id="acc-img-both">
+            <img class="pf-acc-img active" src="./assets/projects/portfolio/acc-default.webp" alt="Homepage in default light mode" id="acc-img-default">
+            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-dark.webp" alt="Homepage in dark mode" id="acc-img-dark">
+            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-hc.webp" alt="Homepage in high contrast mode" id="acc-img-hc">
+            <img class="pf-acc-img" src="./assets/projects/portfolio/acc-both.webp" alt="Homepage with dark mode and high contrast both active" id="acc-img-both">
           </div>
           <!-- Right decorative panel -->
           <div class="pf-acc-side pf-acc-side--right" aria-hidden="true">
@@ -546,16 +546,28 @@
       ctx.restore();
     }
 
-    let lastTs = 0;
+    let lastTs = 0, rafId = 0, running = false, inView = true, visible = true;
     function draw(ts) {
-      const dt = ts - lastTs;
+      const dt = lastTs ? ts - lastTs : 0;
       lastTs = ts;
       ctx.clearRect(0, 0, W, H);
       particles = particles.filter(p => p.phase !== 'dead');
       while (particles.length < MAX_P) particles.push(mkParticle());
       particles.forEach(p => { updateP(p, dt); drawP(p); });
-      if (!canvas._stopped) requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     }
+    function start() {
+      if (running) return;
+      running = true;
+      lastTs = 0; /* reset so a long pause doesn't produce a huge dt jump */
+      rafId = requestAnimationFrame(draw);
+    }
+    function stop() {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    function update() { if (inView && visible) start(); else stop(); }
 
     resize();
     initParticles();
@@ -563,10 +575,11 @@
     const isReduced = () => document.documentElement.getAttribute('data-motion') === 'reduced';
     if (isReduced()) {
       draw(0);
-      canvas._stopped = true;
     } else {
       new ResizeObserver(resize).observe(canvas);
-      requestAnimationFrame(draw);
+      document.addEventListener('visibilitychange', () => { visible = !document.hidden; update(); });
+      new IntersectionObserver(e => { inView = e[0].isIntersecting; update(); }, { rootMargin: '50px' }).observe(canvas);
+      update();
     }
   })();
   </script>
