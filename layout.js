@@ -11,6 +11,48 @@
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 
+/* ---- Disable hover/pointer work while scrolling ----
+   When the cursor sweeps across elements mid-scroll, their :hover transitions
+   fire and repaint every frame (worst offender: the project-card grid, which
+   animates box-shadow + image transform + overlay on hover). Adding
+   html.is-scrolling flips pointer-events off so no :hover can trigger.
+
+   Re-enabling is the tricky part: Lenis eases to a stop, emitting scroll events
+   through its whole glide-out, so a fixed "Xms after last event" timer restores
+   hover late (only once fully settled). Instead, when Lenis is present we track
+   its live velocity and restore hover the instant the glide decays below
+   STILL_VELOCITY — i.e. when it's effectively stopped, not when it's perfectly
+   stopped. Native scroll (no Lenis) falls back to a short settle timer. */
+(function () {
+  const root = document.documentElement;
+  const SETTLE_MS = 90;        // native fallback: clear this long after last event
+  const STILL_VELOCITY = 1.0;  // Lenis: treat as "stopped" below this (tune to taste —
+                               // higher = hover returns earlier in the glide-out)
+  let idleTimer = null;
+  let lenisBound = false;
+
+  function bindLenis() {
+    if (lenisBound || !window.lenis) return;
+    lenisBound = true;
+    clearTimeout(idleTimer); idleTimer = null;
+    window.lenis.on('scroll', (e) => {
+      root.classList.toggle('is-scrolling', Math.abs(e.velocity) > STILL_VELOCITY);
+    });
+  }
+
+  function nativeActivity() {
+    if (lenisBound) return; // once Lenis is driving, velocity governs — ignore this
+    root.classList.add('is-scrolling');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { root.classList.remove('is-scrolling'); idleTimer = null; }, SETTLE_MS);
+  }
+
+  const opts = { passive: true };
+  ['wheel', 'touchmove', 'scroll'].forEach((ev) =>
+    window.addEventListener(ev, () => { bindLenis(); nativeActivity(); }, opts)
+  );
+})();
+
 /* ---- Header HTML ----
    Two-pill floating header:
    1. .nav-pill    — center pill: serif wordmark + in-page section links with a
