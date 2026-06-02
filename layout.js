@@ -22,22 +22,30 @@ window.scrollTo(0, 0);
 const HEADER_HTML = `
 <header>
   <div class="header-spacer" aria-hidden="true"></div>
-  <nav class="nav-pill" aria-label="Page sections">
-    <a href="/" class="nav-pill-name" aria-label="Chris Rudnew — home">Chris Rudnew</a>
-    <span class="nav-pill-divider nav-pill-divider--name" aria-hidden="true"></span>
-    <div class="nav-pill-sections" role="tablist" aria-label="Jump to section">
-      <span class="nav-highlighter" aria-hidden="true"></span>
+  <nav class="nav-pill" aria-label="Primary">
+
+    <!-- LEFT zone — identity -->
+    <div class="nav-pill-left">
+      <a href="/" class="nav-pill-name" aria-label="Chris Rudnew — home">Chris Rudnew</a>
     </div>
-  </nav>
-  <button class="nav-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-sheet">
-    <span class="burger-bar" aria-hidden="true"></span>
-    <span class="burger-bar" aria-hidden="true"></span>
-    <span class="burger-bar" aria-hidden="true"></span>
-  </button>
-  <div class="extras-pill about-pill" aria-label="About page">
-    <a class="extras-item extras-internal" href="/about.html" data-path="/about.html">About</a>
-  </div>
-  <div class="extras-pill" aria-label="Social links">
+
+    <span class="nav-pill-divider nav-pill-divider--name" aria-hidden="true"></span>
+
+    <!-- NAV list — in-page section anchors only (varies per page) -->
+    <div class="nav-pill-center">
+      <div class="nav-pill-sections" role="tablist" aria-label="Jump to section">
+        <span class="nav-highlighter" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT zone — About (page nav) · connect · résumé · preferences -->
+    <div class="nav-pill-right">
+
+      <a class="nav-pill-pagelink" href="/about.html" data-path="/about.html">About</a>
+
+      <span class="nav-pill-divider" aria-hidden="true"></span>
+
+      <div class="nav-pill-social" aria-label="Social links">
     <a class="extras-item extras-external" href="https://linkedin.com/in/chris-rudnew" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn profile (opens in new tab)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -54,8 +62,22 @@ const HEADER_HTML = `
       </svg>
       <span class="extras-label">Contact</span>
     </a>
-  </div>
-  <div class="settings-wrap">
+      </div>
+
+      <span class="nav-pill-divider" aria-hidden="true"></span>
+
+      <!-- Résumé — the single solid accent action -->
+      <a class="nav-pill-resume" href="https://drive.google.com/file/d/1xz3PiAWFq54sbzW0McHqeSko3fiKA5zy/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Résumé</a>
+
+      <span class="nav-pill-divider" aria-hidden="true"></span>
+
+      <button class="nav-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-sheet">
+        <span class="burger-bar" aria-hidden="true"></span>
+        <span class="burger-bar" aria-hidden="true"></span>
+        <span class="burger-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="settings-wrap">
       <button class="settings-btn" aria-label="Display preferences" aria-expanded="false">
         <svg class="display-cog" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
           <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -78,6 +100,8 @@ const HEADER_HTML = `
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
+          <span class="settings-bubble-label">Dark Mode</span>
+          <span class="settings-toggle" aria-hidden="true"><span class="settings-toggle-knob"></span></span>
           <span class="settings-state" aria-hidden="true"></span>
         </button>
         <button class="settings-bubble" role="switch" aria-checked="false"
@@ -87,6 +111,8 @@ const HEADER_HTML = `
             <path d="M12 3v18" stroke-width="1.5"/>
             <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/>
           </svg>
+          <span class="settings-bubble-label">High Contrast</span>
+          <span class="settings-toggle" aria-hidden="true"><span class="settings-toggle-knob"></span></span>
           <span class="settings-state" aria-hidden="true"></span>
         </button>
         <button class="settings-bubble" role="switch" aria-checked="false"
@@ -94,10 +120,15 @@ const HEADER_HTML = `
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
           </svg>
+          <span class="settings-bubble-label">Reduce Motion</span>
+          <span class="settings-toggle" aria-hidden="true"><span class="settings-toggle-knob"></span></span>
           <span class="settings-state" aria-hidden="true"></span>
         </button>
       </div>
-  </div>
+      </div>
+
+    </div><!-- /.nav-pill-right -->
+  </nav>
 </header>
 <div class="nav-sheet" id="nav-sheet" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <div class="nav-sheet-scrim" data-nav-close></div>
@@ -174,8 +205,8 @@ function initLayout() {
     el.outerHTML = HEADER_HTML;
   });
 
-  /* Mark active internal page on the extras pill */
-  document.querySelectorAll('.extras-item[data-path]').forEach(a => {
+  /* Mark active internal page (e.g. About) in the bar */
+  document.querySelectorAll('[data-path]').forEach(a => {
     const path = a.getAttribute('data-path');
     const current = location.pathname.replace(/\/index\.html$/, '/');
     if (path === current || path === location.pathname) {
@@ -219,43 +250,14 @@ function initLayout() {
   /* ---- Mobile menu sheet ---- */
   initNavSheet();
 
-  /* ---- Collision collapse: hamburger when left pill meets right pills ---- */
+  /* ---- Intermediate collapse: at mid widths the unified bar folds its
+     center nav + social + résumé into the hamburger sheet (≤799px is full
+     mobile, handled by CSS media query). ---- */
   (function () {
-    var header   = document.querySelector('body > header');
-    var leftPill = header && header.querySelector('nav.nav-pill');
-    var getRightEdge = function () {
-      var rightEls = header.querySelectorAll('.extras-pill, .settings-wrap');
-      var min = Infinity;
-      rightEls.forEach(function (el) { var l = el.getBoundingClientRect().left; if (l < min) min = l; });
-      return min;
-    };
-    if (!header || !leftPill) return;
-    /* RAF-coalesced + hysteresis on the THRESHOLD (not the measurement).
-       Always measure with the uncollapsed layout — when nav-collapsed is on,
-       the extras-pills are display:none and their rects are zero, which would
-       corrupt the gap calculation. Briefly remove the class for a clean
-       measurement, then apply the final state via the hysteresis threshold
-       so a single gap value can't flip-flop the decision frame to frame. */
-    var _pending = false;
     var check = function () {
-      if (_pending) return;
-      _pending = true;
-      requestAnimationFrame(function () {
-        _pending = false;
-        var w = window.innerWidth;
-        if (w <= 799) { document.body.classList.remove('nav-collapsed'); return; }
-        if (w <= 1050) { document.body.classList.add('nav-collapsed'); return; }
-        var wasCollapsed = document.body.classList.contains('nav-collapsed');
-        /* Measure with the uncollapsed layout for a consistent gap value */
-        document.body.classList.remove('nav-collapsed');
-        var gap = getRightEdge() - leftPill.getBoundingClientRect().right;
-        /* Hysteresis: stricter threshold to collapse, looser to uncollapse */
-        var nowCollapsed = wasCollapsed ? (gap < 60) : (gap < 24);
-        document.body.classList.toggle('nav-collapsed', nowCollapsed);
-      });
+      var w = window.innerWidth;
+      document.body.classList.toggle('nav-collapsed', w > 799 && w <= 1050);
     };
-    var ro = new ResizeObserver(check);
-    ro.observe(header);
     window.addEventListener('resize', check, { passive: true });
     check();
   }());
@@ -303,13 +305,21 @@ function initLayout() {
       _scrollLockTimer = setTimeout(() => { _scrollLocked = false; _lastY = window.scrollY; }, 2000);
     };
 
+    /* Deadzone: Lenis eases to a stop by overshooting + settling a few px,
+       which flips the show/hide direction repeatedly right before it rests.
+       Ignore moves smaller than this AND leave _lastY untouched on those
+       frames, so the settle jitter can never accumulate across the threshold.
+       Real scrolling still triggers once net movement exceeds the deadzone. */
+    const _HIDE_DEADZONE = 8;
     window.addEventListener('scroll', function () {
       if (_scrollLocked || _mouseNearTop || _scrollRaf) return;
       _scrollRaf = true;
       requestAnimationFrame(function () {
         _scrollRaf = false;
         const y = window.scrollY;
-        _header.style.transform = (y > _lastY && y > 80) ? 'translateY(-110%)' : 'translateY(0)';
+        const dy = y - _lastY;
+        if (Math.abs(dy) < _HIDE_DEADZONE) return;
+        _header.style.transform = (dy > 0 && y > 80) ? 'translateY(-110%)' : 'translateY(0)';
         _lastY = y;
       });
     }, { passive: true });
@@ -382,25 +392,59 @@ function initLayout() {
     setTimeout(() => location.reload(), 700);
   });
 
-  /* Settings bubble hover / keyboard */
+  /* Settings menu open/close — fully JS-managed (no CSS :focus-within, so that
+     clicking a *toggle* inside doesn't pin the menu open). Two ways to stay open:
+       • hovering  → transient (closes shortly after the pointer leaves)
+       • clicking the Display/cog button → PINNED (stays open until the button is
+         clicked again or you click anywhere outside the menu). */
   const settingsWrap = document.querySelector('.settings-wrap');
+  const settingsBtn = settingsWrap.querySelector('.settings-btn');
   let leaveTimer = null;
+  let pinned = false;
 
   function openSettings() {
     clearTimeout(leaveTimer);
     settingsWrap.classList.add('is-open');
-    settingsWrap.querySelector('.settings-btn').setAttribute('aria-expanded', 'true');
+    settingsBtn.setAttribute('aria-expanded', 'true');
   }
   function closeSettings() {
+    clearTimeout(leaveTimer);
     settingsWrap.classList.remove('is-open');
-    settingsWrap.querySelector('.settings-btn').setAttribute('aria-expanded', 'false');
+    settingsBtn.setAttribute('aria-expanded', 'false');
+    pinned = false;
   }
 
+  /* Display/cog button: pin open, or close if already pinned open.
+     (Also the open/close path on touch, where there's no hover.) */
+  settingsBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (settingsWrap.classList.contains('is-open') && pinned) {
+      closeSettings();
+    } else {
+      openSettings();
+      pinned = true;
+    }
+  });
+
+  /* Hover — transient open; closes after leaving unless pinned by a click. */
   settingsWrap.addEventListener('mouseenter', openSettings);
   settingsWrap.addEventListener('mouseover',  openSettings);
-  settingsWrap.addEventListener('mouseleave', () => { leaveTimer = setTimeout(closeSettings, 150); });
+  settingsWrap.addEventListener('mouseleave', () => {
+    if (!pinned) leaveTimer = setTimeout(closeSettings, 150);
+  });
+
+  /* Click anywhere outside the menu closes it (covers the pinned state). */
+  document.addEventListener('pointerdown', e => {
+    if (!settingsWrap.contains(e.target)) closeSettings();
+  });
+
+  /* Keyboard: open while focus is inside, close when it leaves; Esc closes. */
+  settingsWrap.addEventListener('focusin', openSettings);
+  settingsWrap.addEventListener('focusout', e => {
+    if (!settingsWrap.contains(e.relatedTarget)) closeSettings();
+  });
   settingsWrap.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeSettings(); settingsWrap.querySelector('.settings-btn').focus(); }
+    if (e.key === 'Escape') { closeSettings(); settingsBtn.focus(); }
   });
 
   /* ---- Custom cursor ---- */
@@ -591,11 +635,12 @@ function initNavSheet() {
   });
   if (!sectionsGroup.children.length) sectionsGroup.hidden = true;
 
-  // Mirror extras (About, LinkedIn, Contact) into the sheet — queries across all .extras-pill elements
-  document.querySelectorAll('.extras-pill .extras-item').forEach(link => {
+  // Mirror About, social links, and Résumé into the sheet
+  document.querySelectorAll('.nav-pill-pagelink, .nav-pill-social .extras-item, .nav-pill-resume').forEach(link => {
     const clone = link.cloneNode(true);
-    clone.classList.remove('extras-item', 'extras-internal', 'extras-external');
+    clone.classList.remove('extras-item', 'extras-internal', 'extras-external', 'nav-pill-pagelink', 'nav-pill-resume');
     clone.classList.add('nav-sheet-link');
+    clone.removeAttribute('aria-current');
     clone.addEventListener('click', () => closeSheet());
     extrasGroup.appendChild(clone);
   });

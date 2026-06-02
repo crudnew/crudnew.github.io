@@ -214,9 +214,8 @@ body > header {
   position: fixed; top: 20px; left: 0; right: 0;
   z-index: 100;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
   padding: 0 32px;
   background: transparent;
   border: none;
@@ -225,7 +224,6 @@ body > header {
   pointer-events: none;
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
 }
-body > header > nav.nav-pill { margin-right: auto; }
 body > header > * { pointer-events: auto; }
 .header-spacer { display: none; }
 
@@ -237,23 +235,20 @@ body > header > * { pointer-events: auto; }
    --tint-color to a muted version of that page's background. A ::before
    pseudo-element carries the tint and fades in after the typewriter
    completes, gently shifting the glass toward the page's signature color. */
-nav.nav-pill,
-.extras-pill,
-.nav-menu-btn,
-.settings-wrap {
-  background-color: rgba(243, 232, 215, 0.50);
-  backdrop-filter: blur(28px) saturate(1.35);
-  -webkit-backdrop-filter: blur(28px) saturate(1.35);
-  border: 1px solid rgba(255,255,255,0.55);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+/* The unified bar carries the glass; inner controls are transparent.
+   Brighter white frost (mirrors the project-card caption strips) so the bar
+   reads as glass over the same-hue sand background instead of vanishing. */
+nav.nav-pill {
+  background-color: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(28px) saturate(1.4) brightness(1.08);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4) brightness(1.08);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.80);
   position: relative;
 }
 
 /* Tint layer — sits above the glass, fades in via body.tint-filled */
-nav.nav-pill::before,
-.extras-pill::before,
-.nav-menu-btn::before,
-.settings-wrap::before {
+nav.nav-pill::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -263,19 +258,13 @@ nav.nav-pill::before,
   transition: opacity 700ms ease;
   pointer-events: none;
 }
-body.tint-filled nav.nav-pill::before,
-body.tint-filled .extras-pill::before,
-body.tint-filled .nav-menu-btn::before,
-body.tint-filled .settings-wrap::before {
+body.tint-filled nav.nav-pill::before {
   opacity: 1;
 }
 
 /* Shadow layer behind the backdrop-filter stacking context — prevents the
    drop shadow from compositing through the glass and causing flash/bleed. */
-nav.nav-pill::after,
-.extras-pill::after,
-.nav-menu-btn::after,
-.settings-wrap::after {
+nav.nav-pill::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -287,88 +276,77 @@ nav.nav-pill::after,
   pointer-events: none;
 }
 
-/* Keep pill content above the tint layer */
-nav.nav-pill > *,
-.extras-pill > *,
-.settings-wrap > .settings-btn {
+/* Keep bar content above the tint layer */
+nav.nav-pill > * {
   position: relative;
   z-index: 1;
 }
 
-[data-theme="dark"] nav.nav-pill,
-[data-theme="dark"] .extras-pill,
-[data-theme="dark"] .nav-menu-btn,
-[data-theme="dark"] .settings-wrap {
-  background-color: rgba(30,22,16,0.68);
-  border-color: rgba(255,255,255,0.12);
+[data-theme="dark"] nav.nav-pill {
+  background-color: rgba(30,22,16,0.72);
+  border-color: rgba(255,255,255,0.14);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
 }
-[data-theme="dark"] nav.nav-pill::after,
-[data-theme="dark"] .extras-pill::after,
-[data-theme="dark"] .nav-menu-btn::after,
-[data-theme="dark"] .settings-wrap::after {
+[data-theme="dark"] nav.nav-pill::after {
   box-shadow:
     0 8px 28px rgba(0,0,0,0.35),
     0 2px 6px  rgba(0,0,0,0.20);
 }
 /* Reduced motion: snap to final state — no fade */
-[data-motion="reduced"] nav.nav-pill::before,
-[data-motion="reduced"] .extras-pill::before,
-[data-motion="reduced"] .nav-menu-btn::before,
-[data-motion="reduced"] .settings-wrap::before {
+[data-motion="reduced"] nav.nav-pill::before {
   transition: none;
 }
-/* High contrast: remove the tint overlay entirely so pills stay crisp */
-[data-contrast="high"] nav.nav-pill::before,
-[data-contrast="high"] .extras-pill::before,
-[data-contrast="high"] .nav-menu-btn::before,
-[data-contrast="high"] .settings-wrap::before {
+/* High contrast: remove the tint overlay entirely so the bar stays crisp */
+[data-contrast="high"] nav.nav-pill::before {
   background: transparent;
 }
 @supports not (backdrop-filter: blur(1px)) {
-  nav.nav-pill, .extras-pill, .nav-menu-btn, .settings-wrap {
+  nav.nav-pill {
     background-color: var(--surface-solid);
   }
-  nav.nav-pill::before,
-  .extras-pill::before,
-  .nav-menu-btn::before,
-  .settings-wrap::before {
+  nav.nav-pill::before {
     background: transparent;
   }
 }
 
 
-/* Per-page tint palette — each color is a muted reading of that page's
-   primary background, kept translucent enough to read as glass not paint. */
-body[data-page-tint="home"]     { --tint-color: rgba(200, 175, 145, 0.22); }
-body[data-page-tint="about"]    { --tint-color: rgba(195, 175, 148, 0.22); }
-body[data-page-tint="linger"]   { --tint-color: rgba(80, 195, 210, 0.24); }
-body[data-page-tint="weact"]    { --tint-color: rgba(70, 125, 195, 0.28); }
-body[data-page-tint="crimemap"] { --tint-color: rgba(8, 4, 4, 0.50); }
-body[data-page-tint="portfolio"]{ --tint-color: rgba(92, 100, 118, 0.28); }
-/* Dark theme: deepen tints so they register over the darker glass base */
-[data-theme="dark"] body[data-page-tint="home"]     { --tint-color: rgba(195, 170, 138, 0.18); }
-[data-theme="dark"] body[data-page-tint="about"]    { --tint-color: rgba(190, 170, 140, 0.18); }
-[data-theme="dark"] body[data-page-tint="linger"]   { --tint-color: rgba(60, 180, 195, 0.22); }
-[data-theme="dark"] body[data-page-tint="weact"]    { --tint-color: rgba(80, 140, 210, 0.24); }
-[data-theme="dark"] body[data-page-tint="crimemap"] { --tint-color: rgba(5, 2, 2, 0.55); }
-[data-theme="dark"] body[data-page-tint="portfolio"]{ --tint-color: rgba(120, 130, 150, 0.22); }
+/* Per-page tint palette — a desaturated MID-TONE of each page's own --bg, so
+   the header reads as "the page background, gently intensified" rather than a
+   saturated brand wash. Low alpha keeps it glass, not paint. */
+body[data-page-tint="home"]     { --tint-color: rgba(205, 186, 158, 0.20); } /* warm sand  (#F6F2EC) */
+body[data-page-tint="about"]    { --tint-color: rgba(203, 184, 158, 0.20); } /* warm sand  (#F6F2EC) */
+body[data-page-tint="linger"]   { --tint-color: rgba(150, 190, 222, 0.20); } /* pale sky   (#E8F4FD) */
+body[data-page-tint="weact"]    { --tint-color: rgba(158, 182, 216, 0.22); } /* pale blue  (#EEF2F8) */
+body[data-page-tint="crimemap"] { --tint-color: rgba(16, 19, 25, 0.48); }    /* cool black (#0F1115) */
+body[data-page-tint="portfolio"]{ --tint-color: rgba(26, 27, 33, 0.42); }    /* near-black (#0D0D0D) */
+/* Dark theme: sample the deepened dark --bg of each page, faint tint. */
+[data-theme="dark"] body[data-page-tint="home"]     { --tint-color: rgba(150, 122, 92, 0.14); } /* warm brown (#17110E) */
+[data-theme="dark"] body[data-page-tint="about"]    { --tint-color: rgba(150, 122, 92, 0.14); } /* warm brown (#17110E) */
+[data-theme="dark"] body[data-page-tint="linger"]   { --tint-color: rgba(108, 138, 150, 0.14); } /* muted teal-grey */
+[data-theme="dark"] body[data-page-tint="weact"]    { --tint-color: rgba(80, 110, 155, 0.16); }  /* navy (#080E1A) */
+[data-theme="dark"] body[data-page-tint="crimemap"] { --tint-color: rgba(10, 11, 16, 0.52); }    /* cool black (#08090C) */
+[data-theme="dark"] body[data-page-tint="portfolio"]{ --tint-color: rgba(24, 24, 30, 0.42); }     /* near-black (#0D0D0D) */
 
-nav.nav-pill,
-.extras-pill {
-  display: flex; align-items: center; gap: 2px;
-  padding: 7px; border-radius: 999px;
-  height: 54px; box-sizing: border-box;
+/* Unified bar — left-set: identity │ nav list, then utilities pushed to the
+   far right via margin-left:auto. */
+nav.nav-pill {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  height: 60px; box-sizing: border-box;
+  padding: 0 12px 0 10px;
+  /* Fixed value, NOT var(--radius-lg) — some pages (e.g. linger.css) redefine
+     that token to 32px, which on a 60px bar reads as a full oval. The header is
+     a global element and must look identical on every page. */
+  border-radius: 22px;
   animation: fadeIn 0.6s ease both;
   animation-delay: 0.1s;
 }
-
-/* Left-anchored nav pill — sits flush-left via margin-right:auto on the
-   header flex row. Internal spacing uses clamp() so the pill compresses
-   smoothly on narrower laptops instead of crashing into the extras pill. */
-nav.nav-pill {
-  padding: 6px clamp(6px, 0.8vw, 10px) 6px 6px;
-}
+.nav-pill-left   { display: flex; align-items: center; }
+.nav-pill-center { display: flex; align-items: center; gap: 2px; }
+.nav-pill-right  { display: flex; align-items: center; gap: 4px; margin-left: auto; height: 100%; }
+.nav-pill-social { display: inline-flex; align-items: center; gap: 2px; }
 
 /* ---- Nav pill contents ----
    Wordmark (serif, heading-sized) | divider | section links with highlighter */
@@ -383,9 +361,6 @@ nav.nav-pill {
   transition: color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
   position: relative; z-index: 2;
-  /* Optical correction — Playfair ascenders at this size sit visually high
-     against the shorter Inter section links; nudge down 1px to re-centre. */
-  translate: 0 1px;
 }
 .nav-pill-name:hover { background: var(--accent-lighter); }
 .nav-pill-name[aria-current="true"] { color: var(--text-primary); }
@@ -420,13 +395,14 @@ nav.nav-pill {
 .nav-pill-section[aria-current="true"] { opacity: 1; font-weight: 600; }
 
 /* Sliding highlighter behind the active section link */
+/* Sliding underline — echoes the hero's underline-draw motif. JS sets width +
+   translateX; vertical placement is CSS. */
 .nav-highlighter {
   position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  border-radius: 999px;
-  background: var(--accent-light);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+  left: 0; bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text-primary);
   opacity: 0;
   transform: translateX(0);
   transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
@@ -438,6 +414,44 @@ nav.nav-pill {
 @media (prefers-reduced-motion: reduce) {
   .nav-highlighter { transition: opacity 0.15s ease; }
 }
+
+/* ---- About — a page link living in the center nav cluster. Styled to match
+   the section links, but it's a real navigation (not scroll-spied), so its
+   active state is a static underline rather than the sliding one. ---- */
+.nav-pill-pagelink {
+  position: relative;
+  display: inline-flex; align-items: center;
+  padding: 9px clamp(10px, 1.2vw, 16px);
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1vw, 14px); font-weight: 550; letter-spacing: 0.01em;
+  white-space: nowrap;
+  opacity: 0.78;
+  transition: opacity 0.2s ease;
+}
+.nav-pill-pagelink:hover { opacity: 1; }
+.nav-pill-pagelink[aria-current="page"] { opacity: 1; font-weight: 600; }
+.nav-pill-pagelink[aria-current="page"]::after {
+  content: '';
+  position: absolute; left: 12px; right: 12px; bottom: 6px;
+  height: 2px; border-radius: 2px;
+  background: var(--text-primary);
+}
+
+/* ---- Résumé — the single solid accent action. Inverts on theme (dark pill /
+   cream text in light mode, and vice-versa) by reusing the CTA token pair. ---- */
+.nav-pill-resume {
+  display: inline-flex; align-items: center;
+  padding: 9px 18px; border-radius: 9999px;
+  background: var(--text-primary); color: var(--surface-solid);
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 600; letter-spacing: 0.01em;
+  text-decoration: none; white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.nav-pill-resume:hover { opacity: 0.85; transform: translateY(-1px); }
+.nav-pill-resume:active { transform: translateY(0); }
 
 /* ---- Extras pill contents ----
    About keeps its label (internal page link needs a word).
@@ -498,12 +512,15 @@ nav.nav-pill {
 /* Glass treatment comes from the shared nav.nav-pill / .extras-pill group above */
 .nav-menu-btn {
   display: none;
-  grid-column: 3; justify-self: end;
-  width: 54px; height: 54px; border-radius: 50%;
+  width: 42px; height: 42px; border-radius: 50%;
   color: var(--text-primary);
   cursor: pointer;
+  background: transparent; border: none;
   align-items: center; justify-content: center;
+  transition: background 0.2s ease;
 }
+.nav-menu-btn:hover { background: rgba(255,255,255,0.35); }
+[data-theme="dark"] .nav-menu-btn:hover { background: rgba(255,255,255,0.08); }
 
 /* ---- Hamburger bars → × morph ---- */
 .nav-menu-btn { flex-direction: column; gap: 4px; }
@@ -635,13 +652,12 @@ nav.nav-pill {
   background: rgba(255,255,255,0.10);
 }
 
-/* Display pill — same outer shell as .extras-pill */
+/* Display control — a ghost button inside the bar (no own glass shell).
+   position:relative anchors the settings-bubbles dropdown. */
 .settings-wrap {
-  display: flex; align-items: center; gap: 2px;
-  padding: 7px; border-radius: 999px;
-  height: 54px; box-sizing: border-box;
-  animation: fadeIn 0.6s ease both;
-  animation-delay: 0.1s;
+  display: flex; align-items: center;
+  position: relative;
+  height: 100%;
 }
 
 .settings-btn {
@@ -656,38 +672,43 @@ nav.nav-pill {
   opacity: 0.82;
 }
 .settings-btn:hover,
-.settings-wrap.is-open .settings-btn,
-.settings-wrap:focus-within .settings-btn {
+.settings-wrap.is-open .settings-btn {
   background: rgba(255,255,255,0.35);
   opacity: 1;
 }
 [data-theme="dark"] .settings-btn:hover,
-[data-theme="dark"] .settings-wrap.is-open .settings-btn,
-[data-theme="dark"] .settings-wrap:focus-within .settings-btn {
+[data-theme="dark"] .settings-wrap.is-open .settings-btn {
   background: rgba(255,255,255,0.08);
 }
 .display-cog { display: none; }
 .display-chevron { width: 12px; height: 12px; transition: transform 0.3s var(--ease); }
-.settings-wrap.is-open .display-chevron,
-.settings-wrap:focus-within .display-chevron { transform: rotate(180deg); }
+.settings-wrap.is-open .display-chevron { transform: rotate(180deg); }
 
 .settings-bubbles {
-  /* Anchor to BOTH left and right edges of the parent. The container then
-     spans the parent's full width, and the bubbles inside are centered via
-     flexbox (align-items: center). This avoids the transform-based 50%
-     offset that was vibrating under reduced motion — browsers compute
-     dual-edge anchoring more stably than a single-point + transform. */
+  /* Full mode: a fixed-width panel right-aligned under the Display button,
+     holding labeled toggle rows. (Collapsed mode reverts to a narrow centered
+     column of icon circles — see the collapse blocks.) */
   position: absolute; top: 100%;
-  left: 0; right: 0;
+  right: 0; left: auto;
+  width: 216px;
   display: flex; flex-direction: column;
-  align-items: center; gap: 8px; padding-top: 10px;
-  z-index: 1; pointer-events: auto;
+  align-items: stretch; gap: 8px; padding-top: 12px;
+  z-index: 1;
+  /* Closed: the panel is still laid out below the button — must NOT capture
+     hover, or the empty area where it will appear would trigger open. Only
+     becomes interactive once open (so moving button→menu keeps it open). */
+  pointer-events: none;
+}
+.settings-wrap.is-open .settings-bubbles {
+  pointer-events: auto;
 }
 
-/* Settings bubbles inherit the same glass treatment as the header pills */
+/* Full mode: each setting is a labeled row — icon · label · toggle switch.
+   Glass treatment matches the header pills. (Collapse reverts to icon circle.) */
 .settings-bubble {
-  display: flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; height: auto;
+  padding: 9px 11px 9px 12px; border-radius: 12px;
   background: rgba(243, 232, 215, 0.62);
   backdrop-filter: blur(28px) saturate(1.35);
   -webkit-backdrop-filter: blur(28px) saturate(1.35);
@@ -695,22 +716,42 @@ nav.nav-pill {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
   cursor: pointer; color: var(--text-primary);
   position: relative;
-  opacity: 0; transform: scale(0.5) translateY(-12px);
+  opacity: 0; transform: scale(0.96) translateY(-8px);
   transition: opacity 0.25s var(--ease), transform 0.3s var(--ease),
               background 0.2s ease, border-color 0.2s ease;
   pointer-events: none;
 }
+.settings-bubble-label {
+  flex: 1; text-align: left;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  letter-spacing: 0.01em; white-space: nowrap;
+}
+/* Toggle switch — track + sliding knob, greens on aria-checked */
+.settings-toggle {
+  flex-shrink: 0; position: relative;
+  width: 34px; height: 20px; border-radius: 999px;
+  background: var(--border-solid);
+  transition: background 0.2s ease;
+}
+.settings-toggle-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.28);
+  transition: transform 0.2s var(--ease);
+}
+.settings-bubble[aria-checked="true"] .settings-toggle      { background: #22c55e; }
+.settings-bubble[aria-checked="true"] .settings-toggle-knob { transform: translateX(14px); }
 [data-theme="dark"] .settings-bubble {
   background: rgba(30,22,16,0.68);
   border-color: rgba(255,255,255,0.12);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
 }
-body.tint-filled .settings-bubble:not([aria-checked="true"]) {
+body.tint-filled .settings-bubble {
   background:
     linear-gradient(var(--tint-color, transparent), var(--tint-color, transparent)),
     rgba(243, 232, 215, 0.62);
 }
-[data-theme="dark"] body.tint-filled .settings-bubble:not([aria-checked="true"]) {
+[data-theme="dark"] body.tint-filled .settings-bubble {
   background:
     linear-gradient(var(--tint-color, transparent), var(--tint-color, transparent)),
     rgba(30,22,16,0.68);
@@ -732,19 +773,14 @@ body.tint-filled .settings-bubble:not([aria-checked="true"]) {
     0 2px 6px  rgba(0,0,0,0.20);
 }
 .settings-bubble svg { width: 17px; height: 17px; flex-shrink: 0; }
-.settings-bubble:nth-child(1) { transition-delay: 0.04s; }
-.settings-bubble:nth-child(2) { transition-delay: 0.1s; }
+/* Stagger only the entrance (opacity/transform) — keep background/border-color
+   instant so a theme toggle recolours every row at once, not in sequence.
+   Order matches the transition list: opacity, transform, background, border. */
+.settings-bubble:nth-child(1) { transition-delay: 0.04s, 0.04s, 0s, 0s; }
+.settings-bubble:nth-child(2) { transition-delay: 0.1s, 0.1s, 0s, 0s; }
 
-.settings-wrap.is-open .settings-bubble,
-.settings-wrap:focus-within .settings-bubble {
+.settings-wrap.is-open .settings-bubble {
   opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
-}
-.settings-bubble[aria-checked="true"] {
-  background: var(--accent-light); border-color: rgba(34, 197, 94, 0.6); color: var(--accent-text);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.72),
-    0 0 0 2px #22c55e,
-    0 0 12px rgba(34, 197, 94, 0.45);
 }
 /* Green ring in high contrast modes — strengthen ring, no glow needed */
 [data-contrast="high"] .settings-bubble[aria-checked="true"],
@@ -760,6 +796,10 @@ body.tint-filled .settings-bubble:not([aria-checked="true"]) {
     forced-color-adjust: none;
   }
 }
+/* Tooltip + On/Off popout are only needed in collapsed (icon-only) mode —
+   in full mode the visible label + toggle convey everything. */
+.settings-bubble::before { display: none; }
+.settings-state { display: none; }
 .settings-bubble::before {
   content: attr(data-tooltip);
   position: absolute; right: calc(100% + 10px);
@@ -775,12 +815,9 @@ body.tint-filled .settings-bubble:not([aria-checked="true"]) {
 .settings-bubble:has(.settings-state--visible)::before {
   transform: translateY(-50%) translateX(-54px);
 }
-/* Light mode: show moon (suggests switching to dark) */
+/* Dark Mode row always shows the moon (represents the setting, not the action) */
 .settings-bubble .icon-moon { display: block; }
 .settings-bubble .icon-sun  { display: none; }
-/* Dark mode: show sun (suggests switching to light) */
-[data-theme="dark"] .settings-bubble .icon-moon { display: none; }
-[data-theme="dark"] .settings-bubble .icon-sun  { display: block; }
 
 /* ---- Settings On/Off state pill ---- */
 .settings-bubble { overflow: visible; }
@@ -3633,31 +3670,71 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
   }
 }
 
-/* Collision-collapse: triggered by JS (ResizeObserver) on wide viewports when
-   left pill would overlap the right pill group, or always on mobile. */
-body.nav-collapsed nav.nav-pill { padding: 6px 8px; }
+/* Intermediate collapse (≈800–1050px, toggled by JS): the unified bar keeps
+   wordmark + hamburger + Display(cog); center nav, social and résumé fold into
+   the menu sheet. */
+body.nav-collapsed .nav-pill-center,
 body.nav-collapsed .nav-pill-divider--name,
-body.nav-collapsed .nav-pill-sections { display: none; }
-body.nav-collapsed .extras-pill { display: none; }
+body.nav-collapsed .nav-pill-pagelink,
+body.nav-collapsed .nav-pill-social,
+body.nav-collapsed .nav-pill-resume,
+body.nav-collapsed .nav-pill-right > .nav-pill-divider { display: none; }
 body.nav-collapsed .nav-menu-btn { display: flex; }
-/* Display pill stays visible but compacts to icon-only */
+/* Display compacts to icon-only */
 body.nav-collapsed .display-label,
 body.nav-collapsed .display-chevron { display: none; }
 body.nav-collapsed .display-cog { display: block; }
-body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
+body.nav-collapsed .settings-btn { padding: 0; width: 42px; height: 42px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
+/* Collapsed dropdown reverts to compact icon circles + green-ring state */
+body.nav-collapsed .settings-bubbles { right: 0; left: 0; width: auto; align-items: center; }
+body.nav-collapsed .settings-bubble {
+  width: 42px; height: 42px; padding: 0;
+  border-radius: 50%; justify-content: center; gap: 0;
+}
+body.nav-collapsed .settings-bubble-label,
+body.nav-collapsed .settings-toggle { display: none; }
+body.nav-collapsed .settings-bubble::before,
+body.nav-collapsed .settings-bubble .settings-state { display: block; }
+body.nav-collapsed .settings-bubble[aria-checked="true"] {
+  border-color: rgba(34,197,94,0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    0 0 0 2px #22c55e,
+    0 0 12px rgba(34,197,94,0.45);
+}
 
 @media (max-width: 799px) {
-  body > header { padding: 14px 16px; grid-template-columns: auto 1fr auto; }
-  /* Collapse the center pill to wordmark only, hide extras pill, show hamburger */
-  nav.nav-pill { grid-column: 1; justify-self: start; padding: 6px 8px; }
+  body > header { padding: 14px 16px; }
+  /* Full mobile: same collapse as the intermediate state */
+  nav.nav-pill { height: 56px; padding: 0 8px; }
+  .nav-pill-center,
   .nav-pill-divider--name,
-  .nav-pill-sections { display: none; }
-  .extras-pill { display: none; }
-  .nav-menu-btn { display: flex; grid-column: 3; }
-  /* Display pill stays visible, compacts to icon-only */
+  .nav-pill-pagelink,
+  .nav-pill-social,
+  .nav-pill-resume,
+  .nav-pill-right > .nav-pill-divider { display: none; }
+  .nav-menu-btn { display: flex; }
+  /* Display compacts to icon-only */
   .display-label, .display-chevron { display: none; }
   .display-cog { display: block; }
-  .settings-btn { padding: 9px 11px; width: 38px; height: 38px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
+  .settings-btn { padding: 0; width: 40px; height: 40px; box-sizing: border-box; justify-content: center; opacity: 0.82; }
+  /* Collapsed dropdown reverts to compact icon circles + green-ring state */
+  .settings-bubbles { right: 0; left: 0; width: auto; align-items: center; }
+  .settings-bubble {
+    width: 42px; height: 42px; padding: 0;
+    border-radius: 50%; justify-content: center; gap: 0;
+  }
+  .settings-bubble-label,
+  .settings-toggle { display: none; }
+  .settings-bubble::before,
+  .settings-bubble .settings-state { display: block; }
+  .settings-bubble[aria-checked="true"] {
+    border-color: rgba(34,197,94,0.6);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.72),
+      0 0 0 2px #22c55e,
+      0 0 12px rgba(34,197,94,0.45);
+  }
   /* Homepage */
   main { padding: var(--header-clearance) 18px 40px; gap: 36px; }
   .hero-wrapper::before, .hero-wrapper::after { display: none; }
@@ -3901,10 +3978,8 @@ body.nav-collapsed .settings-btn { padding: 9px 11px; width: 38px; height: 38px;
   box-shadow: none;
 }
 
-/* All header pills + settings bubbles */
+/* Unified bar + settings bubbles */
 [data-contrast="high"] nav.nav-pill,
-[data-contrast="high"] .extras-pill,
-[data-contrast="high"] .settings-wrap,
 [data-contrast="high"] .settings-bubble {
   background: var(--surface-solid);
   backdrop-filter: none;

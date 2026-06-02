@@ -1619,6 +1619,12 @@ footer { position: relative; z-index: 1; }
   text-shadow: none;
   word-break: break-word;
 }
+/* Unit ("hrs", "flows"…) was unstyled and inherited the body text colour,
+   which goes light in dark mode and fails on the pale orb. Pin it navy. */
+.stat-unit {
+  color: rgba(18, 52, 108, 0.82) !important;
+  text-shadow: none;
+}
 
 /* ---- Process pipeline card ---- */
 .process-pipeline-card {
@@ -1854,8 +1860,11 @@ footer {
 [data-theme="dark"] .reflection-card p,
 [data-theme="dark"] .reflection-card li { color: rgba(185, 218, 250, 0.88) !important; }
 [data-theme="dark"] .reflection-card li strong { color: rgba(225, 245, 255, 0.98) !important; }
-[data-theme="dark"] .stat-number { color: rgba(200, 230, 255, 0.96) !important; text-shadow: 0 2px 12px rgba(0,20,100,0.60) !important; }
-[data-theme="dark"] .stat-label  { color: rgba(175, 215, 250, 0.88) !important; }
+/* Orbs keep their light pastel gradient in dark mode, so their text must stay
+   dark navy — the previous light-blue values failed WCAG against the pale orb. */
+[data-theme="dark"] .stat-number { color: rgba(12, 42, 88, 0.95) !important; text-shadow: 0 1px 8px rgba(255,255,255,0.55) !important; }
+[data-theme="dark"] .stat-unit   { color: rgba(18, 52, 108, 0.82) !important; }
+[data-theme="dark"] .stat-label  { color: rgba(18, 52, 108, 0.88) !important; }
 [data-theme="dark"] .sprint-day-label { color: rgba(200, 230, 255, 0.95) !important; text-shadow: none !important; border-bottom-color: rgba(80,140,220,0.35) !important; }
 [data-theme="dark"] .sprint-day li { background: rgba(20, 60, 160, 0.42) !important; color: rgba(195, 228, 255, 0.92) !important; border-color: rgba(80, 150, 255, 0.30) !important; }
 [data-theme="dark"] .bento-card h3 { color: rgba(210, 235, 255, 0.96); }

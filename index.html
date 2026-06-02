@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=128">
+  <link rel="stylesheet" href="./style.css?v=138">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;/* INTRO_GATE: set to true to play every reload (testing); set to false to gate per-session via sessionStorage (production) */var INTRO_ALWAYS=false;var introWillRun=motionOn&&(INTRO_ALWAYS||!sessionStorage.getItem('introPlayed'))&&window.innerWidth>=768;window._introWillRun=introWillRun;if(introWillRun){document.documentElement.classList.add('intro-running');setTimeout(function(){document.documentElement.classList.remove('intro-running');},4000);}else if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -261,7 +261,7 @@
   <footer-component></footer-component>
 
   <!-- Shared layout (header, footer, settings, cursor) -->
-  <script src="./layout.js?v=20"></script>
+  <script src="./layout.js?v=27"></script>
 
   <!-- Bento card deck (desktop only) -->
   <script>(function(){
