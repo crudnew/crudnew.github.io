@@ -8,3 +8,6 @@ assets/MacEwan-Logo.png
 # Local backups of original PNGs before WebP conversion — kept for safety,
 # not needed in repo.
 assets/*-original.png
+
+# Local-only dev server (clean-URL fallback for localhost). Dev tool, not deployed.
+devserver.py

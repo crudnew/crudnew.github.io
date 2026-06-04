@@ -680,7 +680,9 @@ main {
 .overview-card {
   padding: 40px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter: these cards sit over the flat page bg (+ faint grain),
+     not the hero orbs, so the live blur did nothing visible while costing a
+     per-frame composite during scroll/reveal. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -715,7 +717,7 @@ main {
   display: flex; flex-direction: column; align-items: center;
   gap: 8px; padding: 32px 16px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-top: 3px solid var(--accent);
   border-radius: var(--radius-md);
@@ -800,7 +802,7 @@ main {
 }
 .process-pipeline-card {
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md); box-shadow: var(--shadow-md);
   padding: 48px 48px; width: 100%;
@@ -909,7 +911,7 @@ main {
 .reflection-card {
   padding: 36px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);

@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=141">
-  <link rel="stylesheet" href="./weact.css?v=4">
+  <link rel="stylesheet" href="./style.css?v=148">
+  <link rel="stylesheet" href="./weact.css?v=6">
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
     /* Hero card breathing room */
@@ -617,8 +617,6 @@
   <!-- GSAP + ScrollTrigger (locally bundled — no CDN round-trips) -->
   <script src="./assets/vendor/gsap.min.js"></script>
   <script src="./assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="./assets/vendor/lenis.min.js"></script>
-  <script src="./lenis.js"></script>
   <script src="./anim-io.js"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);

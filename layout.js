@@ -15,33 +15,14 @@ window.scrollTo(0, 0);
    When the cursor sweeps across elements mid-scroll, their :hover transitions
    fire and repaint every frame (worst offender: the project-card grid, which
    animates box-shadow + image transform + overlay on hover). Adding
-   html.is-scrolling flips pointer-events off so no :hover can trigger.
-
-   Re-enabling is the tricky part: Lenis eases to a stop, emitting scroll events
-   through its whole glide-out, so a fixed "Xms after last event" timer restores
-   hover late (only once fully settled). Instead, when Lenis is present we track
-   its live velocity and restore hover the instant the glide decays below
-   STILL_VELOCITY — i.e. when it's effectively stopped, not when it's perfectly
-   stopped. Native scroll (no Lenis) falls back to a short settle timer. */
+   html.is-scrolling flips pointer-events off so no :hover can trigger; it's
+   cleared a short SETTLE_MS after the last scroll/wheel/touch event. */
 (function () {
   const root = document.documentElement;
-  const SETTLE_MS = 90;        // native fallback: clear this long after last event
-  const STILL_VELOCITY = 1.0;  // Lenis: treat as "stopped" below this (tune to taste —
-                               // higher = hover returns earlier in the glide-out)
+  const SETTLE_MS = 90; // clear is-scrolling this long after the last scroll event
   let idleTimer = null;
-  let lenisBound = false;
 
-  function bindLenis() {
-    if (lenisBound || !window.lenis) return;
-    lenisBound = true;
-    clearTimeout(idleTimer); idleTimer = null;
-    window.lenis.on('scroll', (e) => {
-      root.classList.toggle('is-scrolling', Math.abs(e.velocity) > STILL_VELOCITY);
-    });
-  }
-
-  function nativeActivity() {
-    if (lenisBound) return; // once Lenis is driving, velocity governs — ignore this
+  function onScrollActivity() {
     root.classList.add('is-scrolling');
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => { root.classList.remove('is-scrolling'); idleTimer = null; }, SETTLE_MS);
@@ -49,7 +30,7 @@ window.scrollTo(0, 0);
 
   const opts = { passive: true };
   ['wheel', 'touchmove', 'scroll'].forEach((ev) =>
-    window.addEventListener(ev, () => { bindLenis(); nativeActivity(); }, opts)
+    window.addEventListener(ev, onScrollActivity, opts)
   );
 })();
 
@@ -83,7 +64,7 @@ const HEADER_HTML = `
     <!-- RIGHT zone — About (page nav) · connect · résumé · preferences -->
     <div class="nav-pill-right">
 
-      <a class="nav-pill-pagelink" href="/about.html" data-path="/about.html">About</a>
+      <a class="nav-pill-pagelink" href="/about" data-path="/about">About</a>
 
       <span class="nav-pill-divider" aria-hidden="true"></span>
 
@@ -205,7 +186,7 @@ const FOOTER_HTML = `
   </div>
   <div class="footer-divider" aria-hidden="true"></div>
   <nav class="footer-links" aria-label="Footer navigation">
-    <a href="/about.html">
+    <a href="/about">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -230,7 +211,7 @@ const FOOTER_HTML = `
   </nav>
   <div class="footer-bottom">
     <p class="footer-copyright">&copy; 2026 Chris Rudnew</p>
-    <button class="footer-top-btn" onclick="window.lenis?window.lenis.scrollTo(0):window.scrollTo({top:0})" aria-label="Back to top">
+    <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M18 15l-6-6-6 6"/>
       </svg>
@@ -347,11 +328,11 @@ function initLayout() {
       _scrollLockTimer = setTimeout(() => { _scrollLocked = false; _lastY = window.scrollY; }, 2000);
     };
 
-    /* Deadzone: Lenis eases to a stop by overshooting + settling a few px,
-       which flips the show/hide direction repeatedly right before it rests.
-       Ignore moves smaller than this AND leave _lastY untouched on those
-       frames, so the settle jitter can never accumulate across the threshold.
-       Real scrolling still triggers once net movement exceeds the deadzone. */
+    /* Deadzone: ignore tiny scroll deltas so trackpad/settle jitter near a stop
+       can't rapidly flip the header show/hide direction. Ignore moves smaller
+       than this AND leave _lastY untouched on those frames, so jitter never
+       accumulates across the threshold. Real scrolling still triggers once net
+       movement exceeds the deadzone. */
     const _HIDE_DEADZONE = 8;
     window.addEventListener('scroll', function () {
       if (_scrollLocked || _mouseNearTop || _scrollRaf) return;
@@ -580,14 +561,9 @@ function initSectionNav() {
       if (!target) return;
       e.preventDefault();
       if (window._headerLockScroll) window._headerLockScroll();
-      /* Use Lenis when available (avoids native-smooth vs Lenis conflict).
-         Falls back to window.scrollTo on pages without Lenis (reduced motion). */
-      if (window.lenis) {
-        window.lenis.scrollTo(target, { offset: -120 });
-      } else {
-        const y = target.getBoundingClientRect().top + window.scrollY - 120;
-        window.scrollTo({ top: y, behavior: smoothBehaviour });
-      }
+      /* Native smooth scroll to the section, offset for the fixed header. */
+      const y = target.getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top: y, behavior: smoothBehaviour });
       history.replaceState(null, '', `#${id}`);
     });
   });

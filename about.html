@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=141">
+  <link rel="stylesheet" href="./style.css?v=148">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -532,8 +532,6 @@
   <!-- GSAP + ScrollTrigger (locally bundled — no CDN round-trips) -->
   <script src="./assets/vendor/gsap.min.js"></script>
   <script src="./assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="./assets/vendor/lenis.min.js"></script>
-  <script src="./lenis.js"></script>
   <script src="./anim-io.js?v=2"></script>
   <script>
     gsap.registerPlugin(ScrollTrigger);
@@ -686,11 +684,7 @@
         // If collapsing — kick off the scroll FIRST so it runs in parallel with the shrink
         if (wasExpanded) {
           const targetTop = collapsible.getBoundingClientRect().top + window.scrollY - 80;
-          if (window.lenis && !motionReduced) {
-            window.lenis.scrollTo(targetTop, { duration: 1.2, easing: t => 1 - Math.pow(1 - t, 3) });
-          } else {
-            window.scrollTo({ top: targetTop, behavior: motionReduced ? 'auto' : 'smooth' });
-          }
+          window.scrollTo({ top: targetTop, behavior: motionReduced ? 'auto' : 'smooth' });
         }
 
         const expanded = collapsible.classList.toggle('is-expanded');

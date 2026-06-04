@@ -97,7 +97,7 @@
    RESET & BASE
 ============================================================ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: auto; } /* Lenis handles smooth scroll — native smooth fights it and causes layout thrashing */
+html { scroll-behavior: smooth; } /* Native smooth scroll (Lenis removed). Reduced-motion overrides to auto below. */
 
 body {
   font-family: var(--font-body);
@@ -1390,13 +1390,13 @@ body[data-page-tint="about"] .hero-text-backdrop {
     font-size: clamp(28px, 8vw, 38px);
   }
   body[data-page-tint="home"] .hero-bg-zone {
-    height: clamp(520px, 72vh, 640px);
+    height: clamp(580px, 80vh, 720px); /* extended so texture reaches the divider under the hero card */
     -webkit-mask-image: linear-gradient(to bottom,
       transparent 0, rgba(0,0,0,1) 60px,
-      rgba(0,0,0,1) calc(100% - 100px), transparent 100%);
+      rgba(0,0,0,1) calc(100% - 80px), transparent 100%);
               mask-image: linear-gradient(to bottom,
       transparent 0, rgba(0,0,0,1) 60px,
-      rgba(0,0,0,1) calc(100% - 100px), transparent 100%);
+      rgba(0,0,0,1) calc(100% - 80px), transparent 100%);
   }
   body[data-page-tint="about"] .hero { padding: 0; }
   body[data-page-tint="about"] .hero-text-backdrop {
@@ -3286,7 +3286,10 @@ html.is-scrolling * { pointer-events: none !important; }
 .overview-card {
   padding: 40px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter: these case-study cards sit over the flat page bg
+     (+ faint grain), not the hero orbs (canvas is hero-scoped), so the live
+     blur was visually inert while costing a per-frame composite during
+     scroll and the staggered reveal. Shared across weact/linger/crimemap/about. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -3321,7 +3324,7 @@ html.is-scrolling * { pointer-events: none !important; }
   display: flex; flex-direction: column; align-items: center;
   gap: 8px; padding: 32px 16px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -3412,7 +3415,7 @@ html.is-scrolling * { pointer-events: none !important; }
 }
 .process-pipeline-card {
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md); box-shadow: var(--shadow-md);
   padding: 48px 64px; width: 100%;
@@ -3515,7 +3518,7 @@ html.is-scrolling * { pointer-events: none !important; }
 .reflection-card {
   padding: 36px;
   background: var(--surface);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* No backdrop-filter — inert over the flat bg; see .overview-card note. */
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
