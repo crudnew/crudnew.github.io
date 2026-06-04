@@ -11,3 +11,6 @@ assets/*-original.png
 
 # Local-only dev server (clean-URL fallback for localhost). Dev tool, not deployed.
 devserver.py
+
+# Claude Code local memory — not for public repo
+memory/
