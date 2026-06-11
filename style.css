@@ -4189,6 +4189,23 @@ html.intro-running .hero-bg-zone {
    morph. Through the hole the canvas is visible; orbFrost (at z:4502) sits
    over the hole and blurs that same canvas — identical to what the real hero
    card will blur, so the 1.65s handoff is seamless. */
+/* Intro backdrop — flat tan layer that sits BEHIND the WebGL canvas (z:-1, so
+   below .hero-bg-zone at z:0 but above body's own background). During the intro
+   it fills the canvas's top/bottom mask-fade and the area below the canvas with a
+   brown that matches the liquid; at hand-off JS fades its opacity to 0, revealing
+   the page's real cream background + gradients smoothly (no instant colour snap).
+   width:100vw covers the reserved scrollbar gutter too. */
+.intro-bg-fade {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  background-color: rgb(200, 178, 149);
+  display: none;
+}
+html.intro-running .intro-bg-fade { display: block; }
+[data-theme="dark"] .intro-bg-fade { background-color: rgb(36, 26, 22); }
+
 .intro-veil {
   position: fixed; inset: 0;
   width: 100vw; height: 100vh;
