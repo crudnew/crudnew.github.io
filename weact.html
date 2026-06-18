@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=148">
-  <link rel="stylesheet" href="./weact.css?v=6">
+  <link rel="stylesheet" href="./style.css?v=157">
+  <link rel="stylesheet" href="./weact.css?v=7">
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>
     /* Hero card breathing room */
@@ -25,11 +25,12 @@
       border: 1px solid rgba(180, 210, 255, 0.50) !important;
       box-shadow: 0 8px 40px rgba(10,40,120,0.14), inset 0 1px 0 rgba(255,255,255,0.72) !important;
     }
-    /* Inner frosted panel */
+    /* Inner frosted panel — see-through frost (blur removed); 0.74 keeps the
+       animation faintly visible while holding dark text WCAG-safe. */
     .hero-wrapper .case-hero .hero-text-backdrop {
-      background: rgba(235, 243, 255, 0.32);
-      backdrop-filter: blur(22px) saturate(1.15);
-      -webkit-backdrop-filter: blur(22px) saturate(1.15);
+      background: rgba(235, 243, 255, 0.54);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       border: 1px solid rgba(180, 210, 255, 0.55);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 4px 24px rgba(10,40,120,0.08);
     }
@@ -42,9 +43,9 @@
       box-shadow: 0 6px 48px rgba(0,5,20,0.55), 0 2px 12px rgba(0,5,20,0.35), inset 0 1px 0 rgba(80,150,255,0.12) !important;
     }
     [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop {
-      background: rgba(6, 14, 44, 0.72);
-      backdrop-filter: blur(22px) saturate(1.1);
-      -webkit-backdrop-filter: blur(22px) saturate(1.1);
+      background: rgba(6, 14, 44, 0.54);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       border: 1px solid rgba(60, 120, 220, 0.16);
       box-shadow: inset 0 1px 0 rgba(80,150,255,0.12), 0 2px 20px rgba(0,5,20,0.40);
     }
@@ -414,7 +415,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=27"></script>
+  <script src="./layout.js?v=32"></script>
 
   <!-- WeAct: Calming → Strengthening → Active gradient animation -->
   <script>

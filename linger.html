@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=148">
-  <link rel="stylesheet" href="./linger.css?v=7">
+  <link rel="stylesheet" href="./style.css?v=157">
+  <link rel="stylesheet" href="./linger.css?v=8">
   <style>
     /* Hero card breathing room, side padding, button alignment */
     .case-main .hero-wrapper {
@@ -26,11 +26,12 @@
       border: 1px solid rgba(255,255,255,0.55) !important;
       box-shadow: 0 8px 40px rgba(80,100,160,0.10), inset 0 1px 0 rgba(255,255,255,0.70) !important;
     }
-    /* Inner panel — translucent, let the animation breathe through */
+    /* Inner panel — see-through frost (blur removed); 0.74 lets the animation
+       show faintly while keeping dark text WCAG-safe. */
     .hero-wrapper .case-hero .hero-text-backdrop {
-      background: rgba(255,255,255,0.28);
-      backdrop-filter: blur(22px) saturate(1.15);
-      -webkit-backdrop-filter: blur(22px) saturate(1.15);
+      background: rgba(255,255,255,0.54);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       border: 1px solid rgba(255,255,255,0.55);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.70), 0 4px 24px rgba(80,100,160,0.08);
     }
@@ -48,9 +49,9 @@
     }
     /* Inner panel — midnight blue frosted glass */
     [data-theme="dark"] .hero-wrapper .case-hero .hero-text-backdrop {
-      background: rgba(5, 16, 52, 0.72);
-      backdrop-filter: blur(22px) saturate(1.1);
-      -webkit-backdrop-filter: blur(22px) saturate(1.1);
+      background: rgba(5, 16, 52, 0.54);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       border: 1px solid rgba(100, 165, 255, 0.14);
       box-shadow: inset 0 1px 0 rgba(120,180,255,0.12), 0 2px 20px rgba(2,8,30,0.40);
     }
@@ -665,10 +666,10 @@
         <p>Select a flow to explore below.</p>
 
         <div class="proto-tabs" role="tablist" aria-label="Prototype flows">
-          <button class="proto-tab active" role="tab" aria-selected="true"  data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=468-12312%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=468%3A12312">Scent Detection</button>
-          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=267-541%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=267%3A541">Scent Mapping</button>
-          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=362-8240%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=362%3A8240">Scent Archive</button>
-          <button class="proto-tab"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=620-2574%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=620%3A2574">Scent Emission</button>
+          <button class="proto-tab active" role="tab" aria-selected="true" data-cursor="view" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=468-12312%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=468%3A12312">Scent Detection</button>
+          <button class="proto-tab" data-cursor="view"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=267-541%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=267%3A541">Scent Mapping</button>
+          <button class="proto-tab" data-cursor="view"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=362-8240%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=362%3A8240">Scent Archive</button>
+          <button class="proto-tab" data-cursor="view"        role="tab" aria-selected="false" data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/G5miFiXVDAKzLAZ9JFSC2r/FigBuild-2026?page-id=0%3A1%26node-id=620-2574%26scaling=scale-down%26content-scaling=fixed%26starting-point-node-id=620%3A2574">Scent Emission</button>
           <span class="proto-tab-indicator" aria-hidden="true"></span>
         </div>
 
@@ -904,7 +905,7 @@
 
   <footer-component></footer-component>
 
-  <script src="./layout.js?v=27"></script>
+  <script src="./layout.js?v=32"></script>
 
   <!-- Linger: Frutiger Aero — shimmery light water bg, glassy orbs bouncing -->
   <script>

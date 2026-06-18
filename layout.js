@@ -64,7 +64,7 @@ const HEADER_HTML = `
     <!-- RIGHT zone — About (page nav) · connect · résumé · preferences -->
     <div class="nav-pill-right">
 
-      <a class="nav-pill-pagelink" href="/about" data-path="/about">About</a>
+      <a class="nav-pill-pagelink" href="/about" data-path="/about" data-cursor="view">About</a>
 
       <span class="nav-pill-divider" aria-hidden="true"></span>
 
@@ -186,7 +186,7 @@ const FOOTER_HTML = `
   </div>
   <div class="footer-divider" aria-hidden="true"></div>
   <nav class="footer-links" aria-label="Footer navigation">
-    <a href="/about">
+    <a href="/about" data-cursor="view">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -479,6 +479,8 @@ function initLayout() {
 
   const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
   const ring = document.createElement('div'); ring.className = 'cursor-ring';
+  const ringLabel = document.createElement('span'); ringLabel.className = 'cursor-label';
+  ring.appendChild(ringLabel);
   document.body.appendChild(dot);
   document.body.appendChild(ring);
 
@@ -491,13 +493,17 @@ function initLayout() {
      dropping idle style-recalcs from ~120/sec to near zero. */
   (function tick() {
     if (motionOk()) {
-      dx += (mx - dx) * 0.18;
-      dy += (my - dy) * 0.18;
+      /* Zero lag — ring tracks the pointer 1:1 (same as the dot). No trailing
+         to visually wait on or misread placement; all the cursor's motion/
+         personality lives in the hover state, not in catch-up. */
+      dx = mx; dy = my;
     } else {
       dx = mx; dy = my;
     }
     const dotX  = mx - 4,           dotY  = my - 4;
-    const ringX = Math.round(dx - 18), ringY = Math.round(dy - 18);
+    /* Wide "View" pill sits to the RIGHT of the real pointer (arrow points back
+       at it); the circle/compact states stay centered on the pointer. */
+    const ringX = Math.round(dx + (window.__cursorWide ? 14 : -18)), ringY = Math.round(dy - 18);
     if (dotX !== _lastDotX || dotY !== _lastDotY) {
       dot.style.transform = `translate(${dotX}px,${dotY}px)`;
       _lastDotX = dotX; _lastDotY = dotY;
@@ -509,8 +515,40 @@ function initLayout() {
     requestAnimationFrame(tick);
   })();
 
-  // Base hover targets — pages can add more via addCursorHover()
-  addCursorHover('a, button');
+  /* ---- Cursor pills — one pass over every interactive element ----
+       external / new-tab / email / tel        → "↗" badge
+       content-entry links (body links, project cards via their stretched <a>,
+         and anything tagged data-cursor="view": the About links, Linger's
+         prototype-flow tabs, etc.)             → "← View" pill
+       header/footer chrome + action buttons    → plain ring grow (no label)
+     Per-element override: data-cursor="view | ext | none".                 */
+  (function () {
+    function pill(el, text, mode) {
+      el.addEventListener('mouseenter', function () {
+        ringLabel.textContent = text;
+        ring.classList.remove('hovering', 'is-view', 'is-ext');
+        ring.classList.add('is-label', mode);
+        window.__cursorWide = true;
+      });
+      el.addEventListener('mouseleave', function () {
+        ring.classList.remove('is-label', 'is-view', 'is-ext');
+        ringLabel.textContent = '';
+        window.__cursorWide = false;
+      });
+    }
+    function grow(el) {
+      el.addEventListener('mouseenter', function () { ring.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function () { ring.classList.remove('hovering'); });
+    }
+    document.querySelectorAll('a[href], button, [data-cursor]').forEach(function (el) {
+      var ov = el.getAttribute('data-cursor');
+      if (ov === 'none') return;
+      var external = el.matches('a[target="_blank"], a[href^="mailto:"], a[href^="tel:"]');
+      if (ov === 'ext' || external) pill(el, '↗', 'is-ext');
+      else if (ov === 'view' || (el.tagName === 'A' && !el.closest('header, footer'))) pill(el, '← View', 'is-view');
+      else grow(el);
+    });
+  })();
 }
 
 /* ============================================================
@@ -704,6 +742,29 @@ function addCursorHover(selector) {
   document.querySelectorAll(selector).forEach(el => {
     el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
     el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+}
+
+/* Public helper — morph the cursor ring into a labelled pill on hover.
+   modeClass: 'is-view' (wide "← View" pill, offsets to the right of the pointer)
+   or 'is-ext' (compact ↗ badge). No-op when the custom cursor is disabled
+   (touch / reduced-motion), so pages can call it unconditionally.            */
+function addCursorLabel(selector, text, modeClass) {
+  const ring = document.querySelector('.cursor-ring');
+  if (!ring) return;
+  const label = ring.querySelector('.cursor-label');
+  document.querySelectorAll(selector).forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      if (label) label.textContent = text;
+      ring.classList.remove('hovering', 'is-view', 'is-ext');
+      ring.classList.add('is-label', modeClass);
+      window.__cursorWide = true; // both pill types pop to the right of the pointer
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.classList.remove('is-label', 'is-view', 'is-ext');
+      if (label) label.textContent = '';
+      window.__cursorWide = false;
+    });
   });
 }
 

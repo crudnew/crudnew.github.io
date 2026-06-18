@@ -158,19 +158,9 @@ button:focus-visible {
 /* ============================================================
    CUSTOM CURSOR
 ============================================================ */
-.cursor-dot {
-  position: fixed; width: 8px; height: 8px;
-  background: var(--accent); border-radius: 50%;
-  pointer-events: none; z-index: 9999;
-  transition: transform 0.15s ease;
-}
-.cursor-ring {
-  position: fixed; width: 36px; height: 36px;
-  border: 1.5px solid rgba(123,106,95,0.4);
-  border-radius: 50%; pointer-events: none; z-index: 9998;
-  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-}
-.cursor-ring.hovering { width: 54px; height: 54px; border-color: var(--accent); }
+/* Custom cursor: structure, behaviour, and the label-pill morph all live in
+   style.css (single source — keeps it zero-lag and universal). Linger's blue
+   cursor accent is applied lower in this file. */
 
 /* ---- Reduced motion ---- */
 [data-motion="reduced"] *,
