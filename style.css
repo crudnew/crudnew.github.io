@@ -1341,13 +1341,13 @@ body[data-page-tint="about"] .hero-wrapper::after { display: none; }
 /* HOME — bg zone height + gradient mask.
    Height sized so the fade completes around the divider below the hero card. */
 body[data-page-tint="home"] .hero-bg-zone {
-  height: clamp(560px, 62vh, 700px);
+  height: clamp(740px, 84vh, 900px);
   -webkit-mask-image: linear-gradient(to bottom,
     transparent 0, rgba(0,0,0,1) 60px,
-    rgba(0,0,0,1) calc(100% - 90px), transparent 100%);
+    rgba(0,0,0,1) calc(100% - 150px), transparent 100%);
           mask-image: linear-gradient(to bottom,
     transparent 0, rgba(0,0,0,1) 60px,
-    rgba(0,0,0,1) calc(100% - 90px), transparent 100%);
+    rgba(0,0,0,1) calc(100% - 150px), transparent 100%);
 }
 /* HOME — frosted card adopts full outer-card padding + radius + stronger frost */
 body[data-page-tint="home"] .hero-text-backdrop {
