@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=164">
+  <link rel="stylesheet" href="./style.css?v=166">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
   <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
@@ -784,10 +784,13 @@
     /* ==================== PHONE LOOP (shared) ==================== */
     (function() {
       [
-        { selector: '.card--feature.card--weact .card-image', src: './assets/homepage/weact-phones.webp' },
-        { selector: '.card--feature.card--linger .card-image', src: './assets/homepage/linger-phones.webp' },
-        { selector: '.card--feature.card--crimemap .card-image', src: './assets/homepage/crimemap-phones.webp' },
-        { selector: '.card--feature.card--portfolio .card-image', src: './assets/homepage/portfolio-phones.webp' }
+        /* speed: duration multiplier on the desktop (widest) JS-computed loop
+           duration only — tablet/mobile durations are fixed in CSS media
+           queries and unaffected by this. <1 = faster, >1 = slower. */
+        { selector: '.card--feature.card--weact .card-image', src: './assets/homepage/weact-phones.webp', speed: 0.90 },
+        { selector: '.card--feature.card--linger .card-image', src: './assets/homepage/linger-phones.webp', speed: 1.15 },
+        { selector: '.card--feature.card--crimemap .card-image', src: './assets/homepage/crimemap-phones.webp', speed: 1.0 },
+        { selector: '.card--feature.card--portfolio .card-image', src: './assets/homepage/portfolio-phones.webp', speed: 1.0 }
       ].forEach(function(item) {
         const ci = document.querySelector(item.selector);
         if (!ci) return;
@@ -795,7 +798,7 @@
         img.onload = function() {
           const tileH = Math.round(img.naturalHeight * (ci.clientWidth * 0.76 / img.naturalWidth)); // 0.76 = 38% bg-size × 2 (::after is double-width)
           ci.style.setProperty('--tile-h', tileH + 'px');
-          ci.style.setProperty('--loop-dur', Math.round(tileH / 80) + 's');
+          ci.style.setProperty('--loop-dur', (tileH / 80 * item.speed).toFixed(2) + 's');
         };
         img.src = item.src;
       });

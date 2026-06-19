@@ -1361,9 +1361,20 @@ body[data-page-tint="home"] .hero-text-backdrop {
      rather than a thin banner, without forcing dead air around the short
      copy. Projects still peek in below the fold on a standard viewport. */
   min-height: clamp(380px, 46vh, 460px);
+  /* Slight elevation — the base rule has only an inset highlight, so the card
+     sits visually flush with the page. A soft outer shadow gives it a touch
+     of lift/authority without changing size, opacity, or adding content. */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    0 24px 48px -16px rgba(80, 55, 30, 0.16),
+    0 8px 20px -8px rgba(80, 55, 30, 0.10);
 }
 [data-theme="dark"] body[data-page-tint="home"] .hero-text-backdrop {
   background: rgba(36, 26, 22, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 24px 48px -16px rgba(0, 0, 0, 0.45),
+    0 8px 20px -8px rgba(0, 0, 0, 0.30);
 }
 
 /* ABOUT — bg zone shorter (about hero has less content) */
@@ -3508,18 +3519,24 @@ html.is-scrolling * { pointer-events: none !important; }
    match desktop scroll speed (~59px/s). Grid cards get a smaller sprite (~380px)
    sized to their ~400px card width so phones aren't overly zoomed-in. */
 @media (max-width: 1050px) and (min-width: 800px) {
-  /* Linger hero card — full-width, keep large sprite, fix speed */
+  /* Linger hero card — full-width, keep large sprite, fix speed.
+     15s base, +5% (slower) per Linger-only tablet tuning. */
   .card--feature.card--linger .card-image::after {
     background-size: 700px 893px;
     --tile-h: 893px;
-    --loop-dur: 15s;
+    --loop-dur: 15.75s;
   }
-  /* Grid cards (WeAct/Linger if ever in grid) — scale down to match card size */
-  .cards--grid .card--feature.card--weact .card-image::after,
-  .cards--grid .card--feature.card--linger .card-image::after {
+  /* Grid cards — scale down to match card size. WeAct stays at the 15s base;
+     Linger gets its own +5% (slower) tablet tuning, same as the hero card above. */
+  .cards--grid .card--feature.card--weact .card-image::after {
     background-size: 380px 485px;
     --tile-h: 485px;
     animation-duration: 15s;
+  }
+  .cards--grid .card--feature.card--linger .card-image::after {
+    background-size: 380px 485px;
+    --tile-h: 485px;
+    animation-duration: 15.75s;
   }
   /* Grid cards (Crimemap/Portfolio) */
   .cards--grid .card--feature.card--crimemap .card-image::after,
