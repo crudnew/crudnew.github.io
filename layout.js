@@ -237,28 +237,16 @@ function initLayout() {
     }
   });
 
-  /* Typewriter — type name in on every page load.
-     During intro: name stays empty here, then types in when intro:done fires
-     (the typed center name fades out around the same moment — clean handoff). */
+  /* Typewriter — type name in on every page load. */
   const _nameEl = document.querySelector('.nav-pill-name');
-  const _introActive = window._introWillRun || document.documentElement.classList.contains('intro-running');
-  if (_nameEl && motionOk() && !_introActive) {
+  if (_nameEl && motionOk()) {
     _twIn(_nameEl);
-  } else if (_nameEl && _introActive) {
-    _nameEl.textContent = '';
-    // Fire the typewriter when the intro completes so the nav name appears
-    // naturally as a fresh moment (no FLIP, no "name flying" cross-screen).
-    document.addEventListener('intro:done', function () {
-      if (motionOk()) _twIn(_nameEl);
-      else _nameEl.textContent = _TW_NAME;
-    }, { once: true });
   }
 
   /* Page-tint fade — fires after the typewriter finishes so the color
      settles in as a natural follow-on to the name appearing.
-     Typewriter lead (260ms) + 12 chars × 68ms ≈ 1076ms; add a breath.
-     With intro, push the tint fade so it lands after the hero entrance. */
-  const _tintDelay = motionOk() ? (_introActive ? 2200 : 1150) : 0;
+     Typewriter lead (260ms) + 12 chars × 68ms ≈ 1076ms; add a breath. */
+  const _tintDelay = motionOk() ? 1150 : 0;
   setTimeout(() => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

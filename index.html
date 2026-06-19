@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=157">
+  <link rel="stylesheet" href="./style.css?v=159">
   <!-- Theme restore: runs before first paint to avoid flash; pageshow handles bfcache restores -->
-  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;/* INTRO_GATE: set to true to play every reload (testing); set to false to gate per-session via sessionStorage (production) */var INTRO_ALWAYS=false;var introWillRun=motionOn&&(INTRO_ALWAYS||!sessionStorage.getItem('introPlayed'))&&window.innerWidth>=768;window._introWillRun=introWillRun;if(introWillRun){document.documentElement.classList.add('intro-running');setTimeout(function(){document.documentElement.classList.remove('intro-running');},4000);}else if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});if(!sessionStorage.getItem('displayTipSeen')){window._showDisplayTip=true;sessionStorage.setItem('displayTipSeen','1');}})();</script>
+  <script>(function(){function applyPrefs(){var t=localStorage.getItem('theme')||'light',c=localStorage.getItem('contrast')||'normal',m=localStorage.getItem('motion')||'normal';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-contrast',c);document.documentElement.setAttribute('data-motion',m);}applyPrefs();var motionOn=(localStorage.getItem('motion')||'normal')!=='reduced'&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(motionOn){document.documentElement.classList.add('pre-anim');setTimeout(function(){document.documentElement.classList.remove('pre-anim');},1500);}window.addEventListener('pageshow',function(e){if(e.persisted)applyPrefs();});})();</script>
   <style>/* page-specific overrides (none currently) */</style>
 </head>
 <body data-page-tint="home">
@@ -19,42 +19,7 @@
   <!-- Skip to main content — keyboard / screen reader -->
   <a class="skip-link" href="#projects-heading">Skip to main content</a>
 
-<!-- Intro: Glass Orb Unfold (first visit per session, ≥768px only)
-       Note: intro-orb-frost lives OUTSIDE intro-root so its backdrop-filter
-       can blur the canvas behind it (intro-root creates a stacking context
-       that would otherwise isolate the frost from the canvas backdrop). -->
-  <!-- Veil: full-viewport SVG painted with --bg-primary, with a mask that
-       punches a hole at the orb position. JS animates #intro-veil-hole's
-       attributes (x/y/width/height/rx) in sync with the orb so the hole
-       tracks the morph. SVG mask is bulletproof across Chrome/Safari/Firefox
-       and supports rounded-rectangle holes natively via the rx attribute. -->
-  <svg class="intro-veil" id="intro-veil" aria-hidden="true">
-    <defs>
-      <mask id="intro-veil-mask">
-        <rect width="100%" height="100%" fill="white"/>
-        <rect id="intro-veil-hole" x="0" y="0" width="0" height="0" rx="0" fill="black"/>
-      </mask>
-    </defs>
-    <rect width="100%" height="100%" mask="url(#intro-veil-mask)"/>
-  </svg>
-  <!-- Intro backdrop: flat tan layer BEHIND the WebGL canvas. Gives the canvas's
-       top/bottom mask-fade a matching brown edge during the intro, then fades out
-       to reveal the page's real background — colour AND gradients — in sync with
-       the rest of the entrance, instead of snapping. -->
-  <div class="intro-bg-fade" id="intro-bg-fade" aria-hidden="true"></div>
-  <div class="intro-orb-frost" id="intro-orb-frost" aria-hidden="true"></div>
-  <div class="intro-root" id="intro-root" aria-hidden="true">
-    <div class="intro-orb" id="intro-orb"></div>
-    <div class="intro-name" id="intro-name"></div>
-  </div>
-
   <header-component></header-component>
-
-  <!-- Dark mode nudge tooltip — shown once per session via sessionStorage -->
-  <div class="display-tooltip" id="display-tooltip" aria-hidden="true">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0; opacity:0.75;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    Try Dark Mode
-  </div>
 
   <!-- Hero atmospheric backdrop — full-bleed canvas, hero zone only -->
   <div class="hero-bg-zone" aria-hidden="true">
@@ -74,16 +39,14 @@
           <div class="hero-body">
 
             <div class="hero-text-col">
-              <!-- Eyebrow: pill + availability ping, now in normal flow above h1 -->
-              <div class="hero-header-row">
-                <p class="hero-eyebrow" aria-hidden="true">UX/UI Design &amp; Research</p>
-                <div class="hero-avail-chip hero-avail-chip--top">
-                  <span class="hero-avail-dot" aria-hidden="true"></span>
-                  <span>Available for co-op &middot; 2026</span>
-                </div>
+              <h1 id="hero-heading">Welcome, I'm Chris<span class="underline-draw" aria-hidden="true"></span></h1>
+              <div class="hero-meta">
+                <p class="hero-tagline">UX/UI Design &amp; Research, Built on a Technical Foundation</p>
+                <p class="hero-subtitle">
+                  <span class="hero-credential">Master of Information in UX Design @ University of Toronto</span>
+                  <span class="hero-credential">B.Sc. Computer Science &amp; Business</span>
+                </p>
               </div>
-              <h1 id="hero-heading">UX design built on a technical foundation.<span class="underline-draw" aria-hidden="true"></span></h1>
-              <p class="hero-subtitle"><em>Master of Information in UX Design</em>, University of Toronto · BSc. Computer Science &amp; Business.</p>
             </div>
 
           </div>
@@ -310,9 +273,23 @@
     // Activate deck first so cards reflect deck width (420px), then measure
     // natural content height at that width — this is the correct tallest card.
     wrap.classList.add('bento-deck-active');
-    var maxH = Math.max.apply(null, cards.map(function(c) { return c.offsetHeight; }));
-    wrap.style.height = (maxH + 10) + 'px';
-    cards.forEach(function(c) { c.style.height = maxH + 'px'; });
+
+    // Measure with each card's height freed first — if a previous measurement
+    // pinned a card short, that stale fixed height would cap offsetHeight and
+    // the real (now-larger) content would be clipped instead of re-measured.
+    function measureAndSetHeight() {
+      cards.forEach(function(c) { c.style.height = 'auto'; });
+      var maxH = Math.max.apply(null, cards.map(function(c) { return c.offsetHeight; }));
+      wrap.style.height = (maxH + 10) + 'px';
+      cards.forEach(function(c) { c.style.height = maxH + 'px'; });
+    }
+    measureAndSetHeight();
+    // Re-measure once webfonts finish loading — Inter's metrics differ from
+    // the fallback font, so the initial (pre-swap) height can be too short
+    // and clip the card text against the bottom padding.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(measureAndSetHeight);
+    }
 
     var target = 0, current = 0, raf = null;
     function tick() {
@@ -662,191 +639,20 @@
     // cards get "← View" automatically via their stretched <a>. Nothing to do here.
 
     /* ==================== HERO ENTRANCE ==================== */
-    function _runHeroEntrance(opts) {
+    function _runHeroEntrance() {
       if (!motionOk()) return;
-      opts = opts || {};
-      if (opts.skipBgFade) {
-        /* Intro path: the WebGL canvas is already visible full-screen, so we
-           DON'T re-fade .hero-bg-zone (that would flicker).
-
-           The glass card is revealed with a TRANSFORM only — opacity is set to
-           1 in a single frame, never tweened. Animating opacity 0→1 on an
-           element with backdrop-filter renders it through partial group-opacity,
-           and the blur snaps to live sampling only when opacity hits 1 — that
-           one-frame "pop" is the flash seen right as the entrance ends. Sliding
-           it in (opacity already 1) keeps the backdrop consistent throughout.
-           Inner text has no backdrop-filter, so it still fades in normally. */
-        gsap.set('.hero', { opacity: 1, y: 26 });
-        gsap.timeline({ defaults: { ease: 'power3.out' } })
-          .to('.hero',                { y: 0, duration: 0.9 })
-          .from('.hero-header-row',   { y: 16, opacity: 0, duration: 0.6 },  '-=0.55')
-          .from('.hero h1',           { y: 36, opacity: 0, duration: 0.8 },  '-=0.40')
-          .to('.underline-draw',      { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-          .from('.hero-subtitle',     { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
-      } else {
-        gsap.set('.hero-bg-zone', { opacity: 0 });
-        gsap.set('.hero',         { opacity: 0, y: 60 });
-        gsap.timeline({ defaults: { ease: 'power3.out' } })
-          .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
-          .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
-          .from('.hero-header-row',        { y: 16, opacity: 0, duration: 0.6 },  '-=0.50')
-          .from('.hero h1',                { y: 36, opacity: 0, duration: 0.8 },  '-=0.30')
-          .to('.underline-draw',           { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-          .from('.hero-subtitle',          { y: 24, opacity: 0, duration: 0.65 }, '-=0.50');
-      }
+      gsap.set('.hero-bg-zone', { opacity: 0 });
+      gsap.set('.hero',         { opacity: 0, y: 60 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to('.hero-bg-zone',       { opacity: 1, duration: 1.2, delay: 0.1 })
+        .to('.hero',               { y: 0, opacity: 1, duration: 1 }, '<+0.1')
+        .from('.hero h1',          { y: 36, opacity: 0, duration: 0.8 },  '-=0.30')
+        .to('.underline-draw',     { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
+        .from('.hero-tagline',     { y: 18, opacity: 0, duration: 0.55 }, '-=0.55')
+        .from('.hero-subtitle',    { y: 24, opacity: 0, duration: 0.65 }, '-=0.40');
     }
     window._runHeroEntrance = _runHeroEntrance;
-
-    /* ==================== INTRO — Name Typing ==================== */
-    (function runIntro() {
-      if (!document.documentElement.classList.contains('intro-running')) {
-        _runHeroEntrance();
-        return;
-      }
-
-      const NAME_TEXT = 'Chris Rudnew';
-      const TYPE_MS   = 48;
-
-      const introRoot = document.getElementById('intro-root');
-      const veil      = document.getElementById('intro-veil');       // unused — kept hidden
-      const orb       = document.getElementById('intro-orb');
-      const orbFrost  = document.getElementById('intro-orb-frost');
-      const nameEl    = document.getElementById('intro-name');
-      const introBg   = document.getElementById('intro-bg-fade');    // tan layer behind canvas
-
-      if (!introRoot || !veil || !nameEl) {
-        document.documentElement.classList.remove('intro-running');
-        _runHeroEntrance();
-        return;
-      }
-
-      window._suppressHeaderTypewriter = true;
-
-      // Orb, frost + veil from the old morph intro are unused now — keep them out.
-      // The WebGL canvas (.hero-bg-zone) stays visible full-screen behind the
-      // name via the `html.intro-running .hero-bg-zone { opacity: 1 }` rule.
-      if (orb)      gsap.set(orb,      { opacity: 0, display: 'none' });
-      if (orbFrost) gsap.set(orbFrost, { opacity: 0, display: 'none' });
-      veil.style.display = 'none';
-
-      // Pin the tan backdrop visible inline so it survives intro-running being
-      // dropped at hand-off (the CSS `display:block` rule is class-gated). We
-      // fade it out via GSAP then, revealing the real page background.
-      if (introBg) { introBg.style.display = 'block'; introBg.style.opacity = '1'; }
-
-      // Hide the hero card itself during typing so only the canvas + name show.
-      gsap.set('.hero', { opacity: 0 });
-
-      // Center the typed name in the WebGL canvas (.hero-bg-zone) — not the
-      // viewport. The canvas starts at the top and is shorter than the viewport,
-      // so its vertical midpoint sits above 50vh. Measure it and pin the name there.
-      const bgZone  = document.querySelector('.hero-bg-zone');
-      const bgRect  = bgZone ? bgZone.getBoundingClientRect() : null;
-      const canvasCenterY = (bgRect && bgRect.height)
-        ? bgRect.top + bgRect.height / 2
-        : window.innerHeight / 2;
-      gsap.set(nameEl, { top: canvasCenterY, left: 0, right: 0, x: 0, y: '-50%', opacity: 0 });
-
-      // ── Master timeline ──
-      const tl = gsap.timeline({ onComplete: endIntro });
-
-      /* Phase 1 — typewriter. typingCancelled lets skip() halt the setTimeout
-         chain so the name doesn't keep typing during the fast-forward. */
-      let typingCancelled = false;
-      tl.add(() => {
-        if (typingCancelled) return;
-        nameEl.style.opacity = '1';
-        let i = 0;
-        (function tick() {
-          if (typingCancelled) return;
-          i++;
-          nameEl.textContent = NAME_TEXT.slice(0, i);
-          if (i < NAME_TEXT.length) setTimeout(tick, TYPE_MS);
-        })();
-      }, 0.30);
-
-      // When typing finishes, hold a beat, then fade the intro away.
-      const TYPE_DONE = 0.30 + (NAME_TEXT.length * TYPE_MS) / 1000;
-      const FADE_AT   = TYPE_DONE + 0.55;
-
-      /* Phase 2 — the typed name fades away. */
-      tl.to(nameEl, { opacity: 0, duration: 0.40, ease: 'power2.out' }, FADE_AT);
-
-      /* Phase 3 — handoff: header bar + hero card fade in over the still-visible
-         canvas, then the hero content reveals. Starts once the name is gone. */
-      tl.add(() => {
-        // Pin the canvas visible so dropping intro-running's `!important` rule
-        // doesn't make it flicker out.
-        gsap.set('.hero-bg-zone', { opacity: 1 });
-
-        // Drop intro-running — page content (header, main, etc.) becomes eligible
-        // to show. skipBgFade keeps the card hidden until its own fade runs.
-        document.documentElement.classList.remove('intro-running');
-
-        // Fade the tan backdrop out to reveal the page's real background (colour
-        // AND gradients) at the same pace as everything else — this is what stops
-        // the top/bottom brown borders from snapping to off-white. It sits behind
-        // the canvas, so the canvas/card stay put while only the borders cross-fade.
-        if (introBg) gsap.to(introBg, { opacity: 0, duration: 1.4, ease: 'sine.inOut',
-          onComplete: () => { introBg.style.display = 'none'; } });
-
-        // Fade the header bar in (the intro-running rule that hid it no longer
-        // applies once the class is gone, so animate from 0 explicitly).
-        const header = document.querySelector('body > header');
-        if (header) gsap.fromTo(header, { opacity: 0 },
-          { opacity: 1, duration: 0.7, ease: 'power2.out' });
-
-        // Hero card + content entrance over the canvas (no bg re-fade).
-        _runHeroEntrance({ skipBgFade: true });
-
-        // Signal intro done — layout.js listens for this to type the nav name.
-        if (!window._introDone) {
-          window._introDone = true;
-          document.dispatchEvent(new CustomEvent('intro:done'));
-        }
-      }, FADE_AT + 0.45);
-
-      // Tail so endIntro doesn't fire until the entrance AND the 1.4s backdrop
-      // crossfade have both finished (endIntro removes intro-root + the backdrop).
-      tl.to({}, { duration: 1.55 }, FADE_AT + 0.45);
-
-      /* Skip — any input compresses remainder to ~0.25s and halts the typewriter
-         (typing it out at fast-forward speed looks janky). */
-      let skipped = false;
-      function skip() {
-        if (skipped || tl.progress() >= 1) return;
-        skipped = true;
-        typingCancelled = true;
-        gsap.set(nameEl, { opacity: 0 });
-        tl.timeScale(Math.max(1, (tl.duration() - tl.time()) / 0.25));
-        removeListeners();
-      }
-      function removeListeners() {
-        window.removeEventListener('keydown', skip);
-        window.removeEventListener('click', skip);
-        window.removeEventListener('touchstart', skip);
-        window.removeEventListener('wheel', skip);
-      }
-      window.addEventListener('keydown', skip, { passive: true });
-      window.addEventListener('click',   skip, { passive: true });
-      window.addEventListener('touchstart', skip, { passive: true });
-      window.addEventListener('wheel',   skip, { passive: true });
-
-      function endIntro() {
-        removeListeners();
-        sessionStorage.setItem('introPlayed', '1');
-        document.documentElement.classList.remove('intro-running');
-        if (veil && veil.parentNode)           veil.parentNode.removeChild(veil);
-        if (introRoot && introRoot.parentNode) introRoot.parentNode.removeChild(introRoot);
-        if (orbFrost && orbFrost.parentNode)   orbFrost.parentNode.removeChild(orbFrost);
-        if (introBg && introBg.parentNode)     introBg.parentNode.removeChild(introBg);
-        // Safety net: ensure intro:done fired even if the handoff was skipped past.
-        if (!window._introDone) {
-          window._introDone = true;
-          document.dispatchEvent(new CustomEvent('intro:done'));
-        }
-      }
-    })();
+    _runHeroEntrance();
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
     /* Handled by anim-io.js (CSS @keyframes + IntersectionObserver).
@@ -925,105 +731,6 @@
         scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom top', scrub: 1.5 }
       });
     }); // end mm.add desktop
-  </script>
-
-
-  <!-- Dark mode nudge — sessionStorage, once per session -->
-  <script>
-  (function () {
-    if (!window._showDisplayTip) return;
-
-    var tip = document.getElementById('display-tooltip');
-    if (!tip) return;
-
-    var dismissed = false;
-
-    function dismiss() {
-      if (dismissed) return;
-      dismissed = true;
-      gsap.killTweensOf(tip);
-      tip.classList.remove('is-demo-dark', 'is-traveling');
-      gsap.to(tip, { opacity: 0, y: 6, duration: 0.3, ease: 'power2.in',
-        onComplete: function () {
-          tip.classList.remove('is-visible');
-          tip.setAttribute('aria-hidden', 'true');
-        }
-      });
-      document.removeEventListener('click', dismiss);
-      var sw = document.querySelector('.settings-wrap');
-      if (sw) sw.removeEventListener('mouseenter', dismiss);
-    }
-
-    function bindDismiss() {
-      setTimeout(function () {
-        document.addEventListener('click', dismiss, { once: true });
-        var sw = document.querySelector('.settings-wrap');
-        if (sw) sw.addEventListener('mouseenter', dismiss, { once: true });
-      }, 300);
-    }
-
-    function runDemoCycle() {
-      // light (hold 1.0s) → dark transition → hold 1.4s → back to light → auto-dismiss
-      setTimeout(function () { if (!dismissed) tip.classList.add('is-demo-dark'); }, 1000);
-      setTimeout(function () { if (!dismissed) tip.classList.remove('is-demo-dark'); }, 2800);
-      setTimeout(dismiss, 4800);
-    }
-
-    function show() {
-      var btn = document.querySelector('.settings-btn');
-      if (!btn) return;
-      var r = btn.getBoundingClientRect();
-      if (r.width === 0) return;
-
-      // Compute final (destination) position — below the Display button
-      var tipW = tip.offsetWidth || 160;
-      var finalLeft = r.left + r.width / 2 - tipW / 2;
-      finalLeft = Math.max(8, Math.min(finalLeft, window.innerWidth - tipW - 8));
-      var finalTop = r.bottom + 20;
-      var arrowX   = r.left + r.width / 2 - finalLeft;
-
-      // Tooltip STARTS at viewport center — left is set here, GSAP x stays 0
-      var centerLeft = window.innerWidth / 2 - tipW / 2;
-      centerLeft = Math.max(8, Math.min(centerLeft, window.innerWidth - tipW - 8));
-
-      // Place tooltip at viewport center — GSAP animates `left` directly to finalLeft (no x trick)
-      tip.style.top  = finalTop + 'px';
-      tip.style.left = centerLeft + 'px';
-      tip.style.setProperty('--arrow-x', (tipW / 2) + 'px');
-
-      tip.removeAttribute('aria-hidden');
-      tip.classList.add('is-visible', 'is-traveling');
-
-      // ── GSAP entrance — scale pop then slide to button ──
-      gsap.set(tip, { y: 4, opacity: 0, scale: 0.68, transformOrigin: 'top center' });
-
-      gsap.timeline({
-        onComplete: function () {
-          tip.classList.remove('is-traveling');
-          tip.style.setProperty('--arrow-x', arrowX + 'px');
-          runDemoCycle();
-          bindDismiss();
-        }
-      })
-        // 1. Pop in with spring overshoot
-        .to(tip, { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: 'back.out(2.8)' })
-        // 2. Hold at center so the eye registers it appeared, then casual slide
-        //    back.out(1.4) = gentle overshoot of ~6px, settles smoothly. Single
-        //    motion — no separate "squish" or "compress" phases (they look cheap).
-        .to(tip, { left: finalLeft, duration: 1.10, ease: 'back.out(1.4)' }, '+=0.45');
-    }
-
-    // Fire shortly after page load — but wait for the intro to finish first
-    // so the tooltip doesn't pop in during the orb morph.
-    function fire() { setTimeout(show, 500); }
-    if (window._introDone) {
-      fire();
-    } else if (window._introWillRun || document.documentElement.classList.contains('intro-running')) {
-      document.addEventListener('intro:done', fire, { once: true });
-    } else {
-      setTimeout(show, 600);
-    }
-  })();
   </script>
 
 </body>

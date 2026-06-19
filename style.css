@@ -1276,9 +1276,7 @@ main {
     rgba(255, 255, 255, 0.06) 35%,
     transparent 60%);
 }
-.hero-text-backdrop > .hero-eyebrow,
 .hero-text-backdrop > .about-status-chip,
-.hero-text-backdrop > .hero-avail-chip,
 .hero-text-backdrop > .hero-body,
 .hero-text-backdrop > h1,
 .hero-text-backdrop > .hero-subtitle {
@@ -1343,24 +1341,26 @@ body[data-page-tint="about"] .hero-wrapper::after { display: none; }
 /* HOME — bg zone height + gradient mask.
    Height sized so the fade completes around the divider below the hero card. */
 body[data-page-tint="home"] .hero-bg-zone {
-  height: clamp(770px, 84vh, 880px);
+  height: clamp(560px, 62vh, 700px);
   -webkit-mask-image: linear-gradient(to bottom,
-    transparent 0, rgba(0,0,0,1) 80px,
-    rgba(0,0,0,1) calc(100% - 105px), transparent 100%);
+    transparent 0, rgba(0,0,0,1) 60px,
+    rgba(0,0,0,1) calc(100% - 90px), transparent 100%);
           mask-image: linear-gradient(to bottom,
-    transparent 0, rgba(0,0,0,1) 80px,
-    rgba(0,0,0,1) calc(100% - 105px), transparent 100%);
+    transparent 0, rgba(0,0,0,1) 60px,
+    rgba(0,0,0,1) calc(100% - 90px), transparent 100%);
 }
 /* HOME — frosted card adopts full outer-card padding + radius + stronger frost */
 body[data-page-tint="home"] .hero-text-backdrop {
-  padding: 72px 80px; gap: 28px; border-radius: var(--radius-lg);
+  padding: 64px 80px; gap: 28px; border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.34);
   /* Fake frost — none overrides the base .hero-text-backdrop blur on home */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   justify-content: center;
-  /* Tall enough that Linger peeks just below the fold — creates scroll pull */
-  min-height: clamp(375px, 60vh, 540px);
+  /* Middle ground — enough height to read as a deliberate, confident hero
+     rather than a thin banner, without forcing dead air around the short
+     copy. Projects still peek in below the fold on a standard viewport. */
+  min-height: clamp(380px, 46vh, 460px);
 }
 [data-theme="dark"] body[data-page-tint="home"] .hero-text-backdrop {
   background: rgba(36, 26, 22, 0.42);
@@ -1440,21 +1440,6 @@ body[data-page-tint="about"] .hero-text-backdrop {
   }
 }
 
-.hero-eyebrow {
-  font-size: 12px; font-weight: 500; text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: rgba(26, 22, 20, 0.82);
-  padding: 6px 18px;
-  background: rgba(255, 255, 255, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 9999px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.70),
-    0 1px 3px rgba(62, 40, 22, 0.08);
-  text-shadow:
-    0  1px 0 rgba(255, 255, 255, 0.80),
-    0 -1px 0 rgba(0,   0,   0,   0.10);
-}
 .hero h1 {
   font-family: var(--font-heading);
   font-size: 66px; font-weight: 400; font-style: italic; line-height: 1.13;
@@ -1481,26 +1466,33 @@ body[data-page-tint="about"] .hero-text-backdrop {
   background: linear-gradient(90deg, var(--text-muted), transparent);
   border-radius: 2px;
 }
+/* Each credential is its own line, not a single run-on sentence — the first
+   clause alone (~535px at this font size) is already too long to share a
+   line with a second clause inside a column narrow enough to stay readable,
+   so a "single line + separator" layout would just relocate the orphan
+   problem instead of solving it. Stacking sidesteps it entirely: no wrap
+   point ever lands mid-clause regardless of viewport width. */
 .hero-subtitle {
-  font-size: 19px; line-height: 1.7;
-  text-align: center;
+  display: flex; flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 19px; line-height: 1.5;
+  text-align: left;
   color: rgba(26, 22, 20, 0.85);
   max-width: 760px;
   text-shadow:
     0  1px 0 rgba(255, 255, 255, 0.80),
     0 -1px 0 rgba(0,   0,   0,   0.12);
 }
+.hero-tagline {
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 600;
+  text-align: left;
+  color: rgba(26, 22, 20, 0.62);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
 
 /* ---- Dark mode hero text ---- */
-[data-theme="dark"] .hero-eyebrow {
-  color: rgba(245, 240, 234, 0.80);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 1px 3px rgba(0, 0, 0, 0.22);
-  text-shadow: none;
-}
 [data-theme="dark"] .hero h1,
 [data-theme="dark"] .hero-wrapper .hero-text-backdrop h1 {
   color: rgba(245, 240, 234, 0.88);
@@ -1514,53 +1506,14 @@ body[data-page-tint="about"] .hero-text-backdrop {
   color: rgba(245, 240, 234, 0.85);
   text-shadow: none;
 }
-
-/* ============================================================
-   HOMEPAGE HERO — AVAILABILITY CHIP
-============================================================ */
-.hero-avail-chip {
-  display: flex; align-items: center; gap: 10px;
-  width: auto;
-  font-family: var(--font-body);
-  font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
-  color: rgba(26, 22, 20, 0.70);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
-}
-.hero-avail-dot {
-  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-  background: #4caf6e;
-  animation: heroAvailPulse 2.4s ease-in-out infinite;
-}
-@keyframes heroAvailPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 110, 0.85); }
-  50%       { box-shadow: 0 0 0 5px rgba(76, 175, 110, 0.1); }
-}
-[data-motion="reduced"] .hero-avail-dot { animation: none; }
-[data-theme="dark"] .hero-avail-chip {
-  color: rgba(245, 240, 234, 0.62); text-shadow: none;
-}
-[data-contrast="high"] .hero-avail-dot { animation: none; background: #2e7d4f; }
-
-/* Ping in header row — offset 5px right so pulse glow's leftmost edge
-   aligns with the pill border and heading at x=0 */
-.hero-avail-chip--top {
-  width: auto;
-  position: relative; z-index: 3;
-  padding-left: 5px;
+[data-theme="dark"] .hero-tagline {
+  color: rgba(245, 240, 234, 0.58);
+  text-shadow: none;
 }
 
 /* ============================================================
    HOMEPAGE HERO — TWO-COLUMN BODY
 ============================================================ */
-/* Header row — floats in top padding zone, doesn't push body down */
-.hero-header-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-[data-contrast="high"] .hero-header-row { gap: 6px; }
-
 body[data-page-tint="home"] .hero-body {
   display: grid;
   grid-template-columns: 1fr;
@@ -1575,21 +1528,30 @@ body[data-page-tint="home"] .hero-body {
   align-items: center; gap: 28px;
 }
 
-/* Extra separation between eyebrow group and headline */
-body[data-page-tint="home"] .hero-text-col .hero-header-row {
-  margin-bottom: 16px;
+/* Meta block — tagline + credentials, left-aligned. The h1 shares this same
+   width + alignment (see override below) so both sit on one consistent
+   left edge instead of the headline centering independently above a
+   left-aligned block — that mismatch is what made the underline look
+   disconnected from the text under it. */
+.hero-meta {
+  display: flex; flex-direction: column; gap: 10px;
+  align-self: center;
+  max-width: 620px;
+  width: 100%;
 }
 
-/* Override centered defaults for home text column */
+/* Override centered defaults for home text column — left-aligned, same
+   width as .hero-meta, so the underline (which tracks the h1 box width)
+   starts at the same left edge as the credentials below it. */
 body[data-page-tint="home"] .hero-text-col h1 {
-  text-align: center;
-  max-width: none;
-  font-size: clamp(42px, 5.2vw, 72px);
+  text-align: left;
+  max-width: 620px;
+  width: 100%;
+  font-size: clamp(38px, 4.6vw, 64px);
 }
 body[data-page-tint="home"] .hero-text-col .hero-subtitle {
-  text-align: center;
   max-width: none;
-  font-size: 17px;
+  font-size: 20px;
 }
 
 /* Tablet */
@@ -1603,87 +1565,6 @@ body[data-page-tint="home"] .hero-text-col .hero-subtitle {
 /* Mobile — tighten body gap */
 @media (max-width: 799px) {
   body[data-page-tint="home"] .hero-body { gap: 24px; }
-}
-
-/* ============================================================
-   DISPLAY TOOLTIP — first-session dark mode nudge
-============================================================ */
-.display-tooltip {
-  position: fixed;
-  z-index: 10000;
-  display: flex; align-items: center; gap: 8px;
-  padding: 11px 18px;
-  border-radius: 12px;
-  background: rgba(240, 228, 212, 0.96);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.90),
-    0 6px 24px rgba(62, 40, 22, 0.20),
-    0 2px 6px  rgba(62, 40, 22, 0.10);
-  font-family: var(--font-body);
-  font-size: 14px; font-weight: 600;
-  color: rgba(26, 22, 20, 0.88);
-  white-space: nowrap;
-  pointer-events: none;
-  cursor: default;
-  opacity: 0;
-  transform: translateY(6px);
-  /* Visibility + theme-demo color transitions */
-  transition:
-    opacity 0.35s ease,
-    transform 0.35s ease,
-    background 0.55s ease,
-    border-color 0.55s ease,
-    color 0.55s ease,
-    box-shadow 0.55s ease;
-}
-.display-tooltip.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-/* Notch arrow — rotated square pointing up toward Display button */
-.display-tooltip::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: var(--arrow-x, 50%);
-  transform: translateX(-50%) rotate(45deg);
-  width: 9px; height: 9px;
-  background: rgba(244, 234, 220, 0.90);
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-bottom: none; border-right: none;
-  transition: background 0.55s ease, border-color 0.55s ease;
-}
-/* Hide arrow notch while the tooltip is sliding from center to button */
-.display-tooltip.is-traveling::before { opacity: 0; }
-/* Theme-demo dark state — JS adds this class to run the preview cycle */
-.display-tooltip.is-demo-dark {
-  background: rgba(30, 22, 16, 0.92);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 4px 20px rgba(0, 0, 0, 0.40);
-  color: rgba(245, 240, 234, 0.82);
-}
-.display-tooltip.is-demo-dark::before {
-  background: rgba(30, 22, 16, 0.92);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-/* Respect page dark mode too */
-[data-theme="dark"] .display-tooltip {
-  background: rgba(30, 22, 16, 0.88);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 4px 20px rgba(0, 0, 0, 0.36);
-  color: rgba(245, 240, 234, 0.80);
-}
-[data-theme="dark"] .display-tooltip::before {
-  background: rgba(30, 22, 16, 0.88);
-  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* ============================================================
@@ -3915,13 +3796,6 @@ body.nav-collapsed .settings-bubble[aria-checked="true"] {
 [data-contrast="high"] .hero-wrapper .case-hero .subtitle { color: #EEEEEE; text-shadow: none; }
 
 /* Hero text — solid colors, no text-shadow */
-[data-contrast="high"] .hero-eyebrow {
-  color: var(--text-secondary);
-  text-shadow: none;
-  box-shadow: none;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-}
 [data-contrast="high"] .hero h1 {
   color: var(--text-primary);
   text-shadow: none;
@@ -3932,6 +3806,10 @@ body.nav-collapsed .settings-bubble[aria-checked="true"] {
 }
 [data-contrast="high"] .hero-subtitle {
   color: var(--text-primary);
+  text-shadow: none;
+}
+[data-contrast="high"] .hero-tagline {
+  color: var(--text-secondary);
   text-shadow: none;
 }
 [data-contrast="high"] .underline-draw {
@@ -4163,179 +4041,4 @@ html[data-motion="reduced"] .bento-card { scroll-snap-align: center; opacity: 1 
 }
 ::view-transition-new(root) {
   animation: 450ms cubic-bezier(0, 0, 0.2, 1) vt-blur-in both;
-}
-
-/* ============================================================
-   INTRO — Glass Orb Unfold (first visit per session, index only)
-   The existing hero canvas is lifted to fixed/fullscreen and
-   clip-pathed to a small circle, masquerading as liquid inside
-   a glass orb. The orb morphs into the hero card silhouette,
-   then expands the clip to inset(0) revealing the page.
-============================================================ */
-html.intro-running, html.intro-running body { overflow: hidden; }
-
-/* Hide the scrollbar-gutter strip during the intro by tinting both html AND
-   body to match the canvas's tan palette. The cream default body bg would
-   otherwise show as a visible vertical strip in the reserved gutter area on
-   Win/Linux (and any tablet/system that renders classic scrollbar gutters). */
-html.intro-running {
-  background-color: rgb(200, 178, 149);
-}
-html.intro-running body {
-  background-color: rgb(200, 178, 149);
-  background-image: none;
-}
-[data-theme="dark"] html.intro-running,
-[data-theme="dark"] html.intro-running body {
-  background-color: rgb(36, 26, 22);
-}
-
-/* Page content stays in layout but invisible — fade-in is choreographed
-   by the hero entrance during phase 3 alongside the veil fade. */
-html.intro-running > body > header,
-html.intro-running > body > footer-component,
-html.intro-running > body > .display-tooltip,
-html.intro-running > body > .skip-link {
-  opacity: 0;
-  pointer-events: none;
-}
-/* Hide everything in main-content except the hero-wrapper so the real hero
-   card is visible as the intro circle. Projects, divider, etc. stay hidden. */
-html.intro-running > body > #main-content > *:not(.hero-wrapper) {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Canvas: stays at its NORMAL z-index (0) during intro, so the veil (4501)
-   sits ABOVE it. The veil's box-shadow paints --bg-primary everywhere except
-   the hole, hiding the canvas wherever we don't want it visible. */
-html.intro-running .hero-bg-zone {
-  opacity: 1 !important;
-}
-
-/* Veil — full-viewport SVG painted --bg-primary, with a mask that punches a
-   hole at the orb's position. JS animates the #intro-veil-hole rect's x/y/
-   width/height/rx attributes in lockstep with the orb so the hole tracks the
-   morph. Through the hole the canvas is visible; orbFrost (at z:4502) sits
-   over the hole and blurs that same canvas — identical to what the real hero
-   card will blur, so the 1.65s handoff is seamless. */
-/* Intro backdrop — flat tan layer that sits BEHIND the WebGL canvas (z:-1, so
-   below .hero-bg-zone at z:0 but above body's own background). During the intro
-   it fills the canvas's top/bottom mask-fade and the area below the canvas with a
-   brown that matches the liquid; at hand-off JS fades its opacity to 0, revealing
-   the page's real cream background + gradients smoothly (no instant colour snap).
-   width:100vw covers the reserved scrollbar gutter too. */
-.intro-bg-fade {
-  position: fixed; top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: -1;
-  background-color: rgb(200, 178, 149);
-  display: none;
-}
-html.intro-running .intro-bg-fade { display: block; }
-[data-theme="dark"] .intro-bg-fade { background-color: rgb(36, 26, 22); }
-
-.intro-veil {
-  position: fixed; inset: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 4501;
-  display: none;
-}
-html.intro-running .intro-veil { display: block; }
-/* The rect inside the SVG that gets painted (and masked) — colored bg-primary */
-.intro-veil > rect { fill: var(--bg); }
-
-.intro-root {
-  position: fixed; inset: 0; z-index: 5000;
-  pointer-events: none;
-  display: none;
-}
-html.intro-running .intro-root { display: block; }
-
-/* Glass shell — sits above orbFrost frost layer to create glass-sphere illusion.
-   Fades OUT as the shape morphs to a rectangle (highlights look wrong on rect). */
-.intro-orb {
-  position: absolute;
-  width: 180px; height: 180px;
-  border-radius: 90px;
-  pointer-events: none;
-  opacity: 0;
-  /* Dome sheen matching .hero-glass-sheen — fades in during the circle→card morph */
-  background:
-    radial-gradient(ellipse 90% 55% at 50% -5%,
-      rgba(255,255,255,0.45) 0%,
-      rgba(255,255,255,0.12) 45%,
-      transparent 70%),
-    linear-gradient(148deg, rgba(255,255,255,0.22) 0%, transparent 38%),
-    linear-gradient(328deg, rgba(255,255,255,0.10) 0%, transparent 35%);
-  box-shadow:
-    inset 0   1.5px 0 rgba(255,255,255,0.92),
-    inset 1.5px 0   0 rgba(255,255,255,0.55),
-    inset -1.5px 0  0 rgba(255,255,255,0.40),
-    inset 0  -1px   0 rgba(255,255,255,0.22);
-  z-index: 2;
-}
-[data-theme="dark"] .intro-orb {
-  background:
-    radial-gradient(ellipse 90% 55% at 50% -5%,
-      rgba(255,255,255,0.14) 0%,
-      transparent 70%),
-    linear-gradient(148deg, rgba(255,255,255,0.08) 0%, transparent 38%);
-  box-shadow:
-    inset 0   1.5px 0 rgba(255,255,255,0.22),
-    inset 1.5px 0   0 rgba(255,255,255,0.12),
-    inset -1.5px 0  0 rgba(255,255,255,0.08),
-    inset 0  -1px   0 rgba(255,255,255,0.05);
-}
-
-/* Frost overlay — lives at body level (NOT inside .intro-root) so its
-   backdrop-filter can blur the canvas. .intro-root's stacking context
-   would otherwise isolate the frost from the canvas behind it.
-   Visual values MIRROR .hero-text-backdrop on the home page exactly
-   (style.css:1237 override) so the handoff is pixel-identical.
-   Backdrop blur starts smaller — set inline by JS — because a 24px blur on
-   a 180px disc averages all canvas content to one flat color. */
-.intro-orb-frost {
-  position: fixed;
-  width: 180px; height: 180px;
-  border-radius: 90px;
-  pointer-events: none;
-  opacity: 0;
-  background: rgba(255, 255, 255, 0.26);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.55),
-    0 6px 40px rgba(90,58,18,0.22),
-    0 2px 10px rgba(90,58,18,0.14),
-    0 1px 0   rgba(255,255,255,0.80);
-  backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(1.02);
-  z-index: 4502;
-}
-[data-theme="dark"] .intro-orb-frost {
-  background: rgba(36, 26, 22, 0.71);
-  border-color: rgba(255, 255, 255, 0.10);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    0 6px 40px rgba(0,0,0,0.40),
-    0 2px 10px rgba(0,0,0,0.28),
-    0 1px 0   rgba(255,255,255,0.08);
-}
-
-.intro-name {
-  position: absolute;
-  left: 0; right: 0;
-  /* top is set by JS to sit below the orb */
-  text-align: center;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: clamp(28px, 4vw, 44px);
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
-  white-space: nowrap;
-  opacity: 0;
-  will-change: transform, opacity;
-  z-index: 4;
 }
