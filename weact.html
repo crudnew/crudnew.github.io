@@ -706,8 +706,8 @@
         lbImg.src = '';
       }
 
-      // Target imgs inside case sections, exclude hero showcase & persona carousel (has its own UX)
-      document.querySelectorAll('.case-section img, .content-full img').forEach(function (img) {
+      // Target imgs inside case sections, plus the hero phone showcase
+      document.querySelectorAll('.case-section img, .content-full img, .case-showcase .phone-pair img').forEach(function (img) {
         img.classList.add('zoomable');
         img.addEventListener('click', function () { open(img.src, img.alt); });
       });

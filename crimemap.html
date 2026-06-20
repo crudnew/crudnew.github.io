@@ -523,5 +523,41 @@
        Zero per-frame JS — GPU-composited transform/opacity only. */
   </script>
 
+  <!-- Lightbox -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="lightbox-close" aria-label="Close image viewer">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script>
+    (function () {
+      const lb     = document.getElementById('lightbox');
+      const lbImg  = document.getElementById('lightbox-img');
+      const lbClose = document.getElementById('lightbox-close');
+
+      function open(src, alt) {
+        lbImg.src = src;
+        lbImg.alt = alt || '';
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        lb.classList.remove('active');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      document.querySelectorAll('.case-section img').forEach(function (img) {
+        img.classList.add('zoomable');
+        img.addEventListener('click', function () { open(img.src, img.alt); });
+      });
+
+      lbClose.addEventListener('click', close);
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+
 </body>
 </html>
