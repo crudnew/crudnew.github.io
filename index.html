@@ -223,6 +223,7 @@
 
       </div><!-- /.bento-grid -->
       </div><!-- /.bento-grid-wrap -->
+      <p class="bento-nav-hint" aria-hidden="true"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or click and drag to browse</p>
     </section>
 
   </main>
@@ -352,6 +353,62 @@
     // Initial focus: card 1
     target = current = 0;
     render(current);
+  })();</script>
+
+  <!-- Bento card drag-to-scroll + arrow-key snap (reduced-motion mode only —
+       cards aren't deck-animated then). Drag stops wherever the pointer is
+       released; arrow keys still snap card-to-card, just without animation. -->
+  <script>(function(){
+    var wrap = document.querySelector('.bento-grid-wrap');
+    if (!wrap) return;
+    if (typeof motionOk === 'function' && motionOk()) return;
+
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function(e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var cards = [].slice.call(wrap.querySelectorAll('.bento-card'));
+      if (cards.length < 2) return;
+      e.preventDefault();
+      var step = cards[1].offsetLeft - cards[0].offsetLeft;
+      var dir = e.key === 'ArrowRight' ? 1 : -1;
+      var idx = Math.round(wrap.scrollLeft / step) + dir;
+      idx = Math.max(0, Math.min(cards.length - 1, idx));
+      wrap.scrollTo({ left: idx * step, behavior: 'auto' });
+    });
+
+    var isDown = false, startX = 0, startScroll = 0, moved = false;
+
+    wrap.addEventListener('pointerdown', function(e) {
+      if (e.pointerType === 'touch') return; // touch already scrolls natively
+      isDown = true; moved = false;
+      startX = e.clientX;
+      startScroll = wrap.scrollLeft;
+      wrap.classList.add('bento-dragging');
+      wrap.setPointerCapture(e.pointerId);
+    });
+
+    wrap.addEventListener('pointermove', function(e) {
+      if (!isDown) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      wrap.scrollLeft = startScroll - dx;
+    });
+
+    function release(e) {
+      if (!isDown) return;
+      isDown = false;
+      wrap.classList.remove('bento-dragging');
+      if (e && e.pointerId != null && wrap.hasPointerCapture(e.pointerId)) {
+        wrap.releasePointerCapture(e.pointerId);
+      }
+    }
+    wrap.addEventListener('pointerup', release);
+    wrap.addEventListener('pointercancel', release);
+
+    // Suppress accidental text/card selection while dragging.
+    wrap.addEventListener('click', function(e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
   })();</script>
 
   <!-- Liquid wave WebGL animation

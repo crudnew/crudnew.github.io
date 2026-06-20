@@ -2439,6 +2439,7 @@ html.is-scrolling * { pointer-events: none !important; }
    HOMEPAGE — BENTO GRID
 ============================================================ */
 .bento-section {
+  --bento-card-w: 520px;
   display: flex; flex-direction: column; align-items: center;
   gap: 36px; width: 100%; max-width: 1212px;
 }
@@ -2458,7 +2459,7 @@ html.is-scrolling * { pointer-events: none !important; }
 .bento-card {
   display: flex; flex-direction: column; gap: 16px;
   padding: 38px 34px;
-  flex: 0 0 520px;
+  flex: 0 0 var(--bento-card-w);
   scroll-snap-align: start;
   position: relative; overflow: hidden;
   background: rgba(252, 246, 238, 0.38);
@@ -3696,7 +3697,8 @@ body.nav-collapsed .settings-bubble[aria-checked="true"] {
   .card--row .card-text h3 { font-size: 30px; letter-spacing: -0.6px; }
   .card--row .card-image { min-height: 220px; aspect-ratio: 5/3; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
   [data-theme="dark"] .card--row .card-image { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
-  .bento-card { flex: 0 0 82vw; padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
+  .bento-section { --bento-card-w: 82vw; }
+  .bento-card { padding: 26px 20px; gap: 12px; opacity: 1 !important; transform: none !important; }
   .bento-card h3 { font-size: 18px; }
   footer { padding: 16px 20px; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
   .footer-links { gap: 20px; }
@@ -4000,11 +4002,11 @@ body.nav-collapsed .settings-bubble[aria-checked="true"] {
   .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 
   .bento-grid-wrap {
-    padding-inline: calc(50% - 260px);
-    scroll-snap-type: x mandatory;
+    padding-inline: calc(50% - var(--bento-card-w) / 2);
+    scroll-snap-type: none;
     overflow-x: scroll;
   }
-  .bento-card { scroll-snap-align: center; opacity: 1 !important; transform: none !important; }
+  .bento-card { opacity: 1 !important; transform: none !important; }
 }
 
 /* ── in-app toggle (data-motion="reduced" set by settings panel) ── */
@@ -4023,11 +4025,45 @@ html[data-motion="reduced"] .card:hover    { box-shadow: inset 0 1px 0 rgba(255,
 html[data-motion="reduced"] .cards--rows .card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 4px 16px rgba(62,40,22,0.07) !important; }
 html[data-motion="reduced"] .bento-card:hover { box-shadow: inset 0 1px 0 rgba(255,255,255,0.90), inset 1px 0 0 rgba(255,255,255,0.35), var(--shadow-sm) !important; }
 html[data-motion="reduced"] .bento-grid-wrap {
-  padding-inline: calc(50% - 260px);
-  scroll-snap-type: x mandatory;
+  padding-inline: calc(50% - var(--bento-card-w) / 2);
+  scroll-snap-type: none;
   overflow-x: scroll;
 }
-html[data-motion="reduced"] .bento-card { scroll-snap-align: center; opacity: 1 !important; transform: none !important; }
+html[data-motion="reduced"] .bento-card { opacity: 1 !important; transform: none !important; }
+
+/* ---- Drag-to-scroll + nav hint (reduced-motion only) ----
+   Snap is disabled above so a drag (or arrow-key scroll) stops wherever
+   the user releases it, instead of jumping to the nearest card. */
+html[data-motion="reduced"] .bento-grid-wrap { cursor: grab; }
+@media (prefers-reduced-motion: reduce) {
+  .bento-grid-wrap { cursor: grab; }
+}
+.bento-grid-wrap.bento-dragging { cursor: grabbing; user-select: none; }
+.bento-nav-hint {
+  display: none;
+  align-items: center; gap: 6px;
+  margin-top: -20px;
+  padding: 6px 14px;
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.bento-nav-hint kbd {
+  padding: 1px 6px;
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 700;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+html[data-motion="reduced"] .bento-nav-hint { display: inline-flex; }
+@media (prefers-reduced-motion: reduce) {
+  .bento-nav-hint { display: inline-flex; }
+}
 
 /* ============================================================
    PAGE TRANSITIONS — cross-document View Transitions API
