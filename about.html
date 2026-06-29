@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=157">
+  <link rel="stylesheet" href="./style.css?v=171">
   <style>
   /* ============================================================
      ABOUT PAGE — .about-card: project-card glass for text panels
@@ -162,13 +162,25 @@
       <section class="hero" aria-labelledby="about-heading">
         <div class="hero-text-backdrop">
           <div class="hero-sheen-follow" aria-hidden="true"></div>
-          <p class="about-status-chip">
-            <span class="about-status-dot" aria-hidden="true"></span>
-            <span>Currently completing my MI (UX Design) at UofT <b>·</b> Open to Co-Op roles in 2026</span>
-          </p>
-          <h1 id="about-heading">About Me</h1>
-          <span class="underline-draw" aria-hidden="true"></span>
-          <p class="hero-subtitle">UX/UI designer with a Computer Science and Business foundation, building accessible and user-centered digital experiences.</p>
+
+          <!-- Pinned independently, halfway between the card top and the
+               centered h1 below — not part of the h1's centering group.
+               Wrapper handles the absolute positioning so GSAP's own
+               transform (entrance bounce on the chip) doesn't clobber it. -->
+          <div class="about-status-chip-wrap">
+            <p class="about-status-chip">
+              <span class="about-status-dot" aria-hidden="true"></span>
+              <span>Currently completing my MI (UX Design) at UofT <b>·</b> Open to Co-Op roles in 2026</span>
+            </p>
+          </div>
+
+          <!-- Hero body -->
+          <div class="hero-body">
+            <div class="hero-text-col">
+              <h1 id="about-heading">About Me<span class="underline-draw" aria-hidden="true"></span></h1>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>
@@ -332,7 +344,7 @@
   <!-- Shared layout (header, footer, settings, cursor) -->
   <script src="./layout.js?v=32"></script>
 
-  <!-- Liquid wave WebGL animation — identical to index.html (runs for every .liquid-canvas on the page) -->
+  <!-- Rising-smoke WebGL animation — identical to index.html (runs for every .liquid-canvas on the page) -->
   <script>
   document.querySelectorAll('.liquid-canvas').forEach(function (canvas) {
     if (!canvas) return;
@@ -346,7 +358,15 @@
       in vec2 a_pos;
       void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
     `;
-    const FS = `#version 300 es
+
+    /* Two background variants share the same hash→noise→fbm→palette pipeline:
+         'liquid' — original domain-warped pools drifting in place.
+         'smoke'  — sparse warm tendrils rising and dissipating upward
+                    (coffee-steam concept; ties to the brown palette origin).
+       Flip USE_SMOKE to switch between them so they can be compared 1:1. */
+    const USE_SMOKE = true;
+
+    const FS_COMMON = `#version 300 es
       precision highp float;
       precision highp int;
       uniform vec2 u_resolution;
@@ -392,6 +412,40 @@
         float q2y = fbm(w + vec2(-cos(t * 0.22),  sin(t * 0.28)) * 0.6 + vec2(3.7, 7.1));
         return fbm(p + 2.4 * vec2(q2x, q2y));
       }
+
+      /* Softened ridged fbm — folds each octave with 1-|2n-1| (avoids smooth
+         rounded "liquid pool" shapes) but WITHOUT squaring the result, and
+         blended 60/40 with plain fbm. Squaring (an earlier pass) collapsed the
+         ridges into thin high-contrast filaments that read as veins/branches —
+         real smoke has no hard edges anywhere, so this keeps the shape softer
+         and fatter, closer to a blurred wisp than a drawn line. */
+      float fbmRidge(vec2 p) {
+        vec2 p0 = p;
+        float s = 0.0, a = 0.5, w = 0.0;
+        for (int i = 0; i < 4; i++) {
+          float n = 1.0 - abs(2.0 * noise(p) - 1.0);
+          s += a * n; w += a;
+          p *= 2.0; a *= 0.5;
+        }
+        return mix(s / w, fbm(p0), 0.4);
+      }
+
+      /* Rising smoke: sample coords drift downward over time (features appear to
+         rise), a domain-warp adds curl, and the field is read as ridged
+         filaments stretched vertically. Returns raw 0..1 density. */
+      float smoke(vec2 p, float t) {
+        float sway = sin(t * 0.13 + p.y * 0.5) * 0.12;
+        vec2 q = p + vec2(sway, -t * 0.50);
+        float w1 = fbm(q * 0.90 + vec2(0.0,      -t * 0.42));
+        float w2 = fbm(q * 0.90 + vec2(3.3, 1.7) - vec2(0.0,  t * 0.42));
+        vec2 warped = q + 1.30 * vec2(w1 - 0.5, w2 - 0.5);
+        /* Lower frequency than before — bigger, fatter wisps instead of fine
+           stringy detail. */
+        return fbmRidge(warped * vec2(0.95, 0.65));
+      }
+    `;
+
+    const FS_MAIN_LIQUID = `
       void main() {
         vec2 uv = gl_FragCoord.xy / u_resolution;
         float aspect = u_resolution.x / u_resolution.y;
@@ -403,6 +457,32 @@
         outColor = vec4(texture(u_palette, vec2(v, 0.5)).rgb, 1.0);
       }
     `;
+
+    const FS_MAIN_SMOKE = `
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_resolution;
+        float aspect = u_resolution.x / u_resolution.y;
+        float yBoost = max(1.0, 1.6 / aspect);
+        vec2 p = uv * vec2(1.45, 1.05 * yBoost) + u_seed;
+        float d = smoke(p, u_time);
+        /* Wide soft falloff — no hard edge anywhere, so wisps blur into the
+           background gradually instead of reading as drawn lines. */
+        d = smoothstep(0.30, 0.95, d);
+        /* Soften only at the very top so the steam melts out under the header
+           rather than cutting off. (uv.y: 0 bottom → 1 top.) The CSS gradient
+           mask handles the bottom fade. */
+        d *= smoothstep(1.04, 0.78, uv.y);
+        /* Single-color alpha blend — cream base to ONE coffee-brown smoke tone. */
+        vec3 bg       = vec3(0.965, 0.949, 0.925);
+        vec3 smokeCol = vec3(0.58, 0.40, 0.27);
+        /* Cap max density short of 1.0 so the densest wisp stays translucent
+           coffee-haze rather than a flat opaque patch. */
+        vec3 col = mix(bg, smokeCol, d * 0.88);
+        outColor = vec4(col, 1.0);
+      }
+    `;
+
+    const FS = FS_COMMON + (USE_SMOKE ? FS_MAIN_SMOKE : FS_MAIN_LIQUID);
 
     function compile(type, src) {
       const s = gl.createShader(type);
@@ -569,8 +649,7 @@
         .to('.hero', { y: 0, opacity: 1, duration: 1 }, '<+0.1')
         .from('.about-status-chip', { y: 20, opacity: 0, duration: 0.6 }, '-=0.55')
         .from('.hero h1',       { y: 40, opacity: 0, duration: 0.8 }, '-=0.45')
-        .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25')
-        .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.55');
+        .to('.underline-draw',  { width: '100%', duration: 0.9, ease: 'power2.inOut' }, '-=0.25');
     }
 
     /* ==================== DESKTOP SCROLL ANIMATIONS ==================== */
